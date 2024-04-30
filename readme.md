@@ -14,19 +14,6 @@ This project aims to classify food items and estimate their volume using a combi
 
 - **Integration:** Integrate the segmentation and volume estimation algorithms into a unified system for practical use. This involves processing input images, performing segmentation, estimating volumes, and presenting the results in a user-friendly format.
 
-## Project Structure:
-
-- **`data/`:** Contains datasets for training, validation, and testing, along with annotations for food items.
-  
-- **`models/`:** Stores pre-trained and trained models used for food segmentation and volume estimation.
-
-- **`notebooks/`:** Jupyter notebooks for various stages of the project, including data preprocessing, model training, evaluation, and demonstration of the segmentation and volume estimation process.
-
-- **`src/`:** Source code directory containing Python scripts for implementing the food segmentation and volume estimation algorithms. Includes modules for data preprocessing, model architecture, and volume estimation algorithms.
-
-- **`mobile_app/`:** Contains the source code for the mobile application, including front-end and back-end components.
-
-- **`requirements.txt`:** Lists all Python dependencies required for running the project code. Ensure these dependencies are installed before running the code.
 
 ## Usage:
 
