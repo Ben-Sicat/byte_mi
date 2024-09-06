@@ -1,0 +1,3 @@
+"""
+    typical init file
+"""
