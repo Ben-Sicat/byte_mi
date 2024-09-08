@@ -1,0 +1,3 @@
+""" 
+    Typicall init.file
+"""
