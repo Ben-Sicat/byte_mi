@@ -13,7 +13,7 @@ scikit-image
     install scikit-image 0.19.2
 
 tqdm
-
+ 
     install tqdm 4.63.0
 
 scipy
@@ -28,3 +28,5 @@ Tensorflow
     as for the tensorflow version the required is 2.10.0b the version that is installed is 2.10.0
     install tensorflow-gpu 2.10.0
 
+
+goods naman lahat na install lahat
