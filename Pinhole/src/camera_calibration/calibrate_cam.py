@@ -5,24 +5,25 @@ import cv2
 from scipy.optimize import minimize
 
 class TrayBasedCalibrator:
-    def __init__(self, tray_specs, image_size):
+    def __init__(self, plate_dimentions, image_size):
         """
         Initialize the calibrator with tray specifications and image size.
         """
-        self.tray_specs = tray_specs
+        self.pate_length, self.plate_width, self.plate_height = plate_dimentions
         self.image_size = image_size
         self.camera_matrix = None
         self.dist_coeffs = None
         self.rvec = None
         self.tvec = None
 
-    def calibrate(self, tray_mask):
+    def calibrate(self, section_mask):
+        full_plate_mask = np.sum(section_mask, axis = 0) > 0
         # extract tray contour
         contours, _ = cv2.findContours(tray_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        tray_contour = max(contours, key=cv2.contourArea)
+        plate_contour = max(contours, key=cv2.contourArea)
 
         # rotated rectangle 
-        rect = cv2.minAreaRect(tray_contour)
+        rect = cv2.minAreaRect(plate_contour)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
 
@@ -51,13 +52,13 @@ class TrayBasedCalibrator:
         pixel_size = max(rect_size)
         return (pixel_size * 1) / self.tray_specs['overall_width']
 
-    def _generate_3d_tray_points(self):
-        w, h = self.tray_specs['overall_width'], self.tray_specs['overall_height']
+    def _generate_3d_plate_points(self):
+        l, w = self.plate_length / 2, self.plate_width / 2
         return np.array([
-            [-w/2, -h/2, 0],
-            [w/2, -h/2, 0],
-            [w/2, h/2, 0],
-            [-w/2, h/2, 0]
+            [-l, -w, 0],
+            [l, -w, 0],
+            [l, w, 0],
+            [-l, w, 0]
         ], dtype=np.float32)
 
     def _optimize_parameters(self, object_points, image_points):
@@ -81,9 +82,9 @@ class TrayBasedCalibrator:
         initial_params = [
             self.camera_matrix[0, 0], self.camera_matrix[1, 1],
             self.camera_matrix[0, 2], self.camera_matrix[1, 2],
-            0, 0, 0, 0, 0,
-            0, 0, 1,
-            0, 0, 0
+            0, 0, 0, 0, 0, # distortion coeff
+            0, 0, 1,        # translation
+            0, 0, 0         # rotation
         ]
 
         result = minimize(objective, initial_params, method='Powell')
