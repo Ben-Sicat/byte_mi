@@ -8,7 +8,7 @@ import cv2
 from src.preprocessing.image_scaling import upscale_depth, align_segmentation_mask
 from src.preprocessing.noise_reduction import reduce_depth_noise
 
-# Paths
+# paths
 DATA_DIR = 'data'
 IMAGE_INPUT_DIR = os.path.join(DATA_DIR, 'image_input')
 SEGMENTATION_FILE = os.path.join(DATA_DIR, 'train', '_annotations.coco.json')
@@ -16,21 +16,21 @@ SEGMENTATION_FILE = os.path.join(DATA_DIR, 'train', '_annotations.coco.json')
 def load_rgbd_image(filename):
     """Load RGBD image from a PNG file."""
     img = cv2.imread(os.path.join(IMAGE_INPUT_DIR, filename), cv2.IMREAD_UNCHANGED)
-    if img.shape[2] != 4:  # If it's just RGB, add a dummy depth channel
+    if img.shape[2] != 4:  # if its just RGB.... add  dummy d channel
         raise ValueError(f"Expected 4-channel RGBD image, got {img.shape[2]} channels")
     return img
 
 def load_rgb_image(filename):
-    """Load RGB image."""
+    """ load RGB image"""
     return cv2.imread(os.path.join(IMAGE_INPUT_DIR, filename), cv2.IMREAD_COLOR)
 
 def load_coco_data(json_file):
-    """Load COCO format data."""
+    """load COCO format data"""
     with open(json_file, 'r') as f:
         return json.load(f)
 
 def load_segmentation_mask(image_id, coco_data):
-    """Create the segmentation mask from COCO format data."""
+    """ create the segmentation mask from coco format data"""
     image_info = next(img for img in coco_data['images'] if img['id'] == image_id)
     mask = np.zeros((image_info['height'], image_info['width']), dtype=np.uint8)
 
@@ -44,7 +44,7 @@ def load_segmentation_mask(image_id, coco_data):
     return mask
 
 def get_corresponding_rgbd_filename(rgb_filename):
-    """Get the corresponding RGBD filename for a given RGB filename."""
+    """get the corresponding rgbdfilename for a given rgb """
     mapping = {
         'Pair1_png.rf.9a41eaba847f2815f37ffd3e13598fc6.jpg': 'Pairone.png',
         'Pairtwo_png.rf.e23749dcf6644b0a2e561634554a5009.jpg': 'Pairtwo.png',
@@ -80,8 +80,7 @@ def test_reduce_depth_noise():
     depth = rgbd_image[:, :, 3]  # Access depth channel
     reduced_noise_depth = reduce_depth_noise(depth)
     assert reduced_noise_depth.shape == depth.shape, "Noise reduction changed image shape"
-    # error over here fix this:with  as target:
-        pass
+    # error over here fix this
     assert not np.array_equal(reduced_noise_depth, depth), "Noise reduction had no effect"
     print("Reduce depth noise test passed")
 

@@ -1,5 +1,5 @@
 import cv2
-import numpy as numpy
+import numpy as np
 
 
 def reduce_depth_noise(depth_image, method='bilateral'):
@@ -12,7 +12,7 @@ def reduce_depth_noise(depth_image, method='bilateral'):
         numpy.ndarray: Noise reduced dpeth depth_image
 
     """
-
+    depth_image = depth_image.astype(np.float32)
     if method == 'bilateral':
         return cv2.bilateralFilter(depth_image, 9,75,75)
     elif method== 'median':
