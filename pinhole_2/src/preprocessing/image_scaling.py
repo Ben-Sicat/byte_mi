@@ -18,12 +18,17 @@ def upscale_depth(rgbd_image, target_shape):
     
     """
 
-    rgb = rgbd_image[:, :, :3]
-    depth = rgbd_image[:,:,3]
+    if rgbd_image.shape[2] == 4:
+        rgb = rgbd_image[:,:,:3]
+        depth = rgbd_image[:,:,3]
+    else:
+        raise ValueError("Expected RGBD image with 4 channels")
 
-    upscaled_depth = cv2resize(depth,(target_shape[1], target_shape[0]), interpolation=cv2.INTER_CUBIC)
+    upscaled_rgb = cv2.resize(rgb, (target_shape[1], target_shape[0]), interpolation=cv2.INTER_LINEAR)
+    upscaled_depth = cv2.resize(depth, (target_shape[1], target_shape[0]), interpolation=cv2.INTER_NEAREST)
 
-    return np.dstack((rgbd,upscaled_depth))
+
+    return np.dstack((upscaled_rgb,upscaled_depth))
 
 def align_segmentation_mask(mask, rgbd_shape):
 
