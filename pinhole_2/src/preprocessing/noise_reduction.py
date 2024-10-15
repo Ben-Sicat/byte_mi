@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def reduce_depth_noise(depth_image, method='bilateral'):
+def reduce_depth_noise(depth_image, method='median'):
     """
         args:
         depth_image (numpy.ndarray): depth depth_image
