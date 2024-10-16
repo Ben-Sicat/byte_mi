@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def reduce_depth_noise(depth_image, method='median'):
+def reduce_depth_noise(depth_image, method='bilateral'):
     """
         args:
         depth_image (numpy.ndarray): depth depth_image
@@ -12,11 +12,14 @@ def reduce_depth_noise(depth_image, method='median'):
         numpy.ndarray: Noise reduced dpeth depth_image
 
     """
-    depth_image = depth_image.astype(np.float32)
+    print(f"Noise reduction input depth min: {depth_image.min()}, max: {depth_image.max()}")
+    
     if method == 'bilateral':
-        return cv2.bilateralFilter(depth_image, 9,75,75)
-    elif method== 'median':
-        return cv2.medianBlur(depth_image,5)
+        result = cv2.bilateralFilter(depth_image, 9, 75, 75)
+    elif method == 'median':
+        result = cv2.medianBlur(depth_image, 5)
     else:
-        raise ValueError('unsupported noise reduction method')
-        
+        raise ValueError('Unsupported noise reduction method')
+    
+    print(f"Noise reduction output depth min: {result.min()}, max: {result.max()}")
+    return result

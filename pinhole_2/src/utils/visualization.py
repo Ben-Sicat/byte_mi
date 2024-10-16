@@ -1,3 +1,5 @@
+# src/utils/visualization.py
+
 import matplotlib
 matplotlib.use('Agg')  # Set the backend to Agg
 import matplotlib.pyplot as plt
@@ -6,13 +8,13 @@ import cv2
 import os
 
 def visualize_depth(depth_image):
-    depth_min = np.min(depth_image)
-    depth_max = np.max(depth_image)
-    if depth_min == depth_max:
-        print(f"Warning: Depth image has uniform value of {depth_min}")
-        return np.zeros_like(depth_image)
-    normalized_depth = (depth_image - depth_min) / (depth_max - depth_min)
+    depth_min, depth_max = np.min(depth_image), np.max(depth_image)
+    if depth_min != depth_max:
+        normalized_depth = (depth_image - depth_min) / (depth_max - depth_min)
+    else:
+        normalized_depth = np.zeros_like(depth_image)
     return plt.cm.viridis(normalized_depth)
+
 def visualize_preprocessing_steps(rgb_image, original_rgbd, upscaled_rgbd, segmentation_mask, noise_reduced_depth, output_dir):
     fig, axs = plt.subplots(3, 3, figsize=(15, 15))
     fig.suptitle('Preprocessing Pipeline Visualization', fontsize=16)
@@ -76,20 +78,6 @@ def visualize_preprocessing_steps(rgb_image, original_rgbd, upscaled_rgbd, segme
     plt.close(fig)
     print(f"Visualization saved to: {output_path}")
 
-    # Save standalone upscaled RGBD image
-    upscaled_rgbd_path = os.path.join(output_dir, 'upscaled_rgbd.png')
-    cv2.imwrite(upscaled_rgbd_path, cv2.cvtColor(upscaled_rgbd[:,:,:3].astype(np.uint8), cv2.COLOR_RGB2BGR))
-    print(f"Standalone upscaled RGBD image saved to: {upscaled_rgbd_path}")
-
-    # Save upscaled depth image
-    plt.figure(figsize=(10, 8))
-    plt.imshow(depth_vis)
-    plt.title(f'Upscaled Depth (min: {upscaled_rgbd[:,:,3].min():.2f}, max: {upscaled_rgbd[:,:,3].max():.2f})')
-    plt.axis('off')
-    upscaled_depth_path = os.path.join(output_dir, 'upscaled_depth.png')
-    plt.savefig(upscaled_depth_path)
-    plt.close()
-    print(f"Upscaled depth image saved to: {upscaled_depth_path}")
 def overlay_segmentation_on_rgbd(upscaled_rgbd, segmentation_mask):
     # Resize segmentation mask to match upscaled RGBD
     resized_mask = cv2.resize(segmentation_mask, (upscaled_rgbd.shape[1], upscaled_rgbd.shape[0]), 
