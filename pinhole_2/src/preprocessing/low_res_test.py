@@ -11,12 +11,12 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
 def visualize_rgbd(rgbd_image, title):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
     
-    # Visualize RGB
+    #  RGB real image
     ax1.imshow(rgbd_image[:,:,:3])
     ax1.set_title("RGB")
     ax1.axis('off')
     
-    # Visualize Depth
+    # Depth factors
     depth_vis = ax2.imshow(rgbd_image[:,:,3], cmap='jet')
     ax2.set_title("Depth")
     ax2.axis('off')
@@ -27,12 +27,12 @@ def visualize_rgbd(rgbd_image, title):
     return fig
 
 def process_low_res_rgbd(rgb_filename, output_dir):
-    # Get corresponding RGBD filename
+    # get corresponding RGBD filename
     rgbd_filename = get_corresponding_rgbd_filename(rgb_filename)
     if rgbd_filename is None:
         raise ValueError(f"No corresponding RGBD filename found for {rgb_filename}")
 
-    # Load low-resolution RGBD image
+    # load low-resolution RGBD image
     data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data'))
     image_input_dir = os.path.join(data_dir, 'image_input')
     rgbd_path = os.path.join(image_input_dir, rgbd_filename)
@@ -42,7 +42,7 @@ def process_low_res_rgbd(rgb_filename, output_dir):
     print(f"Depth channel min: {original_rgbd[:,:,3].min()}, max: {original_rgbd[:,:,3].max()}")
     print(f"Unique depth values: {np.unique(original_rgbd[:,:,3])}")
 
-    # Visualize original RGBD
+    #vbisualize original RGBD
     fig_original = visualize_rgbd(original_rgbd, "Original Low-res RGBD")
     fig_original.savefig(os.path.join(output_dir, f"{os.path.splitext(rgbd_filename)[0]}_original.png"))
     plt.close(fig_original)
@@ -53,7 +53,7 @@ def process_low_res_rgbd(rgb_filename, output_dir):
 
     print(f"Noise reduced depth min: {noise_reduced_depth.min()}, max: {noise_reduced_depth.max()}")
 
-    # Create noise-reduced RGBD image
+    # create noise-reduced RGBD image
     noise_reduced_rgbd = original_rgbd.copy()
     noise_reduced_rgbd[:,:,3] = noise_reduced_depth
 

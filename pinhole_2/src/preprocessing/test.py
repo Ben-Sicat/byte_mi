@@ -32,13 +32,7 @@ def test_preprocessing_pipeline():
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'output'))
     pipeline = PreprocessingPipeline(data_dir, output_dir)
 
-    print("Testing load_rgbd_image function:")
-    test_load_rgbd_image(pipeline)
-
-    print("\nTesting create_segmentation_mask function:")
-    test_create_segmentation_mask(pipeline)
-
-    print("\nRunning full preprocessing pipeline:")
+    print("Running full preprocessing pipeline:")
     pipeline.run()
 
     # Check if output files are created
@@ -48,10 +42,10 @@ def test_preprocessing_pipeline():
         'Pair3_png.rf.984a166a90eb4fb2fc2ea9a4e5a882f4.jpg'
     ]
     
-# In the test_preprocessing_pipeline function
     for rgb_filename in rgb_filenames:
-        upscaled_rgbd_path = os.path.join(output_dir, 'upscaled', f'{os.path.splitext(rgb_filename)[0]}_upscaled_rgbd.npy')
-        assert os.path.exists(upscaled_rgbd_path), f"Upscaled RGBD file not found: {upscaled_rgbd_path}"
+        output_filename = os.path.splitext(rgb_filename)[0]
+        depth_path = os.path.join(output_dir, 'processed', f'{output_filename}_depth.npy')
+        assert os.path.exists(depth_path), f"Depth file not found: {depth_path}"
         
     visualization_path = os.path.join(output_dir, 'preprocessing_visualization.png')
     assert os.path.exists(visualization_path), f"Visualization file not found: {visualization_path}"

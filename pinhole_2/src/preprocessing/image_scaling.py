@@ -23,22 +23,22 @@ def upscale_depth(rgbd_image, target_shape):
     h, w = rgbd_image.shape[:2]
     target_h, target_w = target_shape
 
-    # Calculate scaling factor while maintaining aspect ratio
+    # calculate scaling factor while maintaining aspect ratio for the image upscaling not the scaling factor for th pinhole
     scale = min(target_w / w, target_h / h)
     new_w, new_h = int(w * scale), int(h * scale)
 
-    # Resize RGB and depth channels separately
+    # depth channels 
     rgb_resized = cv2.resize(rgbd_image[:,:,:3], (new_w, new_h), interpolation=cv2.INTER_LINEAR)
     depth_resized = cv2.resize(rgbd_image[:,:,3], (new_w, new_h), interpolation=cv2.INTER_NEAREST)
 
-    # Create a new RGBD image with the target shape
+    # create a new upscaled image 
     upscaled_rgbd = np.zeros((*target_shape, 4), dtype=rgbd_image.dtype)
     
-    # Calculate padding
+    #  padding
     pad_w = (target_w - new_w) // 2
     pad_h = (target_h - new_h) // 2
 
-    # Place the resized image in the center
+    # put to center para maangas
     upscaled_rgbd[pad_h:pad_h+new_h, pad_w:pad_w+new_w, :3] = rgb_resized
     upscaled_rgbd[pad_h:pad_h+new_h, pad_w:pad_w+new_w, 3] = depth_resized
 
