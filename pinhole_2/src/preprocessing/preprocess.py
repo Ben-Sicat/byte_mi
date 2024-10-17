@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
 from src.utils.utils import (
     load_rgbd_image,
     load_coco_data,
@@ -22,7 +23,12 @@ class PreprocessingPipeline:
         ensure_directory_exists(output_dir)
         self.processed_dir = os.path.join(output_dir, 'processed')
         ensure_directory_exists(self.processed_dir)
+        
+        #load data
+        self.coco_data = load_coco_data(self.segmentation_file)
 
+        # creat mapping of category
+        self.category_id_to_name = {cat['id']: cat['name'] for cat in self.coco_data['categories']}
         # Camera setup constants
         self.camera_height = 33  
         self.plate_height = 1.5 
@@ -133,56 +139,58 @@ class PreprocessingPipeline:
             if rgbd_filename is None:
                 raise ValueError(f"No corresponding RGBD filename found for {rgb_filename}")
 
-            # Load RGBD image (which is actually just RGB in this case)
+            # Load RGBD image
             rgbd_path = os.path.join(self.image_input_dir, rgbd_filename)
             rgbd_image = load_rgbd_image(rgbd_path)
             print(f"Loaded RGBD image shape: {rgbd_image.shape}")
 
-            # Estimate depth from color
-            estimated_depth = self.color_to_depth(rgbd_image[:,:,:3])
-            print(f"Estimated depth shape: {estimated_depth.shape}")
+            # Upscale RGBD image to match RGB resolution
+            upscaled_rgbd = self.upscale_with_padding(rgbd_image, rgb_image.shape[:2])
+            print(f"Upscaled RGBD shape: {upscaled_rgbd.shape}")
 
-            # Upscale estimated depth to match RGB resolution
-            upscaled_depth = self.upscale_with_padding(estimated_depth, rgb_image.shape[:2])
-            print(f"Upscaled depth shape: {upscaled_depth.shape}")
-
-            # Load and create segmentation mask
+            # Create segmentation mask
             coco_data = load_coco_data(self.segmentation_file)
             segmentation_mask = create_segmentation_mask(image_id, coco_data)
             segmentation_mask = align_segmentation_mask(segmentation_mask, rgb_image.shape[:2])
             print(f"Segmentation mask shape: {segmentation_mask.shape}")
+            print(f"Unique values in segmentation mask: {np.unique(segmentation_mask)}")
 
-            # Calibrate depth using the plate
-            calibrated_depth = self.calibrate_depth(upscaled_depth, segmentation_mask)
-
-            # Extract depth for segmented objects
-            segmented_depths = {}
-            unique_objects = np.unique(segmentation_mask)
-            for obj_id in unique_objects:
+            # Extract color data for segmented objects
+            segmented_data = {}
+            for obj_id in np.unique(segmentation_mask):
                 if obj_id == 0:  # Assuming 0 is background
                     continue
                 object_mask = segmentation_mask == obj_id
-                object_depth = np.where(object_mask, calibrated_depth, np.nan)
-                segmented_depths[obj_id] = object_depth
-
-            # Save processed data
-            output_filename = os.path.splitext(rgb_filename)[0]
-            np.save(os.path.join(self.processed_dir, f"{output_filename}_rgb.npy"), rgb_image)
-            np.save(os.path.join(self.processed_dir, f"{output_filename}_depth.npy"), calibrated_depth)
-            np.save(os.path.join(self.processed_dir, f"{output_filename}_segmentation.npy"), segmentation_mask)
-            for obj_id, obj_depth in segmented_depths.items():
-                np.save(os.path.join(self.processed_dir, f"{output_filename}_object{obj_id}_depth.npy"), obj_depth)
+                
+                # Extract RGB data for the object
+                object_rgb = rgb_image.copy()
+                object_rgb[~object_mask] = 0
+                
+                # Extract RGBD color data for the object
+                object_rgbd = upscaled_rgbd.copy()
+                object_rgbd[~object_mask] = 0
+                
+                # Get object name from COCO categories
+                object_name = self.category_id_to_name.get(obj_id, f"unknown_object_{obj_id}")
+                
+                # Extract color values for pixels inside the segmentation mask
+                object_colors = object_rgbd[object_mask]
+                
+                segmented_data[obj_id] = {
+                    'rgb': object_rgb, 
+                    'rgbd': object_rgbd,
+                    'colors': object_colors,
+                    'name': object_name
+                }
 
             # Visualize results
-            visualize_preprocessing_steps(rgb_image, rgbd_image, estimated_depth, calibrated_depth, segmentation_mask, segmented_depths, self.output_dir)
-            print(f"Saved preprocessing visualization to: {self.output_dir}")
+            vis_filename = f"{os.path.splitext(rgb_filename)[0]}_visualization.png"
+            visualize_preprocessing_steps(rgb_image, rgbd_image, upscaled_rgbd, segmentation_mask, segmented_data, self.output_dir, vis_filename)
 
-            return rgb_image, calibrated_depth, segmentation_mask, segmented_depths
-
+            return rgb_image, upscaled_rgbd, segmentation_mask, segmented_data
         except Exception as e:
             print(f"Error processing image {rgb_filename}: {str(e)}")
             raise
-
     def run(self):
         rgb_filenames = [
             'Pair1_png.rf.9a41eaba847f2815f37ffd3e13598fc6.jpg',

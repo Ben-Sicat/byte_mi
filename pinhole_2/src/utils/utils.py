@@ -1,5 +1,3 @@
-# src/utils/utils.py
-
 import os
 import json
 import cv2
@@ -22,6 +20,7 @@ def load_coco_data(json_file):
     with open(json_file, 'r') as f:
         return json.load(f)
 
+
 def create_segmentation_mask(image_id, coco_data):
     image_info = next(img for img in coco_data['images'] if img['id'] == image_id)
     mask = np.zeros((image_info['height'], image_info['width']), dtype=np.uint8)
@@ -33,9 +32,11 @@ def create_segmentation_mask(image_id, coco_data):
         for segmentation in ann['segmentation']:
             pts = np.array(segmentation).reshape((-1, 2)).astype(np.int32)
             cv2.fillPoly(mask, [pts], color=category_id)
-
+    
+    print(f"Number of annotations for image {image_id}: {len(annotations)}")
+    print(f"Unique category IDs in mask: {np.unique(mask)}")
+    
     return mask
-
 def get_corresponding_rgbd_filename(rgb_filename):
     mapping = {
         'Pair1_png.rf.9a41eaba847f2815f37ffd3e13598fc6.jpg': 'Pairone.png',
@@ -64,7 +65,7 @@ def save_depth_image(depth_data, output_path, as_uint8=True):
     as_uint8 (bool): If True, convert depth to uint8 before saving
     """
     if as_uint8:
-        # Normalize depth to 0-255 range
+        # normalizedepth to 0 255 range
         depth_min = np.min(depth_data)
         depth_max = np.max(depth_data)
         if depth_min != depth_max:
