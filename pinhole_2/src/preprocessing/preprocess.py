@@ -2,6 +2,9 @@ import os
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from scipy.ndimage import uniform_filter
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 from src.utils.utils import (
     load_rgbd_image,
     load_coco_data,
@@ -24,170 +27,252 @@ class PreprocessingPipeline:
         self.processed_dir = os.path.join(output_dir, 'processed')
         ensure_directory_exists(self.processed_dir)
         
-        #load data
         self.coco_data = load_coco_data(self.segmentation_file)
-
-        # creat mapping of category
         self.category_id_to_name = {cat['id']: cat['name'] for cat in self.coco_data['categories']}
-        # Camera setup constants
-        self.camera_height = 33  
-        self.plate_height = 1.5 
-        self.plate_depth = 0.7
-
-    def color_to_depth(self, color_image):
+        
+        self.camera_height = 33  # cm
+        self.plate_height = 1.5  # cm
+        self.plate_depth = 0.7  # cm
+    def color_to_depth(self, rgbd_image, segmentation_mask, plate_id=5):
         """
-        Convert color information to estimated depth values.
-        
-        Args:
-        color_image (numpy.ndarray): RGB image
-
-        Returns:
-        numpy.ndarray: Estimated depth values (in cm)
+        Convert color information to estimated depth values for each pixel,
+        with depth relative to each object's own intensity range and smoothing of extreme values.
         """
-        # Convert to grayscale
-        gray = cv2.cvtColor(color_image, cv2.COLOR_RGB2GRAY)
+        # Extract RGB channels
+        rgb = rgbd_image[:,:,:3].astype(float)
         
-        # Normalize to 0-1 range
-        normalized = gray.astype(float) / 255.0
+        # Calculate grayscale intensity
+        intensity = np.dot(rgb, [0.299, 0.587, 0.114])
         
-        # Invert so that darker colors are further away
-        inverted = 1 - normalized
+        # Initialize depth map
+        depth = np.zeros_like(intensity)
         
-        # Scale depth values based on camera setup
-        # Assume the brightest points (now 0) are at plate level, and darkest (now 1) are at max depth
-        max_depth = self.camera_height - self.plate_height
-        depth = inverted * max_depth + self.plate_height
+        # Set plate depth
+        plate_mask = segmentation_mask == plate_id
+        depth[plate_mask] = self.plate_height + self.plate_depth/2
+        
+        # Process each object separately
+        for obj_id in np.unique(segmentation_mask):
+            if obj_id == 0 or obj_id == plate_id:  # Skip background and plate
+                continue
+            
+            obj_mask = segmentation_mask == obj_id
+            obj_intensity = intensity[obj_mask]
+            
+            # Normalize intensity within the object
+            obj_norm_intensity = (obj_intensity - np.min(obj_intensity)) / (np.max(obj_intensity) - np.min(obj_intensity))
+            
+            # Invert normalized intensity so darker colors are further away
+            obj_inv_intensity = 1 - obj_norm_intensity
+            
+            # Scale depth values
+            min_object_height = 0.5  # Minimum height above plate for the brightest part
+            max_object_height = 8    # Maximum height above plate for the darkest part
+            obj_depth = obj_inv_intensity * (max_object_height - min_object_height) + min_object_height
+            
+            # Smooth extreme values
+            obj_depth_2d = np.zeros_like(depth)
+            obj_depth_2d[obj_mask] = obj_depth
+            
+            # Calculate local average depth
+            local_avg = uniform_filter(obj_depth_2d, size=3)
+            
+            # Identify extreme values
+            threshold = 2.0  # Adjust this value to control sensitivity
+            extreme_mask = np.abs(obj_depth_2d - local_avg) > threshold
+            
+            # Adjust extreme values
+            adjustment_factor = 0.5  # Adjust this value to control smoothing strength
+            obj_depth_2d[extreme_mask] = (
+                obj_depth_2d[extreme_mask] * (1 - adjustment_factor) +
+                local_avg[extreme_mask] * adjustment_factor
+            )
+            
+            # Add plate height and depth
+            obj_depth_2d[obj_mask] += self.plate_height + self.plate_depth
+            
+            # Assign depth to object pixels
+            depth[obj_mask] = obj_depth_2d[obj_mask]
+        
+        # Set background to camera height
+        background_mask = segmentation_mask == 0
+        depth[background_mask] = self.camera_height
         
         return depth
-
-    def calibrate_depth(self, depth, segmentation_mask, plate_id=5):
+    def analyze_object_depths(self, depth_map, segmentation_mask):
         """
-        Calibrate depth using the plate as a reference.
-        
+        Analyze depth statistics for each object in the segmentation mask.
+
         Args:
-        depth (numpy.ndarray): Estimated depth values
+        depth_map (numpy.ndarray): Estimated depth values
         segmentation_mask (numpy.ndarray): Segmentation mask
-        plate_id (int): ID of the plate in the segmentation mask
 
         Returns:
-        numpy.ndarray: Calibrated depth values
+        dict: Object depth statistics
         """
-        plate_mask = segmentation_mask == plate_id
-        plate_depth = depth[plate_mask]
-        
-        if plate_depth.size == 0:
-            print("Warning: No plate found in the image for calibration.")
-            return depth
-        
-        plate_avg_depth = np.mean(plate_depth)
-        expected_plate_depth = self.plate_height + self.plate_depth / 2  # Average depth of the plate
-        
-        # Adjust depth so that the plate has the expected depth
-        calibration_factor = expected_plate_depth / plate_avg_depth
-        calibrated_depth = depth * calibration_factor
-        
-        return calibrated_depth
+        object_stats = {}
+        unique_objects = np.unique(segmentation_mask)
+        unique_objects = unique_objects[unique_objects != 0]  # Exclude background
+
+        for obj_id in unique_objects:
+            obj_mask = segmentation_mask == obj_id
+            obj_depths = depth_map[obj_mask]
+            
+            object_stats[obj_id] = {
+                'min_depth': np.min(obj_depths),
+                'max_depth': np.max(obj_depths),
+                'mean_depth': np.mean(obj_depths),
+                'median_depth': np.median(obj_depths),
+                'std_depth': np.std(obj_depths)
+            }
+
+        return object_stats
+    def visualize_object_depths(self, rgb_image, depth_map, segmentation_mask, object_stats, output_path):
+        num_objects = len(object_stats)
+        fig, axs = plt.subplots(2, 3, figsize=(20, 10 * (num_objects // 3 + 1)))
+        fig.suptitle('Object Depth Visualization', fontsize=16)
+
+        # Original RGB Image
+        axs[0, 0].imshow(rgb_image)
+        axs[0, 0].set_title('Original RGB Image')
+        axs[0, 0].axis('off')
+
+        # Full Depth Map
+        im = axs[0, 1].imshow(depth_map, cmap='viridis')
+        axs[0, 1].set_title('Full Depth Map')
+        axs[0, 1].axis('off')
+        plt.colorbar(im, ax=axs[0, 1], label='Depth (cm)')
+
+        # Segmentation Mask
+        axs[0, 2].imshow(segmentation_mask, cmap='tab20')
+        axs[0, 2].set_title('Segmentation Mask')
+        axs[0, 2].axis('off')
+
+        # Individual object depth maps
+        for i, (obj_id, stats) in enumerate(object_stats.items()):
+            row = (i + 3) // 3
+            col = (i + 3) % 3
+            obj_mask = segmentation_mask == obj_id
+            obj_depth = np.ma.masked_where(~obj_mask, depth_map)
+            im = axs[row, col].imshow(obj_depth, cmap='viridis')
+            axs[row, col].set_title(f'Object {obj_id} Depth')
+            axs[row, col].axis('off')
+            plt.colorbar(im, ax=axs[row, col], label='Depth (cm)')
+
+        plt.tight_layout()
+        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+        plt.close()
+    def analyze_object_depths(self, depth_map, segmentation_mask):
+        object_stats = {}
+        unique_objects = np.unique(segmentation_mask)
+        unique_objects = unique_objects[unique_objects != 0]  # Exclude background
+
+        for obj_id in unique_objects:
+            obj_mask = segmentation_mask == obj_id
+            obj_depths = depth_map[obj_mask]
+            
+            object_stats[obj_id] = {
+                'min_depth': np.min(obj_depths),
+                'max_depth': np.max(obj_depths),
+                'mean_depth': np.mean(obj_depths),
+                'median_depth': np.median(obj_depths),
+                'std_depth': np.std(obj_depths)
+            }
+
+        return object_stats
     def upscale_with_padding(self, image, target_shape):
-        """
-        Upscale the image to target shape while maintaining aspect ratio and using padding.
-        
-        Args:
-        image (numpy.ndarray): Input image to upscale
-        target_shape (tuple): Target shape (height, width)
-
-        Returns:
-        numpy.ndarray: Upscaled and padded image
-        """
         h, w = image.shape[:2]
         target_h, target_w = target_shape
-
-        # Calculate scaling factor
         scale = min(target_h / h, target_w / w)
-        
-        # Calculate new dimensions
         new_h, new_w = int(h * scale), int(w * scale)
-
-        # Resize the image
         resized = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
-
-        # Create a black canvas of the target shape
+        
         if len(image.shape) == 3:
             padded = np.zeros((target_h, target_w, image.shape[2]), dtype=resized.dtype)
         else:
             padded = np.zeros((target_h, target_w), dtype=resized.dtype)
-
-        # Compute padding
-        pad_h = (target_h - new_h) // 2
-        pad_w = (target_w - new_w) // 2
-
-        # Place the resized image on the canvas
+        
+        pad_h, pad_w = (target_h - new_h) // 2, (target_w - new_w) // 2
         padded[pad_h:pad_h+new_h, pad_w:pad_w+new_w] = resized
-
         return padded
+
+    def normalize_plate_color(self, upscaled_rgbd, segmentation_mask, plate_id=5):
+        plate_mask = segmentation_mask == plate_id
+        plate_colors = upscaled_rgbd[plate_mask][:, :3]
+        
+        kmeans = KMeans(n_clusters=3, random_state=42)
+        kmeans.fit(plate_colors)
+        
+        cluster_sizes = np.bincount(kmeans.labels_)
+        sorted_clusters = sorted(zip(cluster_sizes, kmeans.cluster_centers_), reverse=True)
+        dominant_color = sorted_clusters[0][1]
+        
+        color_std = np.std(plate_colors, axis=0)
+        distance_threshold = np.mean(color_std) * 2
+        
+        close_to_dominant = np.linalg.norm(plate_colors - dominant_color, axis=1) < distance_threshold
+        normalized_plate_color = np.mean(plate_colors[close_to_dominant], axis=0)
+        
+        normalized_rgbd = upscaled_rgbd.copy().astype(float)
+        for i in range(3):
+            normalized_rgbd[:,:,i] = (normalized_rgbd[:,:,i] - normalized_plate_color[i]) / normalized_plate_color[i] * 0.7 + 0.7
+        
+        return normalized_rgbd, normalized_plate_color
+
+
     def process_image(self, rgb_filename, image_id):
         try:
-            # Load high-resolution RGB image
             rgb_path = os.path.join(self.train_dir, rgb_filename)
             rgb_image = cv2.imread(rgb_path)
             if rgb_image is None:
                 raise FileNotFoundError(f"Could not load RGB image at {rgb_path}")
             rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
-            print(f"Loaded RGB image shape: {rgb_image.shape}")
 
-            # Get corresponding RGBD filename
             rgbd_filename = get_corresponding_rgbd_filename(rgb_filename)
             if rgbd_filename is None:
                 raise ValueError(f"No corresponding RGBD filename found for {rgb_filename}")
 
-            # Load RGBD image
             rgbd_path = os.path.join(self.image_input_dir, rgbd_filename)
             rgbd_image = load_rgbd_image(rgbd_path)
-            print(f"Loaded RGBD image shape: {rgbd_image.shape}")
 
-            # Upscale RGBD image to match RGB resolution
             upscaled_rgbd = self.upscale_with_padding(rgbd_image, rgb_image.shape[:2])
-            print(f"Upscaled RGBD shape: {upscaled_rgbd.shape}")
 
-            # Create segmentation mask
-            coco_data = load_coco_data(self.segmentation_file)
-            segmentation_mask = create_segmentation_mask(image_id, coco_data)
+            segmentation_mask = create_segmentation_mask(image_id, self.coco_data)
             segmentation_mask = align_segmentation_mask(segmentation_mask, rgb_image.shape[:2])
-            print(f"Segmentation mask shape: {segmentation_mask.shape}")
-            print(f"Unique values in segmentation mask: {np.unique(segmentation_mask)}")
+            
+            # Extract and calibrate depth from RGBD
+            calibrated_depth = self.color_to_depth(upscaled_rgbd, segmentation_mask)
+            
+            # Analyze object depths
+            object_stats = self.analyze_object_depths(calibrated_depth, segmentation_mask)
 
-            # Extract color data for segmented objects
+            # Normalize RGB channels (if needed)
+            normalized_rgbd, normalized_plate_color = self.normalize_plate_color(upscaled_rgbd, segmentation_mask)
+
+            # Prepare segmented data
             segmented_data = {}
             for obj_id in np.unique(segmentation_mask):
                 if obj_id == 0:  # Assuming 0 is background
                     continue
                 object_mask = segmentation_mask == obj_id
                 
-                # Extract RGB data for the object
-                object_rgb = rgb_image.copy()
-                object_rgb[~object_mask] = 0
-                
-                # Extract RGBD color data for the object
-                object_rgbd = upscaled_rgbd.copy()
-                object_rgbd[~object_mask] = 0
-                
-                # Get object name from COCO categories
-                object_name = self.category_id_to_name.get(obj_id, f"unknown_object_{obj_id}")
-                
-                # Extract color values for pixels inside the segmentation mask
-                object_colors = object_rgbd[object_mask]
-                
                 segmented_data[obj_id] = {
-                    'rgb': object_rgb, 
-                    'rgbd': object_rgbd,
-                    'colors': object_colors,
-                    'name': object_name
+                    'rgb': rgb_image.copy() * object_mask[:,:,np.newaxis],
+                    'rgbd': normalized_rgbd.copy() * object_mask[:,:,np.newaxis],
+                    'depth': calibrated_depth.copy() * object_mask,
+                    'colors': normalized_rgbd[object_mask],
+                    'name': self.category_id_to_name.get(obj_id, f"unknown_object_{obj_id}")
                 }
 
-            # Visualize results
+            # Visualize preprocessing steps including depth
             vis_filename = f"{os.path.splitext(rgb_filename)[0]}_visualization.png"
-            visualize_preprocessing_steps(rgb_image, rgbd_image, upscaled_rgbd, segmentation_mask, segmented_data, self.output_dir, vis_filename)
+            visualize_preprocessing_steps(
+                rgb_image, rgbd_image, normalized_rgbd, segmentation_mask, 
+                segmented_data, self.output_dir, vis_filename, 
+                normalized_plate_color, calibrated_depth
+            )
 
-            return rgb_image, upscaled_rgbd, segmentation_mask, segmented_data
+            return rgb_image, normalized_rgbd, calibrated_depth, segmentation_mask, segmented_data, normalized_plate_color, object_stats
         except Exception as e:
             print(f"Error processing image {rgb_filename}: {str(e)}")
             raise
@@ -201,9 +286,15 @@ class PreprocessingPipeline:
 
         for rgb_filename, image_id in zip(rgb_filenames, image_ids):
             print(f"Processing {rgb_filename}")
-            rgb, depth, mask, segmented_depths = self.process_image(rgb_filename, image_id)
+            rgb, normalized_rgbd, depth, mask, segmented_data, normalized_plate_color, object_stats = self.process_image(rgb_filename, image_id)
             print(f"Processed {rgb_filename}.")
-            print(f"RGB shape: {rgb.shape}, Depth shape: {depth.shape}, Mask shape: {mask.shape}")
-            print(f"Number of segmented objects: {len(segmented_depths)}")
+            print(f"RGB shape: {rgb.shape}, Normalized RGBD shape: {normalized_rgbd.shape}, Depth shape: {depth.shape}, Mask shape: {mask.shape}")
+            print(f"Number of segmented objects: {len(segmented_data)}")
+            print(f"Normalized plate color: {normalized_plate_color}")
+            print("Object depth statistics:")
+            for obj_id, stats in object_stats.items():
+                print(f"  Object {obj_id} ({self.category_id_to_name.get(obj_id, 'Unknown')}):")
+                for stat_name, stat_value in stats.items():
+                    print(f"    {stat_name}: {stat_value:.2f} cm")
             print(f"Saved processed data to {self.processed_dir}")
             print("---")
