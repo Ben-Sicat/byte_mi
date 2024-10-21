@@ -37,9 +37,7 @@ def test_preprocessing_pipeline():
 
     # Check if output files are created
     rgb_filenames = [
-        'Pair1_png.rf.9a41eaba847f2815f37ffd3e13598fc6.jpg',
-        'Pairtwo_png.rf.e23749dcf6644b0a2e561634554a5009.jpg',
-        'Pair3_png.rf.984a166a90eb4fb2fc2ea9a4e5a882f4.jpg'
+        'normal_pair4_png.rf.fa99eaa222e8d4acfcfb6483600dda01.jpg'
     ]
     
     for rgb_filename in rgb_filenames:

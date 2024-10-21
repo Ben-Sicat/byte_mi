@@ -20,12 +20,18 @@ def load_coco_data(json_file):
     with open(json_file, 'r') as f:
         return json.load(f)
 
-
 def create_segmentation_mask(image_id, coco_data):
-    image_info = next(img for img in coco_data['images'] if img['id'] == image_id)
+    image_info = next((img for img in coco_data['images'] if img['id'] == image_id), None)
+    if image_info is None:
+        raise ValueError(f"No image found with id {image_id}")
+    
     mask = np.zeros((image_info['height'], image_info['width']), dtype=np.uint8)
     
     annotations = [ann for ann in coco_data['annotations'] if ann['image_id'] == image_id]
+    
+    print(f"Number of annotations for image {image_id}: {len(annotations)}")
+    
+    category_id_to_name = {cat['id']: cat['name'] for cat in coco_data['categories']}
     
     for ann in annotations:
         category_id = ann['category_id']
@@ -33,15 +39,16 @@ def create_segmentation_mask(image_id, coco_data):
             pts = np.array(segmentation).reshape((-1, 2)).astype(np.int32)
             cv2.fillPoly(mask, [pts], color=category_id)
     
-    print(f"Number of annotations for image {image_id}: {len(annotations)}")
-    print(f"Unique category IDs in mask: {np.unique(mask)}")
+    unique_ids = np.unique(mask)
+    print("Categories in the image:")
+    for id in unique_ids:
+        if id != 0:  # Skip background
+            print(f"  ID {id}: {category_id_to_name.get(id, 'Unknown')}")
     
     return mask
 def get_corresponding_rgbd_filename(rgb_filename):
     mapping = {
-        'Pair1_png.rf.9a41eaba847f2815f37ffd3e13598fc6.jpg': 'Pairone.png',
-        'Pairtwo_png.rf.e23749dcf6644b0a2e561634554a5009.jpg': 'Pairtwo.png',
-        'Pair3_png.rf.984a166a90eb4fb2fc2ea9a4e5a882f4.jpg': 'Pairthree.png'
+        'normal_pair4_png.rf.fa99eaa222e8d4acfcfb6483600dda01.jpg': 'depth_pair4.png',
     }
     return mapping.get(rgb_filename)
 
