@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-from scipy.ndimage import uniform_filter
+from scipy.ndimage import uniform_filter, median_filter, gaussian_filter
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from src.utils.utils import (
     load_rgbd_image,
@@ -33,6 +33,37 @@ class PreprocessingPipeline:
         self.camera_height = 33  # cm
         self.plate_height = 1.5  # cm
         self.plate_depth = 0.7  # cm
+
+    def equalize_object_histogram(self, obj_intensity):
+        hist, bins = np.histogram(obj_intensity.flatten(), 256, [0, 256])
+        cdf = hist.cumsum()
+        cdf_normalized = cdf * hist.max() / cdf.max()
+        return np.interp(obj_intensity, bins[:-1], cdf_normalized)
+
+    def adaptive_bilateral_filter(self, depth, intensity):
+        sigma_color = np.std(intensity) * 0.1
+        sigma_space = min(depth.shape) * 0.02
+        return cv2.bilateralFilter(depth.astype(np.float32), -1, sigma_color, sigma_space)
+
+    def estimate_relative_depth(self, obj_mask, plate_mask):
+        obj_centroid = np.mean(np.argwhere(obj_mask), axis=0)
+        plate_centroid = np.mean(np.argwhere(plate_mask), axis=0)
+        distance = np.linalg.norm(obj_centroid - plate_centroid)
+        max_distance = np.sqrt(plate_mask.shape[0]**2 + plate_mask.shape[1]**2)
+        return 1 - (distance / max_distance)
+
+    def depth_from_gradient(self, intensity):
+        gradient_x = cv2.Sobel(intensity, cv2.CV_64F, 1, 0, ksize=3)
+        gradient_y = cv2.Sobel(intensity, cv2.CV_64F, 0, 1, ksize=3)
+        gradient_mag = np.sqrt(gradient_x**2 + gradient_y**2)
+        return 1 - (gradient_mag / np.max(gradient_mag))
+
+    def refine_depth(self, depth, iterations=5):
+        for _ in range(iterations):
+            depth_smooth = gaussian_filter(depth, sigma=1)
+            depth = np.where(np.abs(depth - depth_smooth) > np.std(depth), depth_smooth, depth)
+        return depth
+
     def color_to_depth(self, rgbd_image, segmentation_mask, plate_id=5):
         """
         Convert color information to estimated depth values for each pixel,
@@ -59,6 +90,9 @@ class PreprocessingPipeline:
             obj_mask = segmentation_mask == obj_id
             obj_intensity = intensity[obj_mask]
             
+            # Apply histogram equalization
+            obj_intensity = self.equalize_object_histogram(obj_intensity)
+            
             # Normalize intensity within the object
             obj_norm_intensity = (obj_intensity - np.min(obj_intensity)) / (np.max(obj_intensity) - np.min(obj_intensity))
             
@@ -70,35 +104,36 @@ class PreprocessingPipeline:
             max_object_height = 8    # Maximum height above plate for the darkest part
             obj_depth = obj_inv_intensity * (max_object_height - min_object_height) + min_object_height
             
-            # Smooth extreme values
+            # Create a 2D depth map for the object
             obj_depth_2d = np.zeros_like(depth)
             obj_depth_2d[obj_mask] = obj_depth
             
-            # Calculate local average depth
-            local_avg = uniform_filter(obj_depth_2d, size=3)
+            # Apply adaptive bilateral filter
+            obj_depth_filtered = self.adaptive_bilateral_filter(obj_depth_2d, intensity)
             
-            # Identify extreme values
-            threshold = 2.0  # Adjust this value to control sensitivity
-            extreme_mask = np.abs(obj_depth_2d - local_avg) > threshold
+            # Estimate relative depth based on position
+            relative_depth = self.estimate_relative_depth(obj_mask, plate_mask)
+            obj_depth_filtered[obj_mask] *= relative_depth
             
-            # Adjust extreme values
-            adjustment_factor = 0.5  # Adjust this value to control smoothing strength
-            obj_depth_2d[extreme_mask] = (
-                obj_depth_2d[extreme_mask] * (1 - adjustment_factor) +
-                local_avg[extreme_mask] * adjustment_factor
-            )
+            # Apply depth from gradient
+            gradient_depth = self.depth_from_gradient(intensity)
+            obj_depth_filtered[obj_mask] = (obj_depth_filtered[obj_mask] + gradient_depth[obj_mask]) / 2
             
             # Add plate height and depth
-            obj_depth_2d[obj_mask] += self.plate_height + self.plate_depth
+            obj_depth_filtered[obj_mask] += self.plate_height + self.plate_depth
             
             # Assign depth to object pixels
-            depth[obj_mask] = obj_depth_2d[obj_mask]
+            depth[obj_mask] = obj_depth_filtered[obj_mask]
         
         # Set background to camera height
         background_mask = segmentation_mask == 0
         depth[background_mask] = self.camera_height
         
+        # Apply final refinement
+        depth = self.refine_depth(depth)
+        
         return depth
+
     def analyze_object_depths(self, depth_map, segmentation_mask):
         """
         Analyze depth statistics for each object in the segmentation mask.
@@ -127,6 +162,7 @@ class PreprocessingPipeline:
             }
 
         return object_stats
+
     def visualize_object_depths(self, rgb_image, depth_map, segmentation_mask, object_stats, output_path):
         num_objects = len(object_stats)
         fig, axs = plt.subplots(2, 3, figsize=(20, 10 * (num_objects // 3 + 1)))
@@ -162,24 +198,7 @@ class PreprocessingPipeline:
         plt.tight_layout()
         plt.savefig(output_path, dpi=300, bbox_inches='tight')
         plt.close()
-    def analyze_object_depths(self, depth_map, segmentation_mask):
-        object_stats = {}
-        unique_objects = np.unique(segmentation_mask)
-        unique_objects = unique_objects[unique_objects != 0]  # Exclude background
 
-        for obj_id in unique_objects:
-            obj_mask = segmentation_mask == obj_id
-            obj_depths = depth_map[obj_mask]
-            
-            object_stats[obj_id] = {
-                'min_depth': np.min(obj_depths),
-                'max_depth': np.max(obj_depths),
-                'mean_depth': np.mean(obj_depths),
-                'median_depth': np.median(obj_depths),
-                'std_depth': np.std(obj_depths)
-            }
-
-        return object_stats
     def upscale_with_padding(self, image, target_shape):
         h, w = image.shape[:2]
         target_h, target_w = target_shape
@@ -218,7 +237,6 @@ class PreprocessingPipeline:
             normalized_rgbd[:,:,i] = (normalized_rgbd[:,:,i] - normalized_plate_color[i]) / normalized_plate_color[i] * 0.7 + 0.7
         
         return normalized_rgbd, normalized_plate_color
-
 
     def process_image(self, rgb_filename, image_id):
         try:
@@ -276,6 +294,7 @@ class PreprocessingPipeline:
         except Exception as e:
             print(f"Error processing image {rgb_filename}: {str(e)}")
             raise
+
     def run(self):
         rgb_filenames = [
             'Pair1_png.rf.9a41eaba847f2815f37ffd3e13598fc6.jpg',
