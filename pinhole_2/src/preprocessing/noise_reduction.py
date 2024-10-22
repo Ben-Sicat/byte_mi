@@ -15,7 +15,7 @@ def reduce_depth_noise(depth_image, method='bilateral'):
     print(f"Noise reduction input depth min: {depth_image.min()}, max: {depth_image.max()}")
     
     if method == 'bilateral':
-        result = cv2.bilateralFilter(depth_image, 9, 75, 75)
+        result = cv2.bilateralFilter(depth_image, 5, 50, 50)
     elif method == 'median':
         result = cv2.medianBlur(depth_image, 5)
     else:

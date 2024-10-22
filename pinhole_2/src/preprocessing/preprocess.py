@@ -84,7 +84,7 @@ class PreprocessingPipeline:
     def non_linear_normalize(self, values):
         min_val, max_val = np.min(values), np.max(values)
         normalized = (values - min_val) / (max_val - min_val)
-        return np.power(normalized, 0.7)  # Adjust exponent as needed
+        return np.power(normalized, 0.3)  # Adjust exponent as needed
 
     def apply_depth_consistency(self, depth_map, segmentation_mask):
         for obj_id in np.unique(segmentation_mask):
@@ -116,38 +116,73 @@ class PreprocessingPipeline:
             plate_mask = segmentation_mask == plate_id
             depth[plate_mask] = self.plate_height + self.plate_depth/2
             
-            largest_object_size = max(np.sum(segmentation_mask == obj_id) for obj_id in np.unique(segmentation_mask) if obj_id != 0 and obj_id != plate_id)
-            max_object_height = min(15, self.plate_height + (largest_object_size / (rgbd_image.shape[0] * rgbd_image.shape[1])) * 30)
+            # Calculate texture variance for each object
+            object_variance = {}
+            for obj_id in np.unique(segmentation_mask):
+                if obj_id == 0 or obj_id == plate_id:
+                    continue
+                obj_mask = segmentation_mask == obj_id
+                obj_intensity = intensity[obj_mask]
+                object_variance[obj_id] = np.var(obj_intensity)
+            
+            # Find maximum variance (likely the rice)
+            max_variance = max(object_variance.values())
             
             for obj_id in np.unique(segmentation_mask):
                 if obj_id == 0 or obj_id == plate_id:
                     continue
-                
+                    
                 obj_mask = segmentation_mask == obj_id
                 obj_intensity = intensity[obj_mask]
                 
-                obj_intensity = self.equalize_object_histogram(obj_intensity)
-                obj_norm_intensity = self.non_linear_normalize(obj_intensity)
-                obj_inv_intensity = 1 - obj_norm_intensity
+                # Adjust processing based on texture variance
+                variance_ratio = object_variance[obj_id] / max_variance
                 
-                min_object_height = 0.5
+                # For high-variance objects (like rice), preserve more of the original intensity
+                if variance_ratio > 0.7:  # High texture object
+                    obj_intensity = self.equalize_object_histogram(obj_intensity)
+                    obj_norm_intensity = self.non_linear_normalize(obj_intensity)
+                    obj_inv_intensity = 1 - obj_norm_intensity
+                    height_multiplier = 1.0  # Full height range for textured objects
+                else:  # Smoother objects
+                    # Reduce the impact of minor intensity variations
+                    smoothed_intensity = uniform_filter(obj_intensity, size=5)
+                    obj_norm_intensity = self.non_linear_normalize(smoothed_intensity)
+                    obj_inv_intensity = 1 - obj_norm_intensity
+                    height_multiplier = 0.6  # Reduced height range for smooth objects
+                
+                # Calculate object-specific height range
+                obj_size = np.sum(obj_mask)
+                max_object_height = min(20, self.plate_height + 
+                                    (obj_size / (rgbd_image.shape[0] * rgbd_image.shape[1])) * 
+                                    40 * height_multiplier)
+                
+                min_object_height = 0.3
                 obj_depth = obj_inv_intensity * (max_object_height - min_object_height) + min_object_height
                 
                 obj_depth_2d = np.zeros_like(depth)
                 obj_depth_2d[obj_mask] = obj_depth
                 
-                obj_depth_filtered = self.adaptive_bilateral_filter(obj_depth_2d, intensity)
+                # Adjust filtering based on texture
+                if variance_ratio > 0.7:
+                    # Less smoothing for textured objects
+                    obj_depth_filtered = self.adaptive_bilateral_filter(obj_depth_2d, intensity)
+                    gradient_weight = 0.2  # Less gradient influence for textured objects
+                else:
+                    # More smoothing for smooth objects
+                    obj_depth_filtered = gaussian_filter(obj_depth_2d, sigma=1.5)
+                    gradient_weight = 0.4  # More gradient influence for smooth objects
                 
                 relative_depth = self.estimate_relative_depth(obj_mask, plate_mask, segmentation_mask)
                 obj_depth_filtered[obj_mask] *= relative_depth
                 
                 gradient_depth = self.depth_from_gradient(intensity)
-                obj_depth_filtered[obj_mask] = (obj_depth_filtered[obj_mask] + gradient_depth[obj_mask]) / 2
+                obj_depth_filtered[obj_mask] = ((1 - gradient_weight) * obj_depth_filtered[obj_mask] + 
+                                            gradient_weight * gradient_depth[obj_mask])
                 
                 obj_depth_filtered[obj_mask] += self.plate_height + self.plate_depth
                 
-                depth[obj_mask] = obj_depth_filtered[obj_mask]
-            
+                depth[obj_mask] = obj_depth_filtered[obj_mask]           
             background_mask = segmentation_mask == 0
             depth[background_mask] = self.camera_height
             
@@ -315,28 +350,40 @@ class PreprocessingPipeline:
 
             # Prepare segmented data
             segmented_data = {}
+            combined_segmented_depth = np.zeros_like(calibrated_depth)
             for obj_id in np.unique(segmentation_mask):
                 if obj_id == 0:  # Assuming 0 is background
                     continue
                 object_mask = segmentation_mask == obj_id
                 
+                object_depth = calibrated_depth.copy() * object_mask
                 segmented_data[obj_id] = {
                     'rgb': rgb_image.copy() * object_mask[:,:,np.newaxis],
                     'rgbd': normalized_rgbd.copy() * object_mask[:,:,np.newaxis],
-                    'depth': calibrated_depth.copy() * object_mask,
+                    'depth': object_depth,
                     'colors': normalized_rgbd[object_mask],
                     'name': self.category_id_to_name.get(obj_id, f"unknown_object_{obj_id}")
                 }
+                combined_segmented_depth += object_depth
 
             # Visualize preprocessing steps including depth
             vis_filename = f"{os.path.splitext(rgb_filename)[0]}_visualization.png"
+            vis_path = os.path.join(self.output_dir, vis_filename)
             visualize_preprocessing_steps(
                 rgb_image, rgbd_image, normalized_rgbd, segmentation_mask, 
-                segmented_data, self.output_dir, vis_filename, 
-                normalized_plate_color, calibrated_depth
+                segmented_data, self.output_dir, vis_path, 
+                normalized_plate_color, combined_segmented_depth
             )
 
-            return rgb_image, normalized_rgbd, calibrated_depth, segmentation_mask, segmented_data, normalized_plate_color, object_stats
+            # Save segmented depth file
+            depth_filename = f"{os.path.splitext(rgb_filename)[0]}_segmented_depth.npy"
+            depth_path = os.path.join(self.processed_dir, depth_filename)
+            np.save(depth_path, combined_segmented_depth)
+
+            print(f"Visualization saved to: {vis_path}")
+            print(f"Segmented depth file saved to: {depth_path}")
+
+            return rgb_image, normalized_rgbd, combined_segmented_depth, segmentation_mask, segmented_data, normalized_plate_color, object_stats
         except Exception as e:
             print(f"Error processing image {rgb_filename}: {str(e)}")
             raise

@@ -12,8 +12,7 @@ def visualize_depth(depth_image):
     else:
         normalized_depth = np.zeros_like(depth_image)
     return plt.cm.viridis(normalized_depth)
-
-def visualize_preprocessing_steps(rgb_image, rgbd_image, normalized_rgbd, segmentation_mask, segmented_data, output_dir, filename, normalized_plate_color, calibrated_depth):
+def visualize_preprocessing_steps(rgb_image, rgbd_image, normalized_rgbd, segmentation_mask, segmented_data, output_dir, output_path, normalized_plate_color, combined_segmented_depth):
     fig, axs = plt.subplots(2, 3, figsize=(20, 15))
     fig.suptitle('Preprocessing Pipeline Visualization', fontsize=16)
 
@@ -38,22 +37,24 @@ def visualize_preprocessing_steps(rgb_image, rgbd_image, normalized_rgbd, segmen
     axs[1, 0].axis('off')
 
     # Calibrated Depth
-    depth_plot = axs[1, 1].imshow(calibrated_depth, cmap='viridis')
-    axs[1, 1].set_title('Calibrated Depth')
+    depth_plot = axs[1, 1].imshow(combined_segmented_depth, cmap='viridis')
+    axs[1, 1].set_title('Segmented Depth')
     axs[1, 1].axis('off')
     plt.colorbar(depth_plot, ax=axs[1, 1], label='Depth (cm)')
 
-    # Segmented Objects
+    # Segmented Objects with Depth
     axs[1, 2].imshow(rgb_image)
-    for obj_id, obj_data in segmented_data.items():
-        obj_mask = obj_data['depth'] > 0
-        axs[1, 2].imshow(np.ma.masked_where(~obj_mask, obj_data['depth']), cmap='jet', alpha=0.5)
+    depth_mask = combined_segmented_depth > 0
+    axs[1, 2].imshow(np.ma.masked_where(~depth_mask, combined_segmented_depth), cmap='jet', alpha=0.5)
     axs[1, 2].set_title('Segmented Objects with Depth')
     axs[1, 2].axis('off')
 
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/{filename}")
+    plt.savefig(output_path)
     plt.close()
+    
+    print(f"Visualization saved to: {output_path}")
+
 def overlay_segmentation_on_rgbd(upscaled_rgbd, segmentation_mask):
     # Resize segmentation mask to match upscaled RGBD if necessary
     if upscaled_rgbd.shape[:2] != segmentation_mask.shape:

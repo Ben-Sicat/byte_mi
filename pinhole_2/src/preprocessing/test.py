@@ -36,19 +36,14 @@ def test_preprocessing_pipeline():
     pipeline.run()
 
     # Check if output files are created
-    rgb_filenames = [
-        'normal_pair4_png.rf.fa99eaa222e8d4acfcfb6483600dda01.jpg'
-    ]
+    rgb_filename = 'normal_pair4_png.rf.fa99eaa222e8d4acfcfb6483600dda01.jpg'
+    output_filename = os.path.splitext(rgb_filename)[0]
+    segmented_depth_path = os.path.join(output_dir, 'processed', f'{output_filename}_segmented_depth.npy')
+    assert os.path.exists(segmented_depth_path), f"Segmented depth file not found: {segmented_depth_path}"
     
-    for rgb_filename in rgb_filenames:
-        output_filename = os.path.splitext(rgb_filename)[0]
-        depth_path = os.path.join(output_dir, 'processed', f'{output_filename}_depth.npy')
-        assert os.path.exists(depth_path), f"Depth file not found: {depth_path}"
-        
-    visualization_path = os.path.join(output_dir, 'preprocessing_visualization.png')
+    visualization_path = os.path.join(output_dir, f'{output_filename}_visualization.png')
     assert os.path.exists(visualization_path), f"Visualization file not found: {visualization_path}"
 
     print("All tests passed successfully!")
-
 if __name__ == "__main__":
     test_preprocessing_pipeline()
