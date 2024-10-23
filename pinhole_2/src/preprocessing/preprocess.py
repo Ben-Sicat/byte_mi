@@ -108,93 +108,44 @@ class PreprocessingPipeline:
 
     def color_to_depth(self, rgbd_image, segmentation_mask):
         rgb = rgbd_image[:,:,:3].astype(float)
-        intensity = np.dot(rgb, [0.299, 0.587, 0.114])
-        depth = np.zeros_like(intensity)
-        
+        intensity = np.dot(rgb, [0.299, 0.587, 0.114])  # Grayscale intensity
+
+        depth = np.zeros_like(intensity, dtype=float) # Initialize depth map as float
+
         try:
             plate_id = self.find_plate_id(segmentation_mask)
             plate_mask = segmentation_mask == plate_id
             depth[plate_mask] = self.plate_height + self.plate_depth/2
-            
-            # Calculate texture variance for each object
-            object_variance = {}
+
             for obj_id in np.unique(segmentation_mask):
                 if obj_id == 0 or obj_id == plate_id:
                     continue
+
                 obj_mask = segmentation_mask == obj_id
                 obj_intensity = intensity[obj_mask]
-                object_variance[obj_id] = np.var(obj_intensity)
-            
-            # Find maximum variance (likely the rice)
-            max_variance = max(object_variance.values())
-            
-            for obj_id in np.unique(segmentation_mask):
-                if obj_id == 0 or obj_id == plate_id:
-                    continue
-                    
-                obj_mask = segmentation_mask == obj_id
-                obj_intensity = intensity[obj_mask]
-                
-                # Adjust processing based on texture variance
-                variance_ratio = object_variance[obj_id] / max_variance
-                
-                # For high-variance objects (like rice), preserve more of the original intensity
-                if variance_ratio > 0.7:  # High texture object
-                    obj_intensity = self.equalize_object_histogram(obj_intensity)
-                    obj_norm_intensity = self.non_linear_normalize(obj_intensity)
-                    obj_inv_intensity = 1 - obj_norm_intensity
-                    height_multiplier = 1.0  # Full height range for textured objects
-                else:  # Smoother objects
-                    # Reduce the impact of minor intensity variations
-                    smoothed_intensity = uniform_filter(obj_intensity, size=5)
-                    obj_norm_intensity = self.non_linear_normalize(smoothed_intensity)
-                    obj_inv_intensity = 1 - obj_norm_intensity
-                    height_multiplier = 0.6  # Reduced height range for smooth objects
-                
-                # Calculate object-specific height range
-                obj_size = np.sum(obj_mask)
-                max_object_height = min(20, self.plate_height + 
-                                    (obj_size / (rgbd_image.shape[0] * rgbd_image.shape[1])) * 
-                                    40 * height_multiplier)
-                
-                min_object_height = 0.3
-                obj_depth = obj_inv_intensity * (max_object_height - min_object_height) + min_object_height
-                
-                obj_depth_2d = np.zeros_like(depth)
-                obj_depth_2d[obj_mask] = obj_depth
-                
-                # Adjust filtering based on texture
-                if variance_ratio > 0.7:
-                    # Less smoothing for textured objects
-                    obj_depth_filtered = self.adaptive_bilateral_filter(obj_depth_2d, intensity)
-                    gradient_weight = 0.2  # Less gradient influence for textured objects
-                else:
-                    # More smoothing for smooth objects
-                    obj_depth_filtered = gaussian_filter(obj_depth_2d, sigma=1.5)
-                    gradient_weight = 0.4  # More gradient influence for smooth objects
-                
-                relative_depth = self.estimate_relative_depth(obj_mask, plate_mask, segmentation_mask)
-                obj_depth_filtered[obj_mask] *= relative_depth
-                
-                gradient_depth = self.depth_from_gradient(intensity)
-                obj_depth_filtered[obj_mask] = ((1 - gradient_weight) * obj_depth_filtered[obj_mask] + 
-                                            gradient_weight * gradient_depth[obj_mask])
-                
-                obj_depth_filtered[obj_mask] += self.plate_height + self.plate_depth
-                
-                depth[obj_mask] = obj_depth_filtered[obj_mask]           
+
+                # Normalize intensity for each object individually
+                obj_intensity_norm = (obj_intensity - obj_intensity.min()) / (obj_intensity.max() - obj_intensity.min())
+
+                # Invert and scale to desired depth range
+                min_depth = self.plate_height + self.plate_depth  # Objects are above the plate
+                max_depth = min_depth + 4 # Example maximum object height above the plate (adjust as needed)
+
+                obj_depth = (1 - obj_intensity_norm) * (max_depth - min_depth) + min_depth
+                depth[obj_mask] = obj_depth
+
+
             background_mask = segmentation_mask == 0
             depth[background_mask] = self.camera_height
-            
-            depth = self.refine_depth(depth)
-            depth = self.apply_depth_consistency(depth, segmentation_mask)
-        
+
+            # Optional: Apply smoothing (e.g., Gaussian blur) to the depth map
+            depth = gaussian_filter(depth, sigma=1)  # Adjust sigma as needed
+
         except Exception as e:
             print(f"Error in color to depth conversion: {str(e)}")
-            depth.fill(self.camera_height)  # Set all depths to camera height as a fallback
-        
-        return depth
+            depth.fill(self.camera_height)  # Set all depths to camera height as fallback
 
+        return depth
     def analyze_object_depths(self, depth_map, segmentation_mask):
         object_stats = {}
         unique_objects = np.unique(segmentation_mask)
