@@ -49,8 +49,68 @@ so now first I'll be trying to develop the loading of data
    - Multi-view analysis if multiple images are available
    - Implementing more sophisticated depth refinement techniques
    - Exploring machine learning approaches for improved depth estimation
-
+   
 6. Validation:
    - Compare results with ground truth volumes (if available)
    - Analyze performance across different object shapes and sizes
+
+
+# Current Progress:
+  ░▒▓   …/cThesis/pinhole_2   master !?  
+❯ python src/reconstruction/3d_reconstruction.py
+
+Volume Calculation Statistics:
+Base Area (cm²): 5496.00
+Average Height above plate (cm): 1.70
+Max Height above plate (cm): 2.12
+Calculated Volume (cm³): 9324.83
+
+Plate Calibration:
+Actual Plate Volume: 766.06 cm³
+Estimated Plate Volume: 9324.83 cm³
+Scaling Factor: 0.0822
+
+Volume Calculation Statistics:
+Base Area (cm²): 32503.25
+Average Height above plate (cm): 1.41
+Max Height above plate (cm): 2.12
+Calculated Volume (cm³): 20955.58
+
+Results for 'plate':
+Raw Volume: 20955.58 cm³
+Calibrated Volume: 1721.55 cm³
+Volume in Cups: 7.28 cups
+
+Volume Calculation Statistics:
+Base Area (cm²): 5496.00
+Average Height above plate (cm): 1.70
+Max Height above plate (cm): 2.12
+Calculated Volume (cm³): 9324.83
+
+Results for 'Rice':
+Raw Volume: 9324.83 cm³
+Calibrated Volume: 766.06 cm³
+Volume in Cups: 3.24 cups
+
+Volume Calculation Statistics:
+Base Area (cm²): 2555.00
+Average Height above plate (cm): 1.44
+Max Height above plate (cm): 2.12
+Calculated Volume (cm³): 3674.49
+
+Results for 'luncheon meat':
+Raw Volume: 3674.49 cm³
+Calibrated Volume: 301.87 cm³
+Volume in Cups: 1.28 cups
+
+Volume Calculation Statistics:
+Base Area (cm²): 6333.00
+Average Height above plate (cm): 1.26
+Max Height above plate (cm): 2.12
+Calculated Volume (cm³): 7953.79
+
+Results for 'Fried Egg':
+Raw Volume: 7953.79 cm³
+Calibrated Volume: 653.42 cm³
+Volume in Cups: 2.76 cups
 

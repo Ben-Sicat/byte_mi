@@ -1,4 +1,5 @@
 import os
+import traceback  
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
@@ -48,6 +49,32 @@ class PreprocessingPipeline:
             return plate_category_id
         else:
             raise ValueError(f"No plate object found in the segmentation mask. Unique IDs: {unique_ids}")
+    def preprocess_rgbd(self, rgbd_image):
+        """
+        Improve RGBD image quality before depth estimation
+        """
+        # Denoise RGB channels
+        denoised = cv2.fastNlMeansDenoisingColored(rgbd_image[:,:,:3], None, 10, 10, 7, 21)
+        
+        # Enhance contrast
+        lab = cv2.cvtColor(denoised, cv2.COLOR_RGB2LAB)
+        l, a, b = cv2.split(lab)
+        clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
+        l = clahe.apply(l)
+        enhanced = cv2.cvtColor(cv2.merge([l, a, b]), cv2.COLOR_LAB2RGB)
+        
+        # Remove shadows
+        rgb_float = enhanced.astype(float) / 255.0
+        max_rgb = np.max(rgb_float, axis=2)
+        min_rgb = np.min(rgb_float, axis=2)
+        diff = max_rgb - min_rgb
+        
+        shadow_mask = diff < 0.3
+        for i in range(3):
+            channel = rgb_float[:,:,i]
+            channel[shadow_mask] = np.mean(channel[~shadow_mask])
+        
+        return (rgb_float * 255).astype(np.uint8)
     def equalize_object_histogram(self, obj_intensity):
         hist, bins = np.histogram(obj_intensity.flatten(), 256, [0, 256])
         cdf = hist.cumsum()
@@ -105,46 +132,106 @@ class PreprocessingPipeline:
             depth_map[obj_mask] = obj_depth
         
         return depth_map
-
+    def analyze_food_characteristics(self, rgb_image, segmentation_mask, obj_id):
+        """
+        Analyze food characteristics to inform depth estimation
+        """
+        obj_mask = segmentation_mask == obj_id
+        obj_rgb = rgb_image[obj_mask]
+        
+        # Calculate various characteristics
+        hsv = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2HSV)[obj_mask]
+        
+        characteristics = {
+            'brightness': np.mean(hsv[:, 2]),
+            'saturation': np.mean(hsv[:, 1]),
+            'color_variance': np.std(hsv[:, 0]),
+            'texture_energy': np.var(cv2.Laplacian(rgb_image, cv2.CV_64F)[obj_mask]),
+            'edge_density': np.sum(cv2.Canny(rgb_image, 100, 200)[obj_mask]) / np.sum(obj_mask)
+        }
+        
+        return characteristics
     def color_to_depth(self, rgbd_image, segmentation_mask):
+        """
+        Color to depth conversion with chain-reaction adjustment:
+        1. Lower values are adjusted relative to plate depth
+        2. Higher values are pulled down if lower values are dominant
+        """
         rgb = rgbd_image[:,:,:3].astype(float)
-        intensity = np.dot(rgb, [0.299, 0.587, 0.114])  # Grayscale intensity
-
-        depth = np.zeros_like(intensity, dtype=float) # Initialize depth map as float
-
+        hsv = cv2.cvtColor((rgb * 255).astype(np.uint8), cv2.COLOR_RGB2HSV)
+        intensity = np.dot(rgb, [0.299, 0.587, 0.114])
+        
+        # Initialize depth map
+        depth = np.zeros_like(intensity, dtype=float)
+        
         try:
             plate_id = self.find_plate_id(segmentation_mask)
             plate_mask = segmentation_mask == plate_id
-            depth[plate_mask] = self.plate_height + self.plate_depth/2
-
+            depth[plate_mask] = self.plate_height
+            
+            # Get plate statistics for reference
+            plate_intensity = intensity[plate_mask]
+            plate_mean = np.mean(plate_intensity)
+            plate_std = np.std(plate_intensity)
+            
             for obj_id in np.unique(segmentation_mask):
                 if obj_id == 0 or obj_id == plate_id:
                     continue
-
+                    
                 obj_mask = segmentation_mask == obj_id
                 obj_intensity = intensity[obj_mask]
-
-                # Normalize intensity for each object individually
-                obj_intensity_norm = (obj_intensity - obj_intensity.min()) / (obj_intensity.max() - obj_intensity.min())
-
-                # Invert and scale to desired depth range
-                min_depth = self.plate_height + self.plate_depth  # Objects are above the plate
-                max_depth = min_depth + 4 # Example maximum object height above the plate (adjust as needed)
-
-                obj_depth = (1 - obj_intensity_norm) * (max_depth - min_depth) + min_depth
+                
+                # calc distribution stats
+                intensity_hist, bins = np.histogram(obj_intensity, bins=50)
+                bin_centers = (bins[:-1] + bins[1:]) / 2
+                dominant_intensity = bin_centers[np.argmax(intensity_hist)]
+                
+                # Calculate the proportion of values below and above dominant intensity
+                lower_ratio = np.sum(obj_intensity < dominant_intensity) / len(obj_intensity)
+                
+                # Adjust intensities based on dominance of lower values
+                adjusted_intensity = np.zeros_like(obj_intensity)
+                for i, pixel_value in enumerate(obj_intensity):
+                    if pixel_value < dominant_intensity:
+                        # For lower values, relate to plate depth
+                        relative_to_plate = (pixel_value - plate_mean) / (plate_std + 1e-6)
+                        adjusted_intensity[i] = pixel_value
+                    else:
+                        # For higher values, adjust based on lower value dominance
+                        if lower_ratio > 0.6:  # If lower values dominate
+                            # Pull high values closer to dominant value
+                            distance = pixel_value - dominant_intensity
+                            adjustment = 1.0 - (lower_ratio * 0.5)  # Stronger adjustment with more lower values
+                            adjusted_intensity[i] = dominant_intensity + (distance * adjustment)
+                        else:
+                            adjusted_intensity[i] = pixel_value
+                
+                # Convert to depth - darker is higher
+                base_height = self.plate_height + self.plate_depth
+                max_height = 2.0
+                
+                # Calculate depth variation relative to plate
+                depth_variation = 1.0 - (adjusted_intensity - np.min(adjusted_intensity)) / (np.max(adjusted_intensity) - np.min(adjusted_intensity) + 1e-6)
+                
+                # Adjust depth variation based on relationship to plate values
+                plate_relative = np.exp(-np.abs(adjusted_intensity - plate_mean) / (2 * plate_std**2))
+                depth_variation = depth_variation * (1.0 - plate_relative * 0.3)
+                
+                obj_depth = base_height + (depth_variation * max_height)
+                
+                # Apply to depth map
                 depth[obj_mask] = obj_depth
-
-
-            background_mask = segmentation_mask == 0
-            depth[background_mask] = self.camera_height
-
-            # Optional: Apply smoothing (e.g., Gaussian blur) to the depth map
-            depth = gaussian_filter(depth, sigma=1)  # Adjust sigma as needed
-
+                
+            # Minimal smoothing
+            depth = gaussian_filter(depth, sigma=0.3)
+            depth = np.clip(depth, self.plate_height, self.plate_height + 5.0)
+            depth[segmentation_mask == 0] = self.camera_height
+            
         except Exception as e:
-            print(f"Error in color to depth conversion: {str(e)}")
-            depth.fill(self.camera_height)  # Set all depths to camera height as fallback
-
+            print(f"Error in depth estimation: {str(e)}")
+            traceback.print_exc()
+            depth.fill(self.camera_height)
+        
         return depth
     def analyze_object_depths(self, depth_map, segmentation_mask):
         object_stats = {}
@@ -275,9 +362,10 @@ class PreprocessingPipeline:
 
             rgbd_path = os.path.join(self.image_input_dir, rgbd_filename)
             rgbd_image = load_rgbd_image(rgbd_path)
-
             upscaled_rgbd = self.upscale_with_padding(rgbd_image, rgb_image.shape[:2])
-
+            preprocessed_rgbd = self.preprocess_rgbd(upscaled_rgbd)
+            
+            # Create segmentation mask
             segmentation_mask = create_segmentation_mask(image_id, self.coco_data)
             segmentation_mask = align_segmentation_mask(segmentation_mask, rgb_image.shape[:2])
             
@@ -285,8 +373,7 @@ class PreprocessingPipeline:
             print(f"Unique segmentation values: {np.unique(segmentation_mask)}")
             
             # Extract and calibrate depth from RGBD
-            calibrated_depth = self.color_to_depth(upscaled_rgbd, segmentation_mask)
-            
+            calibrated_depth = self.color_to_depth(preprocessed_rgbd, segmentation_mask)
             # Analyze object depths
             object_stats = self.analyze_object_depths(calibrated_depth, segmentation_mask)
 
