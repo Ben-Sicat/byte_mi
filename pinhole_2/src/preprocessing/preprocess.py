@@ -193,22 +193,22 @@ class PreprocessingPipeline:
                 adjusted_intensity = np.zeros_like(obj_intensity)
                 for i, pixel_value in enumerate(obj_intensity):
                     if pixel_value < dominant_intensity:
-                        # For lower values, relate to plate depth
+                        # relate to plate depth
                         relative_to_plate = (pixel_value - plate_mean) / (plate_std + 1e-6)
                         adjusted_intensity[i] = pixel_value
                     else:
                         # For higher values, adjust based on lower value dominance
-                        if lower_ratio > 0.6:  # If lower values dominate
+                        if lower_ratio >= 0.6:  # If lower values dominate
                             # Pull high values closer to dominant value
                             distance = pixel_value - dominant_intensity
-                            adjustment = 1.0 - (lower_ratio * 0.5)  # Stronger adjustment with more lower values
+                            adjustment = 1.0 - (lower_ratio * 0.6)  # Stronger adjustment with more lower values
                             adjusted_intensity[i] = dominant_intensity + (distance * adjustment)
                         else:
                             adjusted_intensity[i] = pixel_value
                 
                 # Convert to depth - darker is higher
                 base_height = self.plate_height + self.plate_depth
-                max_height = 2.0
+                max_height = 2.4
                 
                 # Calculate depth variation relative to plate
                 depth_variation = 1.0 - (adjusted_intensity - np.min(adjusted_intensity)) / (np.max(adjusted_intensity) - np.min(adjusted_intensity) + 1e-6)

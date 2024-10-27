@@ -174,11 +174,11 @@ if __name__ == "__main__":
         raw_volume = estimate_volume_from_mask(
             depth_map, segmentation_mask, intrinsic_params, pixel_size, plate_height
         )
-        adjusted_volume = raw_volume * scaling_factor
-        
+        adjusted_volume = (raw_volume * scaling_factor) - 1
+        vol_cup = (adjusted_volume / 236.588) - 1
         print(f"\nResults for '{category_name}':")
         print(f"Raw Volume: {raw_volume:.2f} cm³")
         print(f"Calibrated Volume: {adjusted_volume:.2f} cm³")
-        print(f"Volume in Cups: {adjusted_volume / 236.588:.2f} cups")
+        print(f"Volume in Cups: {vol_cup:.2f} cups")
         
         visualize_3d_points(depth_map, intrinsic_params, segmentation_mask, category_name, pixel_size, plate_height)
