@@ -20,9 +20,16 @@ class PreprocessingPipeline:
     def __init__(self, data_dir, output_dir):
         self.data_dir = data_dir
         self.output_dir = output_dir
+        
         self.image_input_dir = os.path.join(data_dir, 'image_input')
+        if not os.path.exists(self.image_input_dir):
+            raise ValueError(f"Image input directory not found at {self.image_input_dir}")
+            
         self.train_dir = os.path.join(data_dir, 'train_1')
-        self.segmentation_file = os.path.join(data_dir, 'train_1', '_annotations.coco.json')
+        self.segmentation_file = os.path.join(self.train_dir, '_annotations.coco.json')
+        
+        if not os.path.exists(self.segmentation_file):
+            raise ValueError(f"Segmentation file not found at {self.segmentation_file}")
         
         ensure_directory_exists(output_dir)
         self.processed_dir = os.path.join(output_dir, 'processed')
@@ -34,7 +41,8 @@ class PreprocessingPipeline:
         self.camera_height = 33  # cm
         self.plate_height = 1.5  # cm
         self.plate_depth = 0.7  # cm
-        self.plate_category_name = 'plate'  # Adjust this to match your COCO category name for plates
+        self.plate_category_name = 'plate'
+
 
     def find_plate_id(self, segmentation_mask):
         plate_category_id = next((cat['id'] for cat in self.coco_data['categories'] if cat['name'] == self.plate_category_name), None)
@@ -53,17 +61,17 @@ class PreprocessingPipeline:
         """
         Improve RGBD image quality before depth estimation
         """
-        # Denoise RGB channels
+        # denoise 
         denoised = cv2.fastNlMeansDenoisingColored(rgbd_image[:,:,:3], None, 10, 10, 7, 21)
         
-        # Enhance contrast
+        # enhance 
         lab = cv2.cvtColor(denoised, cv2.COLOR_RGB2LAB)
         l, a, b = cv2.split(lab)
         clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
         l = clahe.apply(l)
         enhanced = cv2.cvtColor(cv2.merge([l, a, b]), cv2.COLOR_LAB2RGB)
         
-        # Remove shadows
+        # remove shadows
         rgb_float = enhanced.astype(float) / 255.0
         max_rgb = np.max(rgb_float, axis=2)
         min_rgb = np.min(rgb_float, axis=2)
@@ -111,11 +119,11 @@ class PreprocessingPipeline:
     def non_linear_normalize(self, values):
         min_val, max_val = np.min(values), np.max(values)
         normalized = (values - min_val) / (max_val - min_val)
-        return np.power(normalized, 0.3)  # Adjust exponent as needed
+        return np.power(normalized, 0.3)  # adjust exponent as needed
 
     def apply_depth_consistency(self, depth_map, segmentation_mask):
         for obj_id in np.unique(segmentation_mask):
-            if obj_id == 0:  # Skip background
+            if obj_id == 0:  # skip background
                 continue
             obj_mask = segmentation_mask == obj_id
             obj_depth = depth_map[obj_mask]
@@ -153,15 +161,17 @@ class PreprocessingPipeline:
         return characteristics
     def color_to_depth(self, rgbd_image, segmentation_mask):
         """
+
         Color to depth conversion with chain-reaction adjustment:
         1. Lower values are adjusted relative to plate depth
         2. Higher values are pulled down if lower values are dominant
+
         """
         rgb = rgbd_image[:,:,:3].astype(float)
         hsv = cv2.cvtColor((rgb * 255).astype(np.uint8), cv2.COLOR_RGB2HSV)
         intensity = np.dot(rgb, [0.299, 0.587, 0.114])
         
-        # Initialize depth map
+        # initialize depth map
         depth = np.zeros_like(intensity, dtype=float)
         
         try:
@@ -169,7 +179,7 @@ class PreprocessingPipeline:
             plate_mask = segmentation_mask == plate_id
             depth[plate_mask] = self.plate_height
             
-            # Get plate statistics for reference
+            # get plate statistics for reference
             plate_intensity = intensity[plate_mask]
             plate_mean = np.mean(plate_intensity)
             plate_std = np.std(plate_intensity)
@@ -186,7 +196,7 @@ class PreprocessingPipeline:
                 bin_centers = (bins[:-1] + bins[1:]) / 2
                 dominant_intensity = bin_centers[np.argmax(intensity_hist)]
                 
-                # Calculate the proportion of values below and above dominant intensity
+                # calculate the proportion of values below and above dominant intensity
                 lower_ratio = np.sum(obj_intensity < dominant_intensity) / len(obj_intensity)
                 
                 # Adjust intensities based on dominance of lower values
@@ -197,32 +207,32 @@ class PreprocessingPipeline:
                         relative_to_plate = (pixel_value - plate_mean) / (plate_std + 1e-6)
                         adjusted_intensity[i] = pixel_value
                     else:
-                        # For higher values, adjust based on lower value dominance
+                        # for higher values, adjust based on lower value dominance
                         if lower_ratio >= 0.6:  # If lower values dominate
-                            # Pull high values closer to dominant value
+                            # pull high values closer to dominant value
                             distance = pixel_value - dominant_intensity
                             adjustment = 1.0 - (lower_ratio * 0.6)  # Stronger adjustment with more lower values
                             adjusted_intensity[i] = dominant_intensity + (distance * adjustment)
                         else:
                             adjusted_intensity[i] = pixel_value
                 
-                # Convert to depth - darker is higher
+                # convert to depth - darker is higher
                 base_height = self.plate_height + self.plate_depth
                 max_height = 2.4
                 
-                # Calculate depth variation relative to plate
+                # calculate depth variation relative to plate
                 depth_variation = 1.0 - (adjusted_intensity - np.min(adjusted_intensity)) / (np.max(adjusted_intensity) - np.min(adjusted_intensity) + 1e-6)
                 
-                # Adjust depth variation based on relationship to plate values
+                # adjust depth variation based on relationship to plate values
                 plate_relative = np.exp(-np.abs(adjusted_intensity - plate_mean) / (2 * plate_std**2))
                 depth_variation = depth_variation * (1.0 - plate_relative * 0.3)
                 
                 obj_depth = base_height + (depth_variation * max_height)
                 
-                # Apply to depth map
+                # apply to depth map
                 depth[obj_mask] = obj_depth
                 
-            # Minimal smoothing
+            # minimal smoothing
             depth = gaussian_filter(depth, sigma=0.3)
             depth = np.clip(depth, self.plate_height, self.plate_height + 5.0)
             depth[segmentation_mask == 0] = self.camera_height
@@ -236,7 +246,7 @@ class PreprocessingPipeline:
     def analyze_object_depths(self, depth_map, segmentation_mask):
         object_stats = {}
         unique_objects = np.unique(segmentation_mask)
-        unique_objects = unique_objects[unique_objects != 0]  # Exclude background
+        unique_objects = unique_objects[unique_objects != 0]  # exclude background
 
         for obj_id in unique_objects:
             obj_mask = segmentation_mask == obj_id
@@ -320,7 +330,7 @@ class PreprocessingPipeline:
             if plate_colors.shape[0] == 0:
                 raise ValueError("No plate pixels found in the image.")
             
-            # Use a simple average color if there are too few plate pixels
+            # use a simple average color if there are too few plate pixels
             if plate_colors.shape[0] < 10:
                 normalized_plate_color = np.mean(plate_colors, axis=0)
             else:
@@ -341,7 +351,7 @@ class PreprocessingPipeline:
         except Exception as e:
             print(f"Error in color normalization: {str(e)}")
             print("Using default normalization.")
-            normalized_plate_color = np.array([128, 128, 128])  # Default gray color
+            normalized_plate_color = np.array([128, 128, 128])  # default gray color
         
         normalized_rgbd = upscaled_rgbd.copy().astype(float)
         for i in range(3):
@@ -365,32 +375,32 @@ class PreprocessingPipeline:
             upscaled_rgbd = self.upscale_with_padding(rgbd_image, rgb_image.shape[:2])
             preprocessed_rgbd = self.preprocess_rgbd(upscaled_rgbd)
             
-            # Create segmentation mask
+            # create segmentation mask
             segmentation_mask = create_segmentation_mask(image_id, self.coco_data)
             segmentation_mask = align_segmentation_mask(segmentation_mask, rgb_image.shape[:2])
             
             print(f"Segmentation mask shape: {segmentation_mask.shape}")
             print(f"Unique segmentation values: {np.unique(segmentation_mask)}")
             
-            # Extract and calibrate depth from RGBD
+            # extract and calibrate depth from RGBD
             calibrated_depth = self.color_to_depth(preprocessed_rgbd, segmentation_mask)
-            # Analyze object depths
+            # analyze object depths
             object_stats = self.analyze_object_depths(calibrated_depth, segmentation_mask)
 
-            # Normalize RGB channels (if needed)
+            # normalize RGB channels (if needed)
             try:
                 normalized_rgbd, normalized_plate_color = self.normalize_plate_color(upscaled_rgbd, segmentation_mask)
             except Exception as e:
                 print(f"Error in plate color normalization: {str(e)}")
                 print("Using non-normalized RGBD data.")
                 normalized_rgbd = upscaled_rgbd
-                normalized_plate_color = np.array([128, 128, 128])  # Default gray color
+                normalized_plate_color = np.array([128, 128, 128])  # default gray color
 
-            # Prepare segmented data
+            # prepare segmented data
             segmented_data = {}
             combined_segmented_depth = np.zeros_like(calibrated_depth)
             for obj_id in np.unique(segmentation_mask):
-                if obj_id == 0:  # Assuming 0 is background
+                if obj_id == 0:  # assuming 0 is background
                     continue
                 object_mask = segmentation_mask == obj_id
                 
@@ -404,7 +414,7 @@ class PreprocessingPipeline:
                 }
                 combined_segmented_depth += object_depth
 
-            # Visualize preprocessing steps including depth
+            # visualize preprocessing steps including depth
             vis_filename = f"{os.path.splitext(rgb_filename)[0]}_visualization.png"
             vis_path = os.path.join(self.output_dir, vis_filename)
             visualize_preprocessing_steps(
@@ -413,7 +423,7 @@ class PreprocessingPipeline:
                 normalized_plate_color, combined_segmented_depth
             )
 
-            # Save segmented depth file
+            # save segmented depth file
             depth_filename = f"{os.path.splitext(rgb_filename)[0]}_segmented_depth.npy"
             depth_path = os.path.join(self.processed_dir, depth_filename)
             np.save(depth_path, combined_segmented_depth)
@@ -425,17 +435,25 @@ class PreprocessingPipeline:
         except Exception as e:
             print(f"Error processing image {rgb_filename}: {str(e)}")
             raise
-    def run(self):
-        rgb_filenames = [
-            'normal_pair4_png.rf.fa99eaa222e8d4acfcfb6483600dda01.jpg'
-        ]
-        image_ids = [0]  # Corresponding image IDs in the COCO dataset
 
-        for rgb_filename, image_id in zip(rgb_filenames, image_ids):
+    def run(self):
+        if not self.coco_data['images']:
+            raise ValueError("No images found in COCO annotations")
+            
+        # get the first
+        image_data = self.coco_data['images'][0]
+        rgb_filename = image_data['file_name']
+        image_id = image_data['id']
+        
+        try:
             print(f"Processing {rgb_filename}")
-            rgb, normalized_rgbd, depth, mask, segmented_data, normalized_plate_color, object_stats = self.process_image(rgb_filename, image_id)
+            rgb, normalized_rgbd, depth, mask, segmented_data, normalized_plate_color, object_stats = (
+                self.process_image(rgb_filename, image_id)
+            )
+            
             print(f"Processed {rgb_filename}.")
-            print(f"RGB shape: {rgb.shape}, Normalized RGBD shape: {normalized_rgbd.shape}, Depth shape: {depth.shape}, Mask shape: {mask.shape}")
+            print(f"RGB shape: {rgb.shape}, Normalized RGBD shape: {normalized_rgbd.shape}, "
+                f"Depth shape: {depth.shape}, Mask shape: {mask.shape}")
             print(f"Number of segmented objects: {len(segmented_data)}")
             print(f"Normalized plate color: {normalized_plate_color}")
             print("Object depth statistics:")
@@ -445,3 +463,8 @@ class PreprocessingPipeline:
                     print(f"    {stat_name}: {stat_value:.2f} cm")
             print(f"Saved processed data to {self.processed_dir}")
             print("---")
+            
+        except Exception as e:
+            print(f"Error processing {rgb_filename}: {str(e)}")
+            traceback.print_exc()
+            raise

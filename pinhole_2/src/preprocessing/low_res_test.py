@@ -47,17 +47,17 @@ def process_low_res_rgbd(rgb_filename, output_dir):
     fig_original.savefig(os.path.join(output_dir, f"{os.path.splitext(rgbd_filename)[0]}_original.png"))
     plt.close(fig_original)
 
-    # Apply noise reduction to depth channel
+    # apply noise reduction to depth channel
     depth = original_rgbd[:,:,3].astype(np.float32)
     noise_reduced_depth = reduce_depth_noise(depth)
 
     print(f"Noise reduced depth min: {noise_reduced_depth.min()}, max: {noise_reduced_depth.max()}")
 
-    # create noise-reduced RGBD image
+    # create noise-reduced deoth image
     noise_reduced_rgbd = original_rgbd.copy()
     noise_reduced_rgbd[:,:,3] = noise_reduced_depth
 
-    # Visualize noise-reduced RGBD
+    # visualize noise-reduced image
     fig_reduced = visualize_rgbd(noise_reduced_rgbd, "Noise-reduced Low-res RGBD")
     fig_reduced.savefig(os.path.join(output_dir, f"{os.path.splitext(rgbd_filename)[0]}_noise_reduced.png"))
     plt.close(fig_reduced)

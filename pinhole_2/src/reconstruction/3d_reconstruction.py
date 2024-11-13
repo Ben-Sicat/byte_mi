@@ -4,6 +4,7 @@ import cv2
 import plotly.graph_objects as go
 from scipy.stats import mode
 import traceback
+import os
 
 def load_coco_annotations(coco_file):
     """Load COCO annotations."""
@@ -52,10 +53,9 @@ def create_binary_mask(segmentation_points, image_shape):
     points = np.array(segmentation_points).reshape(-1, 2)
     cv2.fillPoly(mask, [points.astype(np.int32)], 1)
     return mask
+
 def estimate_volume_from_mask(depth_map, segmentation_mask, intrinsic_params, pixel_size, plate_height=1.5):
-    """
-    Estimate volume using pinhole camera model and 3D reconstruction
-    """
+    """Estimate volume using pinhole camera model and 3D reconstruction"""
     try:
         mask = segmentation_mask > 0
         h, w = depth_map.shape
@@ -101,7 +101,7 @@ def visualize_3d_points(depth_map, intrinsic_params, segmentation_mask, category
         for u in range(w):
             if segmentation_mask[v, u] == 1:
                 depth_value = depth_map[v, u]
-                if depth_value > plate_height:  # Only points above plate
+                if depth_value > plate_height:  
                     adjusted_depth = depth_value - plate_height
                     X, Y, Z = pixel_to_world(u, v, adjusted_depth, intrinsic_params, pixel_size)
                     points_3d.append((X, Y, Z))
@@ -116,7 +116,7 @@ def visualize_3d_points(depth_map, intrinsic_params, segmentation_mask, category
             mode='markers',
             marker=dict(
                 size=2,
-                color=points_3d[:, 2],  # Color by height
+                color=points_3d[:, 2],  # height / Z
                 colorscale='Viridis',
                 showscale=True
             )
@@ -131,30 +131,46 @@ def visualize_3d_points(depth_map, intrinsic_params, segmentation_mask, category
                 aspectmode='data'
             )
         )
-
-        fig.write_html(f'output/3d_points_visualization_{category_name}.html')
-
+        
+        return fig
+    return None
 def calculate_plate_volume(diameter, height):
     """Calculate reference plate volume"""
     radius = diameter / 2
     volume = np.pi * (radius ** 2) * height
     return volume
-
 if __name__ == "__main__":
-    depth_map = np.load('output/processed/normal_pair4_png.rf.fa99eaa222e8d4acfcfb6483600dda01_segmented_depth.npy')
-    coco_file = 'data/train_1/_annotations.coco.json'
+    # Define absolute paths
+    processed_dir = '/home/ben/cThesis/pinhole_2/output/processed'
+    coco_file = '/home/ben/cThesis/pinhole_2/data/train_1/_annotations.coco.json'
+    output_dir = '/home/ben/cThesis/pinhole_2/output'
+    
+    # Find the first .npy file in output/processed
+    depth_files = [f for f in os.listdir(processed_dir) if f.endswith('_segmented_depth.npy')]
+    
+    if not depth_files:
+        raise ValueError(f"No depth files found in {processed_dir}")
+    
+    depth_filename = depth_files[0]
+    print(f"Processing depth file: {depth_filename}")
+    
+    # Load depth map
+    depth_map = np.load(os.path.join(processed_dir, depth_filename))
     segmentation_data = load_coco_annotations(coco_file)
 
+    # Camera parameters
     focal_length_mm = 7.0
     sensor_width_mm = 4.8
     image_width_pixels = depth_map.shape[1]
-    pixel_size = 0.5  # cm per pixel
+    pixel_size = 0.5  
 
     intrinsic_params = calculate_intrinsic_params(focal_length_mm, sensor_width_mm, image_width_pixels)
 
-    plate_diameter = 25.5  # cm
-    plate_height = 1.5    # cm
+    # Plate parameters
+    plate_diameter = 25.5  
+    plate_height = 1.5    
     
+    # Process plate first for calibration
     plate_segmentation_mask = create_binary_mask(segmentation_data[1]['points'], depth_map.shape)
     plate_volume = calculate_plate_volume(plate_diameter, plate_height)
     estimated_plate_volume = estimate_volume_from_mask(
@@ -167,6 +183,7 @@ if __name__ == "__main__":
     print(f"Estimated Plate Volume: {estimated_plate_volume:.2f} cm³")
     print(f"Scaling Factor: {scaling_factor:.4f}")
 
+    # Process each segmented object
     for object_id, data in segmentation_data.items():
         category_name = data['category']
         segmentation_mask = create_binary_mask(data['points'], depth_map.shape)
@@ -176,9 +193,19 @@ if __name__ == "__main__":
         )
         adjusted_volume = (raw_volume * scaling_factor) - 1
         vol_cup = (adjusted_volume / 236.588) - 1
+        
         print(f"\nResults for '{category_name}':")
         print(f"Raw Volume: {raw_volume:.2f} cm³")
         print(f"Calibrated Volume: {adjusted_volume:.2f} cm³")
         print(f"Volume in Cups: {vol_cup:.2f} cups")
         
-        visualize_3d_points(depth_map, intrinsic_params, segmentation_mask, category_name, pixel_size, plate_height)
+        # Update output path for visualizations
+        fig = visualize_3d_points(
+            depth_map, 
+            intrinsic_params, 
+            segmentation_mask, 
+            category_name, 
+            pixel_size, 
+            plate_height
+        )
+        fig.write_html(os.path.join(output_dir, f'3d_points_visualization_{category_name}.html'))
