@@ -220,8 +220,8 @@ class PreprocessingPipeline:
                 base_height = self.plate_height + self.plate_depth
                 max_height = 2.4
                 
-                # calculate depth variation relative to plate
                 depth_variation = 1.0 - (adjusted_intensity - np.min(adjusted_intensity)) / (np.max(adjusted_intensity) - np.min(adjusted_intensity) + 1e-6)
+                # calculate depth variation relative to plate
                 
                 # adjust depth variation based on relationship to plate values
                 plate_relative = np.exp(-np.abs(adjusted_intensity - plate_mean) / (2 * plate_std**2))
@@ -358,30 +358,42 @@ class PreprocessingPipeline:
             normalized_rgbd[:,:,i] = (normalized_rgbd[:,:,i] - normalized_plate_color[i]) / normalized_plate_color[i] * 0.7 + 0.7
         
         return normalized_rgbd, normalized_plate_color
+            
+            
+
+
+
     def process_image(self, rgb_filename, image_id):
         try:
+            # Load RGB image
             rgb_path = os.path.join(self.train_dir, rgb_filename)
             rgb_image = cv2.imread(rgb_path)
             if rgb_image is None:
                 raise FileNotFoundError(f"Could not load RGB image at {rgb_path}")
             rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
 
-            rgbd_filename = get_corresponding_rgbd_filename(rgb_filename)
-            if rgbd_filename is None:
-                raise ValueError(f"No corresponding RGBD filename found for {rgb_filename}")
-
+            # Modified RGBD filename handling
+            rgbd_files = [f for f in os.listdir(self.image_input_dir) if f.endswith(('.png', '.jpg', '.jpeg'))]
+            if not rgbd_files:
+                raise ValueError(f"No RGBD images found in {self.image_input_dir}")
+            
+            # Use the first depth image found (since you mentioned it should dynamically get the first available file)
+            rgbd_filename = rgbd_files[0]
+            print(f"Using RGBD file: {rgbd_filename}")
+            
             rgbd_path = os.path.join(self.image_input_dir, rgbd_filename)
             rgbd_image = load_rgbd_image(rgbd_path)
             upscaled_rgbd = self.upscale_with_padding(rgbd_image, rgb_image.shape[:2])
             preprocessed_rgbd = self.preprocess_rgbd(upscaled_rgbd)
-            
-            # create segmentation mask
+
+            # Rest of your existing process_image code remains the same...
             segmentation_mask = create_segmentation_mask(image_id, self.coco_data)
             segmentation_mask = align_segmentation_mask(segmentation_mask, rgb_image.shape[:2])
             
             print(f"Segmentation mask shape: {segmentation_mask.shape}")
             print(f"Unique segmentation values: {np.unique(segmentation_mask)}")
             
+            # Continue with the rest of your existing code...
             # extract and calibrate depth from RGBD
             calibrated_depth = self.color_to_depth(preprocessed_rgbd, segmentation_mask)
             # analyze object depths
