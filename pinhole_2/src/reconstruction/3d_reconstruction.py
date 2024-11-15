@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from scipy.stats import mode
 import traceback
 import os
+import requests
 
 def load_coco_annotations(coco_file):
     """Load COCO annotations."""
@@ -139,6 +140,22 @@ def calculate_plate_volume(diameter, height):
     radius = diameter / 2
     volume = np.pi * (radius ** 2) * height
     return volume
+def send_nutrition_request(food_data):
+    """
+    send food data to api for macro
+    """
+    url = "https://starfish-app-fycwd.ondigitalocean.app/api/nutrition"
+    headers = {
+        "Content-Type":"application/json" 
+    }
+    payload = {
+        "data"= food_data
+    }
+    
+    response = requests.post(url, json=payload, headers=headers)
+    response.raise_for_status()
+
+    return response.json()
 if __name__ == "__main__":
     # Define absolute paths
     processed_dir = '/home/ben/cThesis/pinhole_2/output/processed'
@@ -182,10 +199,14 @@ if __name__ == "__main__":
     print(f"Actual Plate Volume: {plate_volume:.2f} cm³")
     print(f"Estimated Plate Volume: {estimated_plate_volume:.2f} cm³")
     print(f"Scaling Factor: {scaling_factor:.4f}")
-
+    
+    food_data_list = []
     # Process each segmented object
     for object_id, data in segmentation_data.items():
         category_name = data['category']
+        if category_name.lower=='plate':
+            continue
+
         segmentation_mask = create_binary_mask(data['points'], depth_map.shape)
         
         raw_volume = estimate_volume_from_mask(
@@ -196,8 +217,6 @@ if __name__ == "__main__":
         if vol_cup >= 2:
             vol_cup = vol_cup - 1.1 
 
-       
-
         """
         add the api call to the server to get the macronutrients here:
 
@@ -205,8 +224,8 @@ if __name__ == "__main__":
         {
            data: [
                 {
-                    "food_name": string,
-                    "volume": int
+                    "food_name": category_name,
+                    "volume": vol_cup 
                     },
                     {
                     "food_name": string,
@@ -215,6 +234,12 @@ if __name__ == "__main__":
             ]
         }
         """
+        food_data_list.append({
+            "food_name": category_name.lower(),
+            "volume": round(vol_cup, 2)
+
+
+        })
         print(f"\nResults for '{category_name}':")
         print(f"Raw Volume: {raw_volume:.2f} cm³")
         print(f"Calibrated Volume: {adjusted_volume:.2f} cm³")
@@ -230,3 +255,15 @@ if __name__ == "__main__":
             plate_height
         )
         fig.write_html(os.path.join(output_dir, f'3d_points_visualization_{category_name}.html'))
+        if food_data_list:
+            print("\nSending nutrition request for:")
+            for food in food_data_list:
+                print(f"  - {food['food_name']}: {food['volume']} cups")
+                
+            nutrition_response = send_nutrition_request(food_data_list)
+            
+            if nutrition_response:
+                print("\nNutrition Information:")
+                print(json.dumps(nutrition_response, indent=2))
+            else:
+                print("\nFailed to get nutrition information")
