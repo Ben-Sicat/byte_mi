@@ -149,7 +149,7 @@ def send_nutrition_request(food_data):
         "Content-Type":"application/json" 
     }
     payload = {
-        "data"= food_data
+        "data": food_data
     }
     
     response = requests.post(url, json=payload, headers=headers)
@@ -204,19 +204,18 @@ if __name__ == "__main__":
     # Process each segmented object
     for object_id, data in segmentation_data.items():
         category_name = data['category']
-        if category_name.lower=='plate':
-            continue
+        if category_name.lower=="plate":
+            pass 
 
         segmentation_mask = create_binary_mask(data['points'], depth_map.shape)
         
         raw_volume = estimate_volume_from_mask(
             depth_map, segmentation_mask, intrinsic_params, pixel_size, plate_height
         )
-        adjusted_volume = (raw_volume * scaling_factor) - 1
-        vol_cup = (adjusted_volume / 236.588) - 1
-        if vol_cup >= 2:
-            vol_cup = vol_cup - 1.1 
-
+        adjusted_volume = (raw_volume * scaling_factor) 
+        vol_cup = (adjusted_volume / 236.588)
+        if vol_cup >= 3:
+            vol_cup = vol_cup - 2.1 
         """
         add the api call to the server to get the macronutrients here:
 
@@ -258,6 +257,8 @@ if __name__ == "__main__":
         if food_data_list:
             print("\nSending nutrition request for:")
             for food in food_data_list:
+                if food == 'plate':
+                    continue
                 print(f"  - {food['food_name']}: {food['volume']} cups")
                 
             nutrition_response = send_nutrition_request(food_data_list)

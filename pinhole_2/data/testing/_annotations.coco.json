@@ -1,0 +1,4751 @@
+{
+  "info": {
+    "description": "Food Detection Results",
+    "date_created": "2024-11-15 14:55:19",
+    "version": "1.0",
+    "contributor": "Mask RCNN Food Detector"
+  },
+  "licenses": [
+    {
+      "url": "N/A",
+      "id": 1,
+      "name": "N/A"
+    }
+  ],
+  "images": [
+    {
+      "id": 1,
+      "width": 640,
+      "height": 480,
+      "file_name": "normal_friesbanana.png",
+      "license": 1,
+      "date_captured": "2024-11-15 14:55:19"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "bread-wholemeal",
+      "supercategory": "food"
+    },
+    {
+      "id": 2,
+      "name": "jam",
+      "supercategory": "food"
+    },
+    {
+      "id": 3,
+      "name": "water",
+      "supercategory": "food"
+    },
+    {
+      "id": 4,
+      "name": "bread-sourdough",
+      "supercategory": "food"
+    },
+    {
+      "id": 5,
+      "name": "banana",
+      "supercategory": "food"
+    },
+    {
+      "id": 6,
+      "name": "soft-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 7,
+      "name": "ham-raw",
+      "supercategory": "food"
+    },
+    {
+      "id": 8,
+      "name": "hard-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 9,
+      "name": "cottage-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 10,
+      "name": "bread-half-white",
+      "supercategory": "food"
+    },
+    {
+      "id": 11,
+      "name": "coffee-with-caffeine",
+      "supercategory": "food"
+    },
+    {
+      "id": 12,
+      "name": "fruit-salad",
+      "supercategory": "food"
+    },
+    {
+      "id": 13,
+      "name": "pancakes",
+      "supercategory": "food"
+    },
+    {
+      "id": 14,
+      "name": "tea",
+      "supercategory": "food"
+    },
+    {
+      "id": 15,
+      "name": "salmon-smoked",
+      "supercategory": "food"
+    },
+    {
+      "id": 16,
+      "name": "avocado",
+      "supercategory": "food"
+    },
+    {
+      "id": 17,
+      "name": "spring-onion-scallion",
+      "supercategory": "food"
+    },
+    {
+      "id": 18,
+      "name": "ristretto-with-caffeine",
+      "supercategory": "food"
+    },
+    {
+      "id": 19,
+      "name": "ham",
+      "supercategory": "food"
+    },
+    {
+      "id": 20,
+      "name": "egg",
+      "supercategory": "food"
+    },
+    {
+      "id": 21,
+      "name": "bacon-frying",
+      "supercategory": "food"
+    },
+    {
+      "id": 22,
+      "name": "chips-french-fries",
+      "supercategory": "food"
+    },
+    {
+      "id": 23,
+      "name": "juice-apple",
+      "supercategory": "food"
+    },
+    {
+      "id": 24,
+      "name": "chicken",
+      "supercategory": "food"
+    },
+    {
+      "id": 25,
+      "name": "tomato-raw",
+      "supercategory": "food"
+    },
+    {
+      "id": 26,
+      "name": "broccoli",
+      "supercategory": "food"
+    },
+    {
+      "id": 27,
+      "name": "shrimp-boiled",
+      "supercategory": "food"
+    },
+    {
+      "id": 28,
+      "name": "beetroot-steamed-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 29,
+      "name": "carrot-raw",
+      "supercategory": "food"
+    },
+    {
+      "id": 30,
+      "name": "chickpeas",
+      "supercategory": "food"
+    },
+    {
+      "id": 31,
+      "name": "french-salad-dressing",
+      "supercategory": "food"
+    },
+    {
+      "id": 32,
+      "name": "pasta-hornli",
+      "supercategory": "food"
+    },
+    {
+      "id": 33,
+      "name": "sauce-cream",
+      "supercategory": "food"
+    },
+    {
+      "id": 34,
+      "name": "meat-balls",
+      "supercategory": "food"
+    },
+    {
+      "id": 35,
+      "name": "pasta",
+      "supercategory": "food"
+    },
+    {
+      "id": 36,
+      "name": "tomato-sauce",
+      "supercategory": "food"
+    },
+    {
+      "id": 37,
+      "name": "cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 38,
+      "name": "pear",
+      "supercategory": "food"
+    },
+    {
+      "id": 39,
+      "name": "cashew-nut",
+      "supercategory": "food"
+    },
+    {
+      "id": 40,
+      "name": "almonds",
+      "supercategory": "food"
+    },
+    {
+      "id": 41,
+      "name": "lentils",
+      "supercategory": "food"
+    },
+    {
+      "id": 42,
+      "name": "mixed-vegetables",
+      "supercategory": "food"
+    },
+    {
+      "id": 43,
+      "name": "peanut-butter",
+      "supercategory": "food"
+    },
+    {
+      "id": 44,
+      "name": "apple",
+      "supercategory": "food"
+    },
+    {
+      "id": 45,
+      "name": "blueberries",
+      "supercategory": "food"
+    },
+    {
+      "id": 46,
+      "name": "cucumber",
+      "supercategory": "food"
+    },
+    {
+      "id": 47,
+      "name": "cocoa-powder",
+      "supercategory": "food"
+    },
+    {
+      "id": 48,
+      "name": "greek-yaourt-yahourt-yogourt-ou-yoghourt",
+      "supercategory": "food"
+    },
+    {
+      "id": 49,
+      "name": "maple-syrup-concentrate",
+      "supercategory": "food"
+    },
+    {
+      "id": 50,
+      "name": "buckwheat-grain-peeled",
+      "supercategory": "food"
+    },
+    {
+      "id": 51,
+      "name": "butter",
+      "supercategory": "food"
+    },
+    {
+      "id": 52,
+      "name": "herbal-tea",
+      "supercategory": "food"
+    },
+    {
+      "id": 53,
+      "name": "mayonnaise",
+      "supercategory": "food"
+    },
+    {
+      "id": 54,
+      "name": "soup-vegetable",
+      "supercategory": "food"
+    },
+    {
+      "id": 55,
+      "name": "wine-red",
+      "supercategory": "food"
+    },
+    {
+      "id": 56,
+      "name": "wine-white",
+      "supercategory": "food"
+    },
+    {
+      "id": 57,
+      "name": "green-bean-steamed-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 58,
+      "name": "sausage",
+      "supercategory": "food"
+    },
+    {
+      "id": 59,
+      "name": "pizza-margherita-baked",
+      "supercategory": "food"
+    },
+    {
+      "id": 60,
+      "name": "salami",
+      "supercategory": "food"
+    },
+    {
+      "id": 61,
+      "name": "mushroom",
+      "supercategory": "food"
+    },
+    {
+      "id": 62,
+      "name": "bread-meat-substitute-lettuce-sauce",
+      "supercategory": "food"
+    },
+    {
+      "id": 63,
+      "name": "tart",
+      "supercategory": "food"
+    },
+    {
+      "id": 64,
+      "name": "tea-verveine",
+      "supercategory": "food"
+    },
+    {
+      "id": 65,
+      "name": "rice",
+      "supercategory": "food"
+    },
+    {
+      "id": 66,
+      "name": "white-coffee-with-caffeine",
+      "supercategory": "food"
+    },
+    {
+      "id": 67,
+      "name": "linseeds",
+      "supercategory": "food"
+    },
+    {
+      "id": 68,
+      "name": "sunflower-seeds",
+      "supercategory": "food"
+    },
+    {
+      "id": 69,
+      "name": "ham-cooked",
+      "supercategory": "food"
+    },
+    {
+      "id": 70,
+      "name": "bell-pepper-red-raw",
+      "supercategory": "food"
+    },
+    {
+      "id": 71,
+      "name": "zucchini",
+      "supercategory": "food"
+    },
+    {
+      "id": 72,
+      "name": "green-asparagus",
+      "supercategory": "food"
+    },
+    {
+      "id": 73,
+      "name": "tartar-sauce",
+      "supercategory": "food"
+    },
+    {
+      "id": 74,
+      "name": "lye-pretzel-soft",
+      "supercategory": "food"
+    },
+    {
+      "id": 75,
+      "name": "cucumber-pickled",
+      "supercategory": "food"
+    },
+    {
+      "id": 76,
+      "name": "curry-vegetarian",
+      "supercategory": "food"
+    },
+    {
+      "id": 77,
+      "name": "yaourt-yahourt-yogourt-ou-yoghourt-natural",
+      "supercategory": "food"
+    },
+    {
+      "id": 78,
+      "name": "soup-of-lentils-dahl-dhal",
+      "supercategory": "food"
+    },
+    {
+      "id": 79,
+      "name": "soup-cream-of-vegetables",
+      "supercategory": "food"
+    },
+    {
+      "id": 80,
+      "name": "balsamic-vinegar",
+      "supercategory": "food"
+    },
+    {
+      "id": 81,
+      "name": "salmon",
+      "supercategory": "food"
+    },
+    {
+      "id": 82,
+      "name": "salt-cake-vegetables-filled",
+      "supercategory": "food"
+    },
+    {
+      "id": 83,
+      "name": "bacon",
+      "supercategory": "food"
+    },
+    {
+      "id": 84,
+      "name": "orange",
+      "supercategory": "food"
+    },
+    {
+      "id": 85,
+      "name": "pasta-noodles",
+      "supercategory": "food"
+    },
+    {
+      "id": 86,
+      "name": "cream",
+      "supercategory": "food"
+    },
+    {
+      "id": 87,
+      "name": "cake-chocolate",
+      "supercategory": "food"
+    },
+    {
+      "id": 88,
+      "name": "pasta-spaghetti",
+      "supercategory": "food"
+    },
+    {
+      "id": 89,
+      "name": "black-olives",
+      "supercategory": "food"
+    },
+    {
+      "id": 90,
+      "name": "parmesan",
+      "supercategory": "food"
+    },
+    {
+      "id": 91,
+      "name": "spaetzle",
+      "supercategory": "food"
+    },
+    {
+      "id": 92,
+      "name": "salad-lambs-ear",
+      "supercategory": "food"
+    },
+    {
+      "id": 93,
+      "name": "salad-leaf-salad-green",
+      "supercategory": "food"
+    },
+    {
+      "id": 94,
+      "name": "potatoes-steamed",
+      "supercategory": "food"
+    },
+    {
+      "id": 95,
+      "name": "white-cabbage",
+      "supercategory": "food"
+    },
+    {
+      "id": 96,
+      "name": "halloumi",
+      "supercategory": "food"
+    },
+    {
+      "id": 97,
+      "name": "beetroot-raw",
+      "supercategory": "food"
+    },
+    {
+      "id": 98,
+      "name": "bread-grain",
+      "supercategory": "food"
+    },
+    {
+      "id": 99,
+      "name": "applesauce-unsweetened-canned",
+      "supercategory": "food"
+    },
+    {
+      "id": 100,
+      "name": "cheese-for-raclette",
+      "supercategory": "food"
+    },
+    {
+      "id": 101,
+      "name": "mushrooms",
+      "supercategory": "food"
+    },
+    {
+      "id": 102,
+      "name": "bread-white",
+      "supercategory": "food"
+    },
+    {
+      "id": 103,
+      "name": "curds-natural-with-at-most-10-fidm",
+      "supercategory": "food"
+    },
+    {
+      "id": 104,
+      "name": "bagel-without-filling",
+      "supercategory": "food"
+    },
+    {
+      "id": 105,
+      "name": "quiche-with-cheese-baked-with-puff-pastry",
+      "supercategory": "food"
+    },
+    {
+      "id": 106,
+      "name": "soup-potato",
+      "supercategory": "food"
+    },
+    {
+      "id": 107,
+      "name": "bouillon-vegetable",
+      "supercategory": "food"
+    },
+    {
+      "id": 108,
+      "name": "beef-sirloin-steak",
+      "supercategory": "food"
+    },
+    {
+      "id": 109,
+      "name": "taboule-prepared-with-couscous",
+      "supercategory": "food"
+    },
+    {
+      "id": 110,
+      "name": "eggplant",
+      "supercategory": "food"
+    },
+    {
+      "id": 111,
+      "name": "bread",
+      "supercategory": "food"
+    },
+    {
+      "id": 112,
+      "name": "turnover-with-meat-small-meat-pie-empanadas",
+      "supercategory": "food"
+    },
+    {
+      "id": 113,
+      "name": "mungbean-sprouts",
+      "supercategory": "food"
+    },
+    {
+      "id": 114,
+      "name": "mozzarella",
+      "supercategory": "food"
+    },
+    {
+      "id": 115,
+      "name": "pasta-penne",
+      "supercategory": "food"
+    },
+    {
+      "id": 116,
+      "name": "lasagne-vegetable-prepared",
+      "supercategory": "food"
+    },
+    {
+      "id": 117,
+      "name": "mandarine",
+      "supercategory": "food"
+    },
+    {
+      "id": 118,
+      "name": "kiwi",
+      "supercategory": "food"
+    },
+    {
+      "id": 119,
+      "name": "french-beans",
+      "supercategory": "food"
+    },
+    {
+      "id": 120,
+      "name": "tartar-meat",
+      "supercategory": "food"
+    },
+    {
+      "id": 121,
+      "name": "spring-roll-fried",
+      "supercategory": "food"
+    },
+    {
+      "id": 122,
+      "name": "pork-chop",
+      "supercategory": "food"
+    },
+    {
+      "id": 123,
+      "name": "caprese-salad-tomato-mozzarella",
+      "supercategory": "food"
+    },
+    {
+      "id": 124,
+      "name": "leaf-spinach",
+      "supercategory": "food"
+    },
+    {
+      "id": 125,
+      "name": "roll-of-half-white-or-white-flour-with-large-void",
+      "supercategory": "food"
+    },
+    {
+      "id": 126,
+      "name": "pasta-ravioli-stuffing",
+      "supercategory": "food"
+    },
+    {
+      "id": 127,
+      "name": "omelette-plain",
+      "supercategory": "food"
+    },
+    {
+      "id": 128,
+      "name": "tuna",
+      "supercategory": "food"
+    },
+    {
+      "id": 129,
+      "name": "dark-chocolate",
+      "supercategory": "food"
+    },
+    {
+      "id": 130,
+      "name": "sauce-savoury",
+      "supercategory": "food"
+    },
+    {
+      "id": 131,
+      "name": "dried-raisins",
+      "supercategory": "food"
+    },
+    {
+      "id": 132,
+      "name": "ice-tea",
+      "supercategory": "food"
+    },
+    {
+      "id": 133,
+      "name": "kaki",
+      "supercategory": "food"
+    },
+    {
+      "id": 134,
+      "name": "macaroon",
+      "supercategory": "food"
+    },
+    {
+      "id": 135,
+      "name": "smoothie",
+      "supercategory": "food"
+    },
+    {
+      "id": 136,
+      "name": "crepe-plain",
+      "supercategory": "food"
+    },
+    {
+      "id": 137,
+      "name": "chicken-nuggets",
+      "supercategory": "food"
+    },
+    {
+      "id": 138,
+      "name": "chili-con-carne-prepared",
+      "supercategory": "food"
+    },
+    {
+      "id": 139,
+      "name": "veggie-burger",
+      "supercategory": "food"
+    },
+    {
+      "id": 140,
+      "name": "cream-spinach",
+      "supercategory": "food"
+    },
+    {
+      "id": 141,
+      "name": "cod",
+      "supercategory": "food"
+    },
+    {
+      "id": 142,
+      "name": "chinese-cabbage",
+      "supercategory": "food"
+    },
+    {
+      "id": 143,
+      "name": "hamburger-bread-meat-ketchup",
+      "supercategory": "food"
+    },
+    {
+      "id": 144,
+      "name": "soup-pumpkin",
+      "supercategory": "food"
+    },
+    {
+      "id": 145,
+      "name": "sushi",
+      "supercategory": "food"
+    },
+    {
+      "id": 146,
+      "name": "chestnuts",
+      "supercategory": "food"
+    },
+    {
+      "id": 147,
+      "name": "coffee-decaffeinated",
+      "supercategory": "food"
+    },
+    {
+      "id": 148,
+      "name": "sauce-soya",
+      "supercategory": "food"
+    },
+    {
+      "id": 149,
+      "name": "balsamic-salad-dressing",
+      "supercategory": "food"
+    },
+    {
+      "id": 150,
+      "name": "pasta-twist",
+      "supercategory": "food"
+    },
+    {
+      "id": 151,
+      "name": "bolognaise-sauce",
+      "supercategory": "food"
+    },
+    {
+      "id": 152,
+      "name": "leek",
+      "supercategory": "food"
+    },
+    {
+      "id": 153,
+      "name": "fajita-bread-only",
+      "supercategory": "food"
+    },
+    {
+      "id": 154,
+      "name": "potato-gnocchi",
+      "supercategory": "food"
+    },
+    {
+      "id": 155,
+      "name": "beef-cut-into-stripes-only-meat",
+      "supercategory": "food"
+    },
+    {
+      "id": 156,
+      "name": "rice-noodles-vermicelli",
+      "supercategory": "food"
+    },
+    {
+      "id": 157,
+      "name": "tea-ginger",
+      "supercategory": "food"
+    },
+    {
+      "id": 158,
+      "name": "tea-green",
+      "supercategory": "food"
+    },
+    {
+      "id": 159,
+      "name": "bread-whole-wheat",
+      "supercategory": "food"
+    },
+    {
+      "id": 160,
+      "name": "onion",
+      "supercategory": "food"
+    },
+    {
+      "id": 161,
+      "name": "garlic",
+      "supercategory": "food"
+    },
+    {
+      "id": 162,
+      "name": "hummus",
+      "supercategory": "food"
+    },
+    {
+      "id": 163,
+      "name": "pizza-with-vegetables-baked",
+      "supercategory": "food"
+    },
+    {
+      "id": 164,
+      "name": "beer",
+      "supercategory": "food"
+    },
+    {
+      "id": 165,
+      "name": "glucose-drink-50g",
+      "supercategory": "food"
+    },
+    {
+      "id": 166,
+      "name": "chicken-wing",
+      "supercategory": "food"
+    },
+    {
+      "id": 167,
+      "name": "ratatouille",
+      "supercategory": "food"
+    },
+    {
+      "id": 168,
+      "name": "peanut",
+      "supercategory": "food"
+    },
+    {
+      "id": 169,
+      "name": "high-protein-pasta-made-of-lentils-peas",
+      "supercategory": "food"
+    },
+    {
+      "id": 170,
+      "name": "cauliflower",
+      "supercategory": "food"
+    },
+    {
+      "id": 171,
+      "name": "quiche-with-spinach-baked-with-cake-dough",
+      "supercategory": "food"
+    },
+    {
+      "id": 172,
+      "name": "green-olives",
+      "supercategory": "food"
+    },
+    {
+      "id": 173,
+      "name": "brazil-nut",
+      "supercategory": "food"
+    },
+    {
+      "id": 174,
+      "name": "eggplant-caviar",
+      "supercategory": "food"
+    },
+    {
+      "id": 175,
+      "name": "bread-pita",
+      "supercategory": "food"
+    },
+    {
+      "id": 176,
+      "name": "pasta-wholemeal",
+      "supercategory": "food"
+    },
+    {
+      "id": 177,
+      "name": "sauce-pesto",
+      "supercategory": "food"
+    },
+    {
+      "id": 178,
+      "name": "oil",
+      "supercategory": "food"
+    },
+    {
+      "id": 179,
+      "name": "couscous",
+      "supercategory": "food"
+    },
+    {
+      "id": 180,
+      "name": "sauce-roast",
+      "supercategory": "food"
+    },
+    {
+      "id": 181,
+      "name": "prosecco",
+      "supercategory": "food"
+    },
+    {
+      "id": 182,
+      "name": "crackers",
+      "supercategory": "food"
+    },
+    {
+      "id": 183,
+      "name": "bread-toast",
+      "supercategory": "food"
+    },
+    {
+      "id": 184,
+      "name": "shrimp-prawn-small",
+      "supercategory": "food"
+    },
+    {
+      "id": 185,
+      "name": "panna-cotta",
+      "supercategory": "food"
+    },
+    {
+      "id": 186,
+      "name": "romanesco",
+      "supercategory": "food"
+    },
+    {
+      "id": 187,
+      "name": "water-with-lemon-juice",
+      "supercategory": "food"
+    },
+    {
+      "id": 188,
+      "name": "espresso-with-caffeine",
+      "supercategory": "food"
+    },
+    {
+      "id": 189,
+      "name": "egg-scrambled-prepared",
+      "supercategory": "food"
+    },
+    {
+      "id": 190,
+      "name": "juice-orange",
+      "supercategory": "food"
+    },
+    {
+      "id": 191,
+      "name": "ice-cubes",
+      "supercategory": "food"
+    },
+    {
+      "id": 192,
+      "name": "braided-white-loaf",
+      "supercategory": "food"
+    },
+    {
+      "id": 193,
+      "name": "emmental-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 194,
+      "name": "croissant-wholegrain",
+      "supercategory": "food"
+    },
+    {
+      "id": 195,
+      "name": "hazelnut-chocolate-spread-nutella-ovomaltine-caotina",
+      "supercategory": "food"
+    },
+    {
+      "id": 196,
+      "name": "tomme",
+      "supercategory": "food"
+    },
+    {
+      "id": 197,
+      "name": "water-mineral",
+      "supercategory": "food"
+    },
+    {
+      "id": 198,
+      "name": "hazelnut",
+      "supercategory": "food"
+    },
+    {
+      "id": 199,
+      "name": "bacon-raw",
+      "supercategory": "food"
+    },
+    {
+      "id": 200,
+      "name": "bread-nut",
+      "supercategory": "food"
+    },
+    {
+      "id": 201,
+      "name": "black-forest-tart",
+      "supercategory": "food"
+    },
+    {
+      "id": 202,
+      "name": "soup-miso",
+      "supercategory": "food"
+    },
+    {
+      "id": 203,
+      "name": "peach",
+      "supercategory": "food"
+    },
+    {
+      "id": 204,
+      "name": "figs",
+      "supercategory": "food"
+    },
+    {
+      "id": 205,
+      "name": "beef-filet",
+      "supercategory": "food"
+    },
+    {
+      "id": 206,
+      "name": "mustard-dijon",
+      "supercategory": "food"
+    },
+    {
+      "id": 207,
+      "name": "rice-basmati",
+      "supercategory": "food"
+    },
+    {
+      "id": 208,
+      "name": "mashed-potatoes-prepared-with-full-fat-milk-with-butter",
+      "supercategory": "food"
+    },
+    {
+      "id": 209,
+      "name": "dumplings",
+      "supercategory": "food"
+    },
+    {
+      "id": 210,
+      "name": "pumpkin",
+      "supercategory": "food"
+    },
+    {
+      "id": 211,
+      "name": "swiss-chard",
+      "supercategory": "food"
+    },
+    {
+      "id": 212,
+      "name": "red-cabbage",
+      "supercategory": "food"
+    },
+    {
+      "id": 213,
+      "name": "spinach-raw",
+      "supercategory": "food"
+    },
+    {
+      "id": 214,
+      "name": "naan-indien-bread",
+      "supercategory": "food"
+    },
+    {
+      "id": 215,
+      "name": "chicken-curry-cream-coconut-milk-curry-spices-paste",
+      "supercategory": "food"
+    },
+    {
+      "id": 216,
+      "name": "crunch-muesli",
+      "supercategory": "food"
+    },
+    {
+      "id": 217,
+      "name": "biscuits",
+      "supercategory": "food"
+    },
+    {
+      "id": 218,
+      "name": "bread-french-white-flour",
+      "supercategory": "food"
+    },
+    {
+      "id": 219,
+      "name": "meatloaf",
+      "supercategory": "food"
+    },
+    {
+      "id": 220,
+      "name": "fresh-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 221,
+      "name": "honey",
+      "supercategory": "food"
+    },
+    {
+      "id": 222,
+      "name": "vegetable-mix-peas-and-carrots",
+      "supercategory": "food"
+    },
+    {
+      "id": 223,
+      "name": "parsley",
+      "supercategory": "food"
+    },
+    {
+      "id": 224,
+      "name": "brownie",
+      "supercategory": "food"
+    },
+    {
+      "id": 225,
+      "name": "dairy-ice-cream",
+      "supercategory": "food"
+    },
+    {
+      "id": 226,
+      "name": "tea-black",
+      "supercategory": "food"
+    },
+    {
+      "id": 227,
+      "name": "carrot-cake",
+      "supercategory": "food"
+    },
+    {
+      "id": 228,
+      "name": "fish-fingers-breaded",
+      "supercategory": "food"
+    },
+    {
+      "id": 229,
+      "name": "salad-dressing",
+      "supercategory": "food"
+    },
+    {
+      "id": 230,
+      "name": "dried-meat",
+      "supercategory": "food"
+    },
+    {
+      "id": 231,
+      "name": "chicken-breast",
+      "supercategory": "food"
+    },
+    {
+      "id": 232,
+      "name": "mixed-salad-chopped-without-sauce",
+      "supercategory": "food"
+    },
+    {
+      "id": 233,
+      "name": "feta",
+      "supercategory": "food"
+    },
+    {
+      "id": 234,
+      "name": "praline",
+      "supercategory": "food"
+    },
+    {
+      "id": 235,
+      "name": "tea-peppermint",
+      "supercategory": "food"
+    },
+    {
+      "id": 236,
+      "name": "walnut",
+      "supercategory": "food"
+    },
+    {
+      "id": 237,
+      "name": "potato-salad-with-mayonnaise-yogurt-dressing",
+      "supercategory": "food"
+    },
+    {
+      "id": 238,
+      "name": "kebab-in-pita-bread",
+      "supercategory": "food"
+    },
+    {
+      "id": 239,
+      "name": "kolhrabi",
+      "supercategory": "food"
+    },
+    {
+      "id": 240,
+      "name": "alfa-sprouts",
+      "supercategory": "food"
+    },
+    {
+      "id": 241,
+      "name": "brussel-sprouts",
+      "supercategory": "food"
+    },
+    {
+      "id": 242,
+      "name": "bacon-cooking",
+      "supercategory": "food"
+    },
+    {
+      "id": 243,
+      "name": "gruyere",
+      "supercategory": "food"
+    },
+    {
+      "id": 244,
+      "name": "bulgur",
+      "supercategory": "food"
+    },
+    {
+      "id": 245,
+      "name": "grapes",
+      "supercategory": "food"
+    },
+    {
+      "id": 246,
+      "name": "pork-escalope",
+      "supercategory": "food"
+    },
+    {
+      "id": 247,
+      "name": "chocolate-egg-small",
+      "supercategory": "food"
+    },
+    {
+      "id": 248,
+      "name": "cappuccino",
+      "supercategory": "food"
+    },
+    {
+      "id": 249,
+      "name": "zucchini-stewed-without-addition-of-fat-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 250,
+      "name": "crisp-bread-wasa",
+      "supercategory": "food"
+    },
+    {
+      "id": 251,
+      "name": "bread-black",
+      "supercategory": "food"
+    },
+    {
+      "id": 252,
+      "name": "perch-fillets-lake",
+      "supercategory": "food"
+    },
+    {
+      "id": 253,
+      "name": "rosti",
+      "supercategory": "food"
+    },
+    {
+      "id": 254,
+      "name": "mango",
+      "supercategory": "food"
+    },
+    {
+      "id": 255,
+      "name": "sandwich-ham-cheese-and-butter",
+      "supercategory": "food"
+    },
+    {
+      "id": 256,
+      "name": "muesli",
+      "supercategory": "food"
+    },
+    {
+      "id": 257,
+      "name": "spinach-steamed-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 258,
+      "name": "fish",
+      "supercategory": "food"
+    },
+    {
+      "id": 259,
+      "name": "risotto-without-cheese-cooked",
+      "supercategory": "food"
+    },
+    {
+      "id": 260,
+      "name": "milk-chocolate-with-hazelnuts",
+      "supercategory": "food"
+    },
+    {
+      "id": 261,
+      "name": "cake-oblong",
+      "supercategory": "food"
+    },
+    {
+      "id": 262,
+      "name": "crisps",
+      "supercategory": "food"
+    },
+    {
+      "id": 263,
+      "name": "pork",
+      "supercategory": "food"
+    },
+    {
+      "id": 264,
+      "name": "pomegranate",
+      "supercategory": "food"
+    },
+    {
+      "id": 265,
+      "name": "sweet-corn-canned",
+      "supercategory": "food"
+    },
+    {
+      "id": 266,
+      "name": "flakes-oat",
+      "supercategory": "food"
+    },
+    {
+      "id": 267,
+      "name": "greek-salad",
+      "supercategory": "food"
+    },
+    {
+      "id": 268,
+      "name": "cantonese-fried-rice",
+      "supercategory": "food"
+    },
+    {
+      "id": 269,
+      "name": "sesame-seeds",
+      "supercategory": "food"
+    },
+    {
+      "id": 270,
+      "name": "bouillon",
+      "supercategory": "food"
+    },
+    {
+      "id": 271,
+      "name": "baked-potato",
+      "supercategory": "food"
+    },
+    {
+      "id": 272,
+      "name": "fennel",
+      "supercategory": "food"
+    },
+    {
+      "id": 273,
+      "name": "meat",
+      "supercategory": "food"
+    },
+    {
+      "id": 274,
+      "name": "bread-olive",
+      "supercategory": "food"
+    },
+    {
+      "id": 275,
+      "name": "croutons",
+      "supercategory": "food"
+    },
+    {
+      "id": 276,
+      "name": "philadelphia",
+      "supercategory": "food"
+    },
+    {
+      "id": 277,
+      "name": "mushroom-average-stewed-without-addition-of-fat-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 278,
+      "name": "bell-pepper-red-stewed-without-addition-of-fat-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 279,
+      "name": "white-chocolate",
+      "supercategory": "food"
+    },
+    {
+      "id": 280,
+      "name": "mixed-nuts",
+      "supercategory": "food"
+    },
+    {
+      "id": 281,
+      "name": "breadcrumbs-unspiced",
+      "supercategory": "food"
+    },
+    {
+      "id": 282,
+      "name": "fondue",
+      "supercategory": "food"
+    },
+    {
+      "id": 283,
+      "name": "sauce-mushroom",
+      "supercategory": "food"
+    },
+    {
+      "id": 284,
+      "name": "tea-spice",
+      "supercategory": "food"
+    },
+    {
+      "id": 285,
+      "name": "strawberries",
+      "supercategory": "food"
+    },
+    {
+      "id": 286,
+      "name": "tea-rooibos",
+      "supercategory": "food"
+    },
+    {
+      "id": 287,
+      "name": "pie-plum-baked-with-cake-dough",
+      "supercategory": "food"
+    },
+    {
+      "id": 288,
+      "name": "potatoes-au-gratin-dauphinois-prepared",
+      "supercategory": "food"
+    },
+    {
+      "id": 289,
+      "name": "capers",
+      "supercategory": "food"
+    },
+    {
+      "id": 290,
+      "name": "vegetables",
+      "supercategory": "food"
+    },
+    {
+      "id": 291,
+      "name": "bread-wholemeal-toast",
+      "supercategory": "food"
+    },
+    {
+      "id": 292,
+      "name": "red-radish",
+      "supercategory": "food"
+    },
+    {
+      "id": 293,
+      "name": "fruit-tart",
+      "supercategory": "food"
+    },
+    {
+      "id": 294,
+      "name": "beans-kidney",
+      "supercategory": "food"
+    },
+    {
+      "id": 295,
+      "name": "sauerkraut",
+      "supercategory": "food"
+    },
+    {
+      "id": 296,
+      "name": "mustard",
+      "supercategory": "food"
+    },
+    {
+      "id": 297,
+      "name": "country-fries",
+      "supercategory": "food"
+    },
+    {
+      "id": 298,
+      "name": "ketchup",
+      "supercategory": "food"
+    },
+    {
+      "id": 299,
+      "name": "pasta-linguini-parpadelle-tagliatelle",
+      "supercategory": "food"
+    },
+    {
+      "id": 300,
+      "name": "chicken-cut-into-stripes-only-meat",
+      "supercategory": "food"
+    },
+    {
+      "id": 301,
+      "name": "cookies",
+      "supercategory": "food"
+    },
+    {
+      "id": 302,
+      "name": "sun-dried-tomatoe",
+      "supercategory": "food"
+    },
+    {
+      "id": 303,
+      "name": "bread-ticino",
+      "supercategory": "food"
+    },
+    {
+      "id": 304,
+      "name": "semi-hard-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 305,
+      "name": "margarine",
+      "supercategory": "food"
+    },
+    {
+      "id": 306,
+      "name": "porridge-prepared-with-partially-skimmed-milk",
+      "supercategory": "food"
+    },
+    {
+      "id": 307,
+      "name": "soya-drink-soy-milk",
+      "supercategory": "food"
+    },
+    {
+      "id": 308,
+      "name": "juice-multifruit",
+      "supercategory": "food"
+    },
+    {
+      "id": 309,
+      "name": "popcorn-salted",
+      "supercategory": "food"
+    },
+    {
+      "id": 310,
+      "name": "chocolate-filled",
+      "supercategory": "food"
+    },
+    {
+      "id": 311,
+      "name": "milk-chocolate",
+      "supercategory": "food"
+    },
+    {
+      "id": 312,
+      "name": "bread-fruit",
+      "supercategory": "food"
+    },
+    {
+      "id": 313,
+      "name": "mix-of-dried-fruits-and-nuts",
+      "supercategory": "food"
+    },
+    {
+      "id": 314,
+      "name": "corn",
+      "supercategory": "food"
+    },
+    {
+      "id": 315,
+      "name": "tete-de-moine",
+      "supercategory": "food"
+    },
+    {
+      "id": 316,
+      "name": "dates",
+      "supercategory": "food"
+    },
+    {
+      "id": 317,
+      "name": "pistachio",
+      "supercategory": "food"
+    },
+    {
+      "id": 318,
+      "name": "celery",
+      "supercategory": "food"
+    },
+    {
+      "id": 319,
+      "name": "white-radish",
+      "supercategory": "food"
+    },
+    {
+      "id": 320,
+      "name": "oat-milk",
+      "supercategory": "food"
+    },
+    {
+      "id": 321,
+      "name": "cream-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 322,
+      "name": "bread-rye",
+      "supercategory": "food"
+    },
+    {
+      "id": 323,
+      "name": "witloof-chicory",
+      "supercategory": "food"
+    },
+    {
+      "id": 324,
+      "name": "apple-crumble",
+      "supercategory": "food"
+    },
+    {
+      "id": 325,
+      "name": "goat-cheese-soft",
+      "supercategory": "food"
+    },
+    {
+      "id": 326,
+      "name": "grapefruit-pomelo",
+      "supercategory": "food"
+    },
+    {
+      "id": 327,
+      "name": "risotto-with-mushrooms-cooked",
+      "supercategory": "food"
+    },
+    {
+      "id": 328,
+      "name": "blue-mould-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 329,
+      "name": "biscuit-with-butter",
+      "supercategory": "food"
+    },
+    {
+      "id": 330,
+      "name": "guacamole",
+      "supercategory": "food"
+    },
+    {
+      "id": 331,
+      "name": "pecan-nut",
+      "supercategory": "food"
+    },
+    {
+      "id": 332,
+      "name": "tofu",
+      "supercategory": "food"
+    },
+    {
+      "id": 333,
+      "name": "cordon-bleu-from-pork-schnitzel-fried",
+      "supercategory": "food"
+    },
+    {
+      "id": 334,
+      "name": "paprika-chips",
+      "supercategory": "food"
+    },
+    {
+      "id": 335,
+      "name": "quinoa",
+      "supercategory": "food"
+    },
+    {
+      "id": 336,
+      "name": "kefir-drink",
+      "supercategory": "food"
+    },
+    {
+      "id": 337,
+      "name": "m-m-s",
+      "supercategory": "food"
+    },
+    {
+      "id": 338,
+      "name": "salad-rocket",
+      "supercategory": "food"
+    },
+    {
+      "id": 339,
+      "name": "bread-spelt",
+      "supercategory": "food"
+    },
+    {
+      "id": 340,
+      "name": "pizza-with-ham-with-mushrooms-baked",
+      "supercategory": "food"
+    },
+    {
+      "id": 341,
+      "name": "fruit-coulis",
+      "supercategory": "food"
+    },
+    {
+      "id": 342,
+      "name": "plums",
+      "supercategory": "food"
+    },
+    {
+      "id": 343,
+      "name": "beef-minced-only-meat",
+      "supercategory": "food"
+    },
+    {
+      "id": 344,
+      "name": "pizza-with-ham-baked",
+      "supercategory": "food"
+    },
+    {
+      "id": 345,
+      "name": "pineapple",
+      "supercategory": "food"
+    },
+    {
+      "id": 346,
+      "name": "soup-tomato",
+      "supercategory": "food"
+    },
+    {
+      "id": 347,
+      "name": "cheddar",
+      "supercategory": "food"
+    },
+    {
+      "id": 348,
+      "name": "tea-fruit",
+      "supercategory": "food"
+    },
+    {
+      "id": 349,
+      "name": "rice-jasmin",
+      "supercategory": "food"
+    },
+    {
+      "id": 350,
+      "name": "seeds",
+      "supercategory": "food"
+    },
+    {
+      "id": 351,
+      "name": "focaccia",
+      "supercategory": "food"
+    },
+    {
+      "id": 352,
+      "name": "milk",
+      "supercategory": "food"
+    },
+    {
+      "id": 353,
+      "name": "coleslaw-chopped-without-sauce",
+      "supercategory": "food"
+    },
+    {
+      "id": 354,
+      "name": "pastry-flaky",
+      "supercategory": "food"
+    },
+    {
+      "id": 355,
+      "name": "curd",
+      "supercategory": "food"
+    },
+    {
+      "id": 356,
+      "name": "savoury-puff-pastry-stick",
+      "supercategory": "food"
+    },
+    {
+      "id": 357,
+      "name": "sweet-potato",
+      "supercategory": "food"
+    },
+    {
+      "id": 358,
+      "name": "chicken-leg",
+      "supercategory": "food"
+    },
+    {
+      "id": 359,
+      "name": "croissant",
+      "supercategory": "food"
+    },
+    {
+      "id": 360,
+      "name": "sour-cream",
+      "supercategory": "food"
+    },
+    {
+      "id": 361,
+      "name": "ham-turkey",
+      "supercategory": "food"
+    },
+    {
+      "id": 362,
+      "name": "processed-cheese",
+      "supercategory": "food"
+    },
+    {
+      "id": 363,
+      "name": "fruit-compotes",
+      "supercategory": "food"
+    },
+    {
+      "id": 364,
+      "name": "cheesecake",
+      "supercategory": "food"
+    },
+    {
+      "id": 365,
+      "name": "pasta-tortelloni-stuffing",
+      "supercategory": "food"
+    },
+    {
+      "id": 366,
+      "name": "sauce-cocktail",
+      "supercategory": "food"
+    },
+    {
+      "id": 367,
+      "name": "croissant-with-chocolate-filling",
+      "supercategory": "food"
+    },
+    {
+      "id": 368,
+      "name": "pumpkin-seeds",
+      "supercategory": "food"
+    },
+    {
+      "id": 369,
+      "name": "artichoke",
+      "supercategory": "food"
+    },
+    {
+      "id": 370,
+      "name": "champagne",
+      "supercategory": "food"
+    },
+    {
+      "id": 371,
+      "name": "grissini",
+      "supercategory": "food"
+    },
+    {
+      "id": 372,
+      "name": "sweets-candies",
+      "supercategory": "food"
+    },
+    {
+      "id": 373,
+      "name": "brie",
+      "supercategory": "food"
+    },
+    {
+      "id": 374,
+      "name": "wienerli-swiss-sausage",
+      "supercategory": "food"
+    },
+    {
+      "id": 375,
+      "name": "syrup-diluted-ready-to-drink",
+      "supercategory": "food"
+    },
+    {
+      "id": 376,
+      "name": "apple-pie",
+      "supercategory": "food"
+    },
+    {
+      "id": 377,
+      "name": "white-bread-with-butter-eggs-and-milk",
+      "supercategory": "food"
+    },
+    {
+      "id": 378,
+      "name": "savoury-puff-pastry",
+      "supercategory": "food"
+    },
+    {
+      "id": 379,
+      "name": "anchovies",
+      "supercategory": "food"
+    },
+    {
+      "id": 380,
+      "name": "tuna-in-oil-drained",
+      "supercategory": "food"
+    },
+    {
+      "id": 381,
+      "name": "lemon-pie",
+      "supercategory": "food"
+    },
+    {
+      "id": 382,
+      "name": "meat-terrine-pate",
+      "supercategory": "food"
+    },
+    {
+      "id": 383,
+      "name": "coriander",
+      "supercategory": "food"
+    },
+    {
+      "id": 384,
+      "name": "falafel-balls",
+      "supercategory": "food"
+    },
+    {
+      "id": 385,
+      "name": "berries",
+      "supercategory": "food"
+    },
+    {
+      "id": 386,
+      "name": "latte-macchiato-with-caffeine",
+      "supercategory": "food"
+    },
+    {
+      "id": 387,
+      "name": "faux-mage-cashew-vegan-chers",
+      "supercategory": "food"
+    },
+    {
+      "id": 388,
+      "name": "beans-white",
+      "supercategory": "food"
+    },
+    {
+      "id": 389,
+      "name": "sugar-melon",
+      "supercategory": "food"
+    },
+    {
+      "id": 390,
+      "name": "mixed-seeds",
+      "supercategory": "food"
+    },
+    {
+      "id": 391,
+      "name": "hamburger",
+      "supercategory": "food"
+    },
+    {
+      "id": 392,
+      "name": "hamburger-bun",
+      "supercategory": "food"
+    },
+    {
+      "id": 393,
+      "name": "oil-vinegar-salad-dressing",
+      "supercategory": "food"
+    },
+    {
+      "id": 394,
+      "name": "soya-yaourt-yahourt-yogourt-ou-yoghourt",
+      "supercategory": "food"
+    },
+    {
+      "id": 395,
+      "name": "chocolate-milk-chocolate-drink",
+      "supercategory": "food"
+    },
+    {
+      "id": 396,
+      "name": "celeriac",
+      "supercategory": "food"
+    },
+    {
+      "id": 397,
+      "name": "chocolate-mousse",
+      "supercategory": "food"
+    },
+    {
+      "id": 398,
+      "name": "cenovis-yeast-spread",
+      "supercategory": "food"
+    },
+    {
+      "id": 399,
+      "name": "thickened-cream-35",
+      "supercategory": "food"
+    },
+    {
+      "id": 400,
+      "name": "meringue",
+      "supercategory": "food"
+    },
+    {
+      "id": 401,
+      "name": "lamb-chop",
+      "supercategory": "food"
+    },
+    {
+      "id": 402,
+      "name": "shrimp-prawn-large",
+      "supercategory": "food"
+    },
+    {
+      "id": 403,
+      "name": "beef",
+      "supercategory": "food"
+    },
+    {
+      "id": 404,
+      "name": "lemon",
+      "supercategory": "food"
+    },
+    {
+      "id": 405,
+      "name": "croque-monsieur",
+      "supercategory": "food"
+    },
+    {
+      "id": 406,
+      "name": "chives",
+      "supercategory": "food"
+    },
+    {
+      "id": 407,
+      "name": "chocolate-cookies",
+      "supercategory": "food"
+    },
+    {
+      "id": 408,
+      "name": "birchermuesli-prepared-no-sugar-added",
+      "supercategory": "food"
+    },
+    {
+      "id": 409,
+      "name": "fish-crunchies-battered",
+      "supercategory": "food"
+    },
+    {
+      "id": 410,
+      "name": "muffin",
+      "supercategory": "food"
+    },
+    {
+      "id": 411,
+      "name": "savoy-cabbage-steamed-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 412,
+      "name": "pine-nuts",
+      "supercategory": "food"
+    },
+    {
+      "id": 413,
+      "name": "chorizo",
+      "supercategory": "food"
+    },
+    {
+      "id": 414,
+      "name": "chia-grains",
+      "supercategory": "food"
+    },
+    {
+      "id": 415,
+      "name": "frying-sausage",
+      "supercategory": "food"
+    },
+    {
+      "id": 416,
+      "name": "french-pizza-from-alsace-baked",
+      "supercategory": "food"
+    },
+    {
+      "id": 417,
+      "name": "chocolate",
+      "supercategory": "food"
+    },
+    {
+      "id": 418,
+      "name": "cooked-sausage",
+      "supercategory": "food"
+    },
+    {
+      "id": 419,
+      "name": "grits-polenta-maize-flour",
+      "supercategory": "food"
+    },
+    {
+      "id": 420,
+      "name": "gummi-bears-fruit-jellies-jelly-babies-with-fruit-essence",
+      "supercategory": "food"
+    },
+    {
+      "id": 421,
+      "name": "wine-rose",
+      "supercategory": "food"
+    },
+    {
+      "id": 422,
+      "name": "coca-cola",
+      "supercategory": "food"
+    },
+    {
+      "id": 423,
+      "name": "raspberries",
+      "supercategory": "food"
+    },
+    {
+      "id": 424,
+      "name": "roll-with-pieces-of-chocolate",
+      "supercategory": "food"
+    },
+    {
+      "id": 425,
+      "name": "goat-average-raw",
+      "supercategory": "food"
+    },
+    {
+      "id": 426,
+      "name": "lemon-cake",
+      "supercategory": "food"
+    },
+    {
+      "id": 427,
+      "name": "coconut-milk",
+      "supercategory": "food"
+    },
+    {
+      "id": 428,
+      "name": "rice-wild",
+      "supercategory": "food"
+    },
+    {
+      "id": 429,
+      "name": "gluten-free-bread",
+      "supercategory": "food"
+    },
+    {
+      "id": 430,
+      "name": "pearl-onions",
+      "supercategory": "food"
+    },
+    {
+      "id": 431,
+      "name": "buckwheat-pancake",
+      "supercategory": "food"
+    },
+    {
+      "id": 432,
+      "name": "bread-5-grain",
+      "supercategory": "food"
+    },
+    {
+      "id": 433,
+      "name": "light-beer",
+      "supercategory": "food"
+    },
+    {
+      "id": 434,
+      "name": "sugar-glazing",
+      "supercategory": "food"
+    },
+    {
+      "id": 435,
+      "name": "tzatziki",
+      "supercategory": "food"
+    },
+    {
+      "id": 436,
+      "name": "butter-herb",
+      "supercategory": "food"
+    },
+    {
+      "id": 437,
+      "name": "ham-croissant",
+      "supercategory": "food"
+    },
+    {
+      "id": 438,
+      "name": "corn-crisps",
+      "supercategory": "food"
+    },
+    {
+      "id": 439,
+      "name": "lentils-green-du-puy-du-berry",
+      "supercategory": "food"
+    },
+    {
+      "id": 440,
+      "name": "cocktail",
+      "supercategory": "food"
+    },
+    {
+      "id": 441,
+      "name": "rice-whole-grain",
+      "supercategory": "food"
+    },
+    {
+      "id": 442,
+      "name": "veal-sausage",
+      "supercategory": "food"
+    },
+    {
+      "id": 443,
+      "name": "cervelat",
+      "supercategory": "food"
+    },
+    {
+      "id": 444,
+      "name": "sorbet",
+      "supercategory": "food"
+    },
+    {
+      "id": 445,
+      "name": "aperitif-with-alcohol-aperol-spritz",
+      "supercategory": "food"
+    },
+    {
+      "id": 446,
+      "name": "dips",
+      "supercategory": "food"
+    },
+    {
+      "id": 447,
+      "name": "corn-flakes",
+      "supercategory": "food"
+    },
+    {
+      "id": 448,
+      "name": "peas",
+      "supercategory": "food"
+    },
+    {
+      "id": 449,
+      "name": "tiramisu",
+      "supercategory": "food"
+    },
+    {
+      "id": 450,
+      "name": "apricots",
+      "supercategory": "food"
+    },
+    {
+      "id": 451,
+      "name": "cake-marble",
+      "supercategory": "food"
+    },
+    {
+      "id": 452,
+      "name": "lamb",
+      "supercategory": "food"
+    },
+    {
+      "id": 453,
+      "name": "lasagne-meat-prepared",
+      "supercategory": "food"
+    },
+    {
+      "id": 454,
+      "name": "coca-cola-zero",
+      "supercategory": "food"
+    },
+    {
+      "id": 455,
+      "name": "cake-salted",
+      "supercategory": "food"
+    },
+    {
+      "id": 456,
+      "name": "dough-puff-pastry-shortcrust-bread-pizza-dough",
+      "supercategory": "food"
+    },
+    {
+      "id": 457,
+      "name": "rice-waffels",
+      "supercategory": "food"
+    },
+    {
+      "id": 458,
+      "name": "sekt",
+      "supercategory": "food"
+    },
+    {
+      "id": 459,
+      "name": "brioche",
+      "supercategory": "food"
+    },
+    {
+      "id": 460,
+      "name": "vegetable-au-gratin-baked",
+      "supercategory": "food"
+    },
+    {
+      "id": 461,
+      "name": "mango-dried",
+      "supercategory": "food"
+    },
+    {
+      "id": 462,
+      "name": "processed-meat-charcuterie",
+      "supercategory": "food"
+    },
+    {
+      "id": 463,
+      "name": "mousse",
+      "supercategory": "food"
+    },
+    {
+      "id": 464,
+      "name": "sauce-sweet-sour",
+      "supercategory": "food"
+    },
+    {
+      "id": 465,
+      "name": "basil",
+      "supercategory": "food"
+    },
+    {
+      "id": 466,
+      "name": "butter-spread-puree-almond",
+      "supercategory": "food"
+    },
+    {
+      "id": 467,
+      "name": "pie-apricot-baked-with-cake-dough",
+      "supercategory": "food"
+    },
+    {
+      "id": 468,
+      "name": "rusk-wholemeal",
+      "supercategory": "food"
+    },
+    {
+      "id": 469,
+      "name": "beef-roast",
+      "supercategory": "food"
+    },
+    {
+      "id": 470,
+      "name": "vanille-cream-cooked-custard-creme-dessert",
+      "supercategory": "food"
+    },
+    {
+      "id": 471,
+      "name": "pasta-in-conch-form",
+      "supercategory": "food"
+    },
+    {
+      "id": 472,
+      "name": "nuts",
+      "supercategory": "food"
+    },
+    {
+      "id": 473,
+      "name": "sauce-carbonara",
+      "supercategory": "food"
+    },
+    {
+      "id": 474,
+      "name": "fig-dried",
+      "supercategory": "food"
+    },
+    {
+      "id": 475,
+      "name": "pasta-in-butterfly-form-farfalle",
+      "supercategory": "food"
+    },
+    {
+      "id": 476,
+      "name": "minced-meat",
+      "supercategory": "food"
+    },
+    {
+      "id": 477,
+      "name": "carrot-steamed-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 478,
+      "name": "ebly",
+      "supercategory": "food"
+    },
+    {
+      "id": 479,
+      "name": "damson-plum",
+      "supercategory": "food"
+    },
+    {
+      "id": 480,
+      "name": "shoots",
+      "supercategory": "food"
+    },
+    {
+      "id": 481,
+      "name": "bouquet-garni",
+      "supercategory": "food"
+    },
+    {
+      "id": 482,
+      "name": "coconut",
+      "supercategory": "food"
+    },
+    {
+      "id": 483,
+      "name": "banana-cake",
+      "supercategory": "food"
+    },
+    {
+      "id": 484,
+      "name": "waffle",
+      "supercategory": "food"
+    },
+    {
+      "id": 485,
+      "name": "apricot-dried",
+      "supercategory": "food"
+    },
+    {
+      "id": 486,
+      "name": "sauce-curry",
+      "supercategory": "food"
+    },
+    {
+      "id": 487,
+      "name": "watermelon-fresh",
+      "supercategory": "food"
+    },
+    {
+      "id": 488,
+      "name": "sauce-sweet-salted-asian",
+      "supercategory": "food"
+    },
+    {
+      "id": 489,
+      "name": "pork-roast",
+      "supercategory": "food"
+    },
+    {
+      "id": 490,
+      "name": "blackberry",
+      "supercategory": "food"
+    },
+    {
+      "id": 491,
+      "name": "smoked-cooked-sausage-of-pork-and-beef-meat-sausag",
+      "supercategory": "food"
+    },
+    {
+      "id": 492,
+      "name": "bean-seeds",
+      "supercategory": "food"
+    },
+    {
+      "id": 493,
+      "name": "italian-salad-dressing",
+      "supercategory": "food"
+    },
+    {
+      "id": 494,
+      "name": "white-asparagus",
+      "supercategory": "food"
+    },
+    {
+      "id": 495,
+      "name": "pie-rhubarb-baked-with-cake-dough",
+      "supercategory": "food"
+    },
+    {
+      "id": 496,
+      "name": "tomato-stewed-without-addition-of-fat-without-addition-of-salt",
+      "supercategory": "food"
+    },
+    {
+      "id": 497,
+      "name": "cherries",
+      "supercategory": "food"
+    },
+    {
+      "id": 498,
+      "name": "nectarine",
+      "supercategory": "food"
+    }
+  ],
+  "annotations": [
+    {
+      "id": 1,
+      "image_id": 1,
+      "category_id": 21,
+      "bbox": [
+        162.0,
+        203.0,
+        201.0,
+        183.0
+      ],
+      "area": 19933.0,
+      "segmentation": [
+        [
+          272.0,
+          362.5,
+          271.0,
+          362.5,
+          270.0,
+          362.5,
+          269.0,
+          362.5,
+          268.0,
+          362.5,
+          267.0,
+          362.5,
+          266.0,
+          362.5,
+          265.0,
+          362.5,
+          264.0,
+          362.5,
+          263.0,
+          362.5,
+          262.0,
+          362.5,
+          261.0,
+          362.5,
+          260.5,
+          362.0,
+          260.0,
+          361.5,
+          259.0,
+          361.5,
+          258.0,
+          361.5,
+          257.0,
+          361.5,
+          256.5,
+          361.0,
+          256.0,
+          360.5,
+          255.0,
+          360.5,
+          254.0,
+          360.5,
+          253.5,
+          360.0,
+          253.0,
+          359.5,
+          252.0,
+          359.5,
+          251.0,
+          359.5,
+          250.0,
+          359.5,
+          249.5,
+          359.0,
+          249.0,
+          358.5,
+          248.5,
+          358.0,
+          248.0,
+          357.5,
+          247.5,
+          357.0,
+          247.0,
+          356.5,
+          246.5,
+          356.0,
+          246.0,
+          355.5,
+          245.5,
+          355.0,
+          245.0,
+          354.5,
+          244.5,
+          354.0,
+          244.0,
+          353.5,
+          243.0,
+          353.5,
+          242.5,
+          353.0,
+          242.0,
+          352.5,
+          241.5,
+          352.0,
+          241.0,
+          351.5,
+          240.0,
+          351.5,
+          239.5,
+          351.0,
+          239.0,
+          350.5,
+          238.5,
+          350.0,
+          238.0,
+          349.5,
+          237.5,
+          349.0,
+          237.0,
+          348.5,
+          236.0,
+          348.5,
+          235.5,
+          348.0,
+          235.0,
+          347.5,
+          234.0,
+          347.5,
+          233.0,
+          347.5,
+          232.5,
+          347.0,
+          232.0,
+          346.5,
+          231.0,
+          346.5,
+          230.0,
+          346.5,
+          229.0,
+          346.5,
+          228.5,
+          346.0,
+          228.0,
+          345.5,
+          227.0,
+          345.5,
+          226.0,
+          345.5,
+          225.0,
+          345.5,
+          224.0,
+          345.5,
+          223.0,
+          345.5,
+          222.0,
+          345.5,
+          221.0,
+          345.5,
+          220.0,
+          345.5,
+          219.0,
+          345.5,
+          218.0,
+          345.5,
+          217.5,
+          346.0,
+          217.0,
+          346.5,
+          216.0,
+          346.5,
+          215.0,
+          346.5,
+          214.5,
+          346.0,
+          214.0,
+          345.5,
+          213.0,
+          345.5,
+          212.0,
+          345.5,
+          211.5,
+          345.0,
+          211.0,
+          344.5,
+          210.0,
+          344.5,
+          209.5,
+          344.0,
+          209.0,
+          343.5,
+          208.5,
+          343.0,
+          208.0,
+          342.5,
+          207.5,
+          342.0,
+          207.0,
+          341.5,
+          206.0,
+          341.5,
+          205.5,
+          341.0,
+          205.0,
+          340.5,
+          204.5,
+          340.0,
+          204.0,
+          339.5,
+          203.5,
+          339.0,
+          203.5,
+          338.0,
+          203.0,
+          337.5,
+          202.5,
+          337.0,
+          202.0,
+          336.5,
+          201.5,
+          336.0,
+          201.0,
+          335.5,
+          200.5,
+          335.0,
+          200.0,
+          334.5,
+          199.5,
+          334.0,
+          199.0,
+          333.5,
+          198.5,
+          333.0,
+          198.5,
+          332.0,
+          198.0,
+          331.5,
+          197.5,
+          331.0,
+          197.5,
+          330.0,
+          197.0,
+          329.5,
+          196.5,
+          329.0,
+          196.0,
+          328.5,
+          195.5,
+          328.0,
+          195.0,
+          327.5,
+          194.5,
+          327.0,
+          194.0,
+          326.5,
+          193.5,
+          326.0,
+          193.0,
+          325.5,
+          192.5,
+          325.0,
+          192.0,
+          324.5,
+          191.5,
+          324.0,
+          191.5,
+          323.0,
+          191.0,
+          322.5,
+          190.5,
+          322.0,
+          190.5,
+          321.0,
+          190.0,
+          320.5,
+          189.5,
+          320.0,
+          189.5,
+          319.0,
+          189.0,
+          318.5,
+          188.5,
+          318.0,
+          188.5,
+          317.0,
+          188.0,
+          316.5,
+          187.5,
+          316.0,
+          187.0,
+          315.5,
+          186.5,
+          315.0,
+          186.0,
+          314.5,
+          185.5,
+          314.0,
+          185.0,
+          313.5,
+          184.5,
+          313.0,
+          184.5,
+          312.0,
+          184.0,
+          311.5,
+          183.5,
+          311.0,
+          183.0,
+          310.5,
+          182.5,
+          310.0,
+          182.5,
+          309.0,
+          182.0,
+          308.5,
+          181.5,
+          308.0,
+          181.0,
+          307.5,
+          180.5,
+          307.0,
+          180.0,
+          306.5,
+          179.5,
+          306.0,
+          179.0,
+          305.5,
+          178.5,
+          305.0,
+          178.0,
+          304.5,
+          177.5,
+          304.0,
+          177.5,
+          303.0,
+          177.0,
+          302.5,
+          176.5,
+          302.0,
+          176.5,
+          301.0,
+          176.5,
+          300.0,
+          176.5,
+          299.0,
+          176.0,
+          298.5,
+          175.5,
+          298.0,
+          175.5,
+          297.0,
+          175.5,
+          296.0,
+          175.5,
+          295.0,
+          175.5,
+          294.0,
+          175.5,
+          293.0,
+          175.0,
+          292.5,
+          174.5,
+          292.0,
+          174.5,
+          291.0,
+          174.5,
+          290.0,
+          174.5,
+          289.0,
+          174.5,
+          288.0,
+          174.5,
+          287.0,
+          174.5,
+          286.0,
+          174.5,
+          285.0,
+          174.5,
+          284.0,
+          174.5,
+          283.0,
+          174.5,
+          282.0,
+          174.5,
+          281.0,
+          174.5,
+          280.0,
+          174.5,
+          279.0,
+          174.5,
+          278.0,
+          174.5,
+          277.0,
+          174.0,
+          276.5,
+          173.5,
+          276.0,
+          173.5,
+          275.0,
+          173.5,
+          274.0,
+          173.5,
+          273.0,
+          173.5,
+          272.0,
+          173.0,
+          271.5,
+          172.5,
+          271.0,
+          172.5,
+          270.0,
+          172.0,
+          269.5,
+          171.5,
+          269.0,
+          171.5,
+          268.0,
+          171.5,
+          267.0,
+          171.0,
+          266.5,
+          170.5,
+          266.0,
+          170.5,
+          265.0,
+          170.5,
+          264.0,
+          170.0,
+          263.5,
+          169.5,
+          263.0,
+          169.5,
+          262.0,
+          169.5,
+          261.0,
+          169.5,
+          260.0,
+          169.5,
+          259.0,
+          169.5,
+          258.0,
+          169.5,
+          257.0,
+          169.5,
+          256.0,
+          169.5,
+          255.0,
+          169.5,
+          254.0,
+          169.5,
+          253.0,
+          169.5,
+          252.0,
+          169.5,
+          251.0,
+          169.5,
+          250.0,
+          170.0,
+          249.5,
+          170.5,
+          249.0,
+          170.5,
+          248.0,
+          171.0,
+          247.5,
+          171.5,
+          247.0,
+          171.5,
+          246.0,
+          172.0,
+          245.5,
+          172.5,
+          245.0,
+          173.0,
+          244.5,
+          173.5,
+          244.0,
+          174.0,
+          243.5,
+          174.5,
+          243.0,
+          175.0,
+          242.5,
+          175.5,
+          242.0,
+          175.5,
+          241.0,
+          176.0,
+          240.5,
+          176.5,
+          240.0,
+          177.0,
+          239.5,
+          177.5,
+          239.0,
+          178.0,
+          238.5,
+          178.5,
+          238.0,
+          179.0,
+          237.5,
+          179.5,
+          237.0,
+          180.0,
+          236.5,
+          181.0,
+          236.5,
+          181.5,
+          236.0,
+          182.0,
+          235.5,
+          182.5,
+          235.0,
+          183.0,
+          234.5,
+          184.0,
+          234.5,
+          184.5,
+          234.0,
+          185.0,
+          233.5,
+          185.5,
+          233.0,
+          186.0,
+          232.5,
+          186.5,
+          232.0,
+          187.0,
+          231.5,
+          187.5,
+          231.0,
+          188.0,
+          230.5,
+          189.0,
+          230.5,
+          189.5,
+          230.0,
+          190.0,
+          229.5,
+          191.0,
+          229.5,
+          191.5,
+          229.0,
+          192.0,
+          228.5,
+          193.0,
+          228.5,
+          194.0,
+          228.5,
+          195.0,
+          228.5,
+          196.0,
+          228.5,
+          196.5,
+          228.0,
+          197.0,
+          227.5,
+          198.0,
+          227.5,
+          199.0,
+          227.5,
+          200.0,
+          227.5,
+          201.0,
+          227.5,
+          201.5,
+          227.0,
+          202.0,
+          226.5,
+          203.0,
+          226.5,
+          204.0,
+          226.5,
+          205.0,
+          226.5,
+          206.0,
+          226.5,
+          207.0,
+          226.5,
+          208.0,
+          226.5,
+          208.5,
+          226.0,
+          209.0,
+          225.5,
+          210.0,
+          225.5,
+          211.0,
+          225.5,
+          212.0,
+          225.5,
+          213.0,
+          225.5,
+          214.0,
+          225.5,
+          214.5,
+          225.0,
+          215.0,
+          224.5,
+          216.0,
+          224.5,
+          217.0,
+          224.5,
+          218.0,
+          224.5,
+          219.0,
+          224.5,
+          220.0,
+          224.5,
+          221.0,
+          224.5,
+          222.0,
+          224.5,
+          222.5,
+          224.0,
+          223.0,
+          223.5,
+          224.0,
+          223.5,
+          225.0,
+          223.5,
+          226.0,
+          223.5,
+          226.5,
+          223.0,
+          227.0,
+          222.5,
+          228.0,
+          222.5,
+          229.0,
+          222.5,
+          230.0,
+          222.5,
+          231.0,
+          222.5,
+          231.5,
+          222.0,
+          232.0,
+          221.5,
+          233.0,
+          221.5,
+          233.5,
+          221.0,
+          234.0,
+          220.5,
+          235.0,
+          220.5,
+          236.0,
+          220.5,
+          236.5,
+          220.0,
+          237.0,
+          219.5,
+          237.5,
+          219.0,
+          238.0,
+          218.5,
+          239.0,
+          218.5,
+          239.5,
+          218.0,
+          240.0,
+          217.5,
+          240.5,
+          217.0,
+          241.0,
+          216.5,
+          242.0,
+          216.5,
+          242.5,
+          216.0,
+          243.0,
+          215.5,
+          244.0,
+          215.5,
+          245.0,
+          215.5,
+          246.0,
+          215.5,
+          246.5,
+          215.0,
+          247.0,
+          214.5,
+          248.0,
+          214.5,
+          249.0,
+          214.5,
+          250.0,
+          214.5,
+          251.0,
+          214.5,
+          252.0,
+          214.5,
+          253.0,
+          214.5,
+          254.0,
+          214.5,
+          255.0,
+          214.5,
+          256.0,
+          214.5,
+          257.0,
+          214.5,
+          258.0,
+          214.5,
+          259.0,
+          214.5,
+          260.0,
+          214.5,
+          261.0,
+          214.5,
+          262.0,
+          214.5,
+          262.5,
+          215.0,
+          263.0,
+          215.5,
+          264.0,
+          215.5,
+          265.0,
+          215.5,
+          266.0,
+          215.5,
+          266.5,
+          216.0,
+          267.0,
+          216.5,
+          268.0,
+          216.5,
+          268.5,
+          217.0,
+          269.0,
+          217.5,
+          269.5,
+          218.0,
+          270.0,
+          218.5,
+          270.5,
+          219.0,
+          271.0,
+          219.5,
+          272.0,
+          219.5,
+          272.5,
+          220.0,
+          273.0,
+          220.5,
+          274.0,
+          220.5,
+          274.5,
+          221.0,
+          275.0,
+          221.5,
+          276.0,
+          221.5,
+          277.0,
+          221.5,
+          277.5,
+          222.0,
+          278.0,
+          222.5,
+          279.0,
+          222.5,
+          280.0,
+          222.5,
+          280.5,
+          223.0,
+          281.0,
+          223.5,
+          282.0,
+          223.5,
+          283.0,
+          223.5,
+          283.5,
+          224.0,
+          284.0,
+          224.5,
+          285.0,
+          224.5,
+          285.5,
+          225.0,
+          286.0,
+          225.5,
+          287.0,
+          225.5,
+          288.0,
+          225.5,
+          288.5,
+          226.0,
+          289.0,
+          226.5,
+          290.0,
+          226.5,
+          291.0,
+          226.5,
+          292.0,
+          226.5,
+          293.0,
+          226.5,
+          293.5,
+          227.0,
+          294.0,
+          227.5,
+          295.0,
+          227.5,
+          296.0,
+          227.5,
+          297.0,
+          227.5,
+          298.0,
+          227.5,
+          298.5,
+          228.0,
+          299.0,
+          228.5,
+          300.0,
+          228.5,
+          301.0,
+          228.5,
+          302.0,
+          228.5,
+          303.0,
+          228.5,
+          303.5,
+          229.0,
+          304.0,
+          229.5,
+          305.0,
+          229.5,
+          306.0,
+          229.5,
+          307.0,
+          229.5,
+          307.5,
+          230.0,
+          308.0,
+          230.5,
+          309.0,
+          230.5,
+          309.5,
+          231.0,
+          310.0,
+          231.5,
+          310.5,
+          232.0,
+          311.0,
+          232.5,
+          311.5,
+          233.0,
+          311.5,
+          234.0,
+          312.0,
+          234.5,
+          312.5,
+          235.0,
+          313.0,
+          235.5,
+          313.5,
+          236.0,
+          314.0,
+          236.5,
+          314.5,
+          237.0,
+          315.0,
+          237.5,
+          315.5,
+          238.0,
+          316.0,
+          238.5,
+          316.5,
+          239.0,
+          317.0,
+          239.5,
+          317.5,
+          240.0,
+          317.5,
+          241.0,
+          317.5,
+          242.0,
+          318.0,
+          242.5,
+          318.5,
+          243.0,
+          318.5,
+          244.0,
+          318.5,
+          245.0,
+          319.0,
+          245.5,
+          319.5,
+          246.0,
+          319.5,
+          247.0,
+          319.5,
+          248.0,
+          320.0,
+          248.5,
+          320.5,
+          249.0,
+          320.5,
+          250.0,
+          320.5,
+          251.0,
+          321.0,
+          251.5,
+          321.5,
+          252.0,
+          322.0,
+          252.5,
+          322.5,
+          253.0,
+          323.0,
+          253.5,
+          323.5,
+          254.0,
+          324.0,
+          254.5,
+          324.5,
+          255.0,
+          325.0,
+          255.5,
+          325.5,
+          256.0,
+          326.0,
+          256.5,
+          326.5,
+          257.0,
+          326.5,
+          258.0,
+          327.0,
+          258.5,
+          327.5,
+          259.0,
+          328.0,
+          259.5,
+          328.5,
+          260.0,
+          329.0,
+          260.5,
+          329.5,
+          261.0,
+          330.0,
+          261.5,
+          331.0,
+          261.5,
+          331.5,
+          262.0,
+          332.0,
+          262.5,
+          332.5,
+          263.0,
+          333.0,
+          263.5,
+          333.5,
+          264.0,
+          334.0,
+          264.5,
+          334.5,
+          265.0,
+          335.0,
+          265.5,
+          335.5,
+          266.0,
+          336.0,
+          266.5,
+          337.0,
+          266.5,
+          337.5,
+          267.0,
+          338.0,
+          267.5,
+          338.5,
+          268.0,
+          339.0,
+          268.5,
+          340.0,
+          268.5,
+          340.5,
+          269.0,
+          341.0,
+          269.5,
+          341.5,
+          270.0,
+          342.0,
+          270.5,
+          342.5,
+          271.0,
+          343.0,
+          271.5,
+          343.5,
+          272.0,
+          344.0,
+          272.5,
+          344.5,
+          273.0,
+          345.0,
+          273.5,
+          345.5,
+          274.0,
+          346.0,
+          274.5,
+          346.5,
+          275.0,
+          347.0,
+          275.5,
+          348.0,
+          275.5,
+          348.5,
+          276.0,
+          348.5,
+          277.0,
+          349.0,
+          277.5,
+          349.5,
+          278.0,
+          350.0,
+          278.5,
+          350.5,
+          279.0,
+          351.0,
+          279.5,
+          351.5,
+          280.0,
+          352.0,
+          280.5,
+          352.5,
+          281.0,
+          353.0,
+          281.5,
+          353.5,
+          282.0,
+          354.0,
+          282.5,
+          354.5,
+          283.0,
+          354.5,
+          284.0,
+          355.0,
+          284.5,
+          355.5,
+          285.0,
+          355.5,
+          286.0,
+          355.5,
+          287.0,
+          356.0,
+          287.5,
+          356.5,
+          288.0,
+          356.5,
+          289.0,
+          356.5,
+          290.0,
+          356.5,
+          291.0,
+          356.5,
+          292.0,
+          356.5,
+          293.0,
+          356.5,
+          294.0,
+          356.5,
+          295.0,
+          356.5,
+          296.0,
+          356.5,
+          297.0,
+          356.5,
+          298.0,
+          356.5,
+          299.0,
+          356.0,
+          299.5,
+          355.5,
+          300.0,
+          355.5,
+          301.0,
+          355.5,
+          302.0,
+          355.0,
+          302.5,
+          354.5,
+          303.0,
+          354.5,
+          304.0,
+          354.0,
+          304.5,
+          353.5,
+          305.0,
+          353.0,
+          305.5,
+          352.5,
+          306.0,
+          352.0,
+          306.5,
+          351.5,
+          307.0,
+          351.0,
+          307.5,
+          350.5,
+          308.0,
+          350.0,
+          308.5,
+          349.5,
+          309.0,
+          349.0,
+          309.5,
+          348.5,
+          310.0,
+          348.0,
+          310.5,
+          347.5,
+          311.0,
+          347.5,
+          312.0,
+          347.0,
+          312.5,
+          346.5,
+          313.0,
+          346.0,
+          313.5,
+          345.0,
+          313.5,
+          344.5,
+          314.0,
+          344.0,
+          314.5,
+          343.5,
+          315.0,
+          343.0,
+          315.5,
+          342.5,
+          316.0,
+          342.5,
+          317.0,
+          342.0,
+          317.5,
+          341.5,
+          318.0,
+          341.5,
+          319.0,
+          341.0,
+          319.5,
+          340.5,
+          320.0,
+          340.0,
+          320.5,
+          339.5,
+          321.0,
+          339.5,
+          322.0,
+          339.0,
+          322.5,
+          338.5,
+          323.0,
+          338.0,
+          323.5,
+          337.5,
+          324.0,
+          337.0,
+          324.5,
+          336.5,
+          325.0,
+          336.0,
+          325.5,
+          335.5,
+          326.0,
+          335.5,
+          327.0,
+          335.0,
+          327.5,
+          334.5,
+          328.0,
+          334.5,
+          329.0,
+          334.0,
+          329.5,
+          333.5,
+          330.0,
+          333.5,
+          331.0,
+          333.0,
+          331.5,
+          332.5,
+          332.0,
+          332.5,
+          333.0,
+          332.0,
+          333.5,
+          331.5,
+          334.0,
+          331.0,
+          334.5,
+          330.5,
+          335.0,
+          330.0,
+          335.5,
+          329.0,
+          335.5,
+          328.5,
+          336.0,
+          328.5,
+          337.0,
+          328.0,
+          337.5,
+          327.5,
+          338.0,
+          327.0,
+          338.5,
+          326.5,
+          339.0,
+          326.0,
+          339.5,
+          325.5,
+          340.0,
+          325.5,
+          341.0,
+          325.0,
+          341.5,
+          324.5,
+          342.0,
+          324.0,
+          342.5,
+          323.5,
+          343.0,
+          323.0,
+          343.5,
+          322.5,
+          344.0,
+          322.0,
+          344.5,
+          321.5,
+          345.0,
+          321.0,
+          345.5,
+          320.5,
+          346.0,
+          320.5,
+          347.0,
+          320.0,
+          347.5,
+          319.5,
+          348.0,
+          319.0,
+          348.5,
+          318.5,
+          349.0,
+          318.5,
+          350.0,
+          318.0,
+          350.5,
+          317.5,
+          351.0,
+          317.0,
+          351.5,
+          316.0,
+          351.5,
+          315.5,
+          352.0,
+          315.0,
+          352.5,
+          314.0,
+          352.5,
+          313.5,
+          353.0,
+          313.0,
+          353.5,
+          312.0,
+          353.5,
+          311.5,
+          354.0,
+          311.0,
+          354.5,
+          310.0,
+          354.5,
+          309.5,
+          355.0,
+          309.0,
+          355.5,
+          308.0,
+          355.5,
+          307.5,
+          356.0,
+          307.0,
+          356.5,
+          306.5,
+          357.0,
+          306.0,
+          357.5,
+          305.0,
+          357.5,
+          304.0,
+          357.5,
+          303.5,
+          358.0,
+          303.0,
+          358.5,
+          302.0,
+          358.5,
+          301.0,
+          358.5,
+          300.0,
+          358.5,
+          299.0,
+          358.5,
+          298.5,
+          359.0,
+          298.0,
+          359.5,
+          297.0,
+          359.5,
+          296.0,
+          359.5,
+          295.0,
+          359.5,
+          294.0,
+          359.5,
+          293.0,
+          359.5,
+          292.0,
+          359.5,
+          291.0,
+          359.5,
+          290.0,
+          359.5,
+          289.0,
+          359.5,
+          288.0,
+          359.5,
+          287.0,
+          359.5,
+          286.0,
+          359.5,
+          285.0,
+          359.5,
+          284.0,
+          359.5,
+          283.0,
+          359.5,
+          282.5,
+          360.0,
+          282.0,
+          360.5,
+          281.0,
+          360.5,
+          280.0,
+          360.5,
+          279.0,
+          360.5,
+          278.0,
+          360.5,
+          277.0,
+          360.5,
+          276.5,
+          361.0,
+          276.0,
+          361.5,
+          275.0,
+          361.5,
+          274.0,
+          361.5,
+          273.0,
+          361.5,
+          272.5,
+          362.0,
+          272.0,
+          362.5
+        ]
+      ],
+      "iscrowd": 0,
+      "score": 0.9599466323852539
+    },
+    {
+      "id": 2,
+      "image_id": 1,
+      "category_id": 4,
+      "bbox": [
+        198.0,
+        137.0,
+        168.0,
+        59.0
+      ],
+      "area": 5147.0,
+      "segmentation": [
+        [
+          339.0,
+          194.5,
+          338.0,
+          194.5,
+          337.0,
+          194.5,
+          336.0,
+          194.5,
+          335.0,
+          194.5,
+          334.5,
+          194.0,
+          334.0,
+          193.5,
+          333.0,
+          193.5,
+          332.0,
+          193.5,
+          331.0,
+          193.5,
+          330.0,
+          193.5,
+          329.0,
+          193.5,
+          328.0,
+          193.5,
+          327.0,
+          193.5,
+          326.5,
+          193.0,
+          326.0,
+          192.5,
+          325.0,
+          192.5,
+          324.0,
+          192.5,
+          323.0,
+          192.5,
+          322.5,
+          192.0,
+          322.0,
+          191.5,
+          321.0,
+          191.5,
+          320.0,
+          191.5,
+          319.0,
+          191.5,
+          318.5,
+          191.0,
+          318.0,
+          190.5,
+          317.0,
+          190.5,
+          316.5,
+          190.0,
+          316.0,
+          189.5,
+          315.0,
+          189.5,
+          314.0,
+          189.5,
+          313.5,
+          189.0,
+          313.0,
+          188.5,
+          312.0,
+          188.5,
+          311.0,
+          188.5,
+          310.5,
+          188.0,
+          310.0,
+          187.5,
+          309.0,
+          187.5,
+          308.0,
+          187.5,
+          307.0,
+          187.5,
+          306.5,
+          187.0,
+          306.0,
+          186.5,
+          305.0,
+          186.5,
+          304.0,
+          186.5,
+          303.5,
+          186.0,
+          303.0,
+          185.5,
+          302.0,
+          185.5,
+          301.0,
+          185.5,
+          300.5,
+          185.0,
+          300.0,
+          184.5,
+          299.0,
+          184.5,
+          298.0,
+          184.5,
+          297.5,
+          184.0,
+          297.0,
+          183.5,
+          296.0,
+          183.5,
+          295.0,
+          183.5,
+          294.0,
+          183.5,
+          293.0,
+          183.5,
+          292.5,
+          183.0,
+          292.0,
+          182.5,
+          291.0,
+          182.5,
+          290.0,
+          182.5,
+          289.0,
+          182.5,
+          288.5,
+          182.0,
+          288.0,
+          181.5,
+          287.0,
+          181.5,
+          286.5,
+          181.0,
+          286.0,
+          180.5,
+          285.0,
+          180.5,
+          284.5,
+          180.0,
+          284.0,
+          179.5,
+          283.0,
+          179.5,
+          282.0,
+          179.5,
+          281.0,
+          179.5,
+          280.5,
+          179.0,
+          280.0,
+          178.5,
+          279.0,
+          178.5,
+          278.5,
+          178.0,
+          278.0,
+          177.5,
+          277.0,
+          177.5,
+          276.0,
+          177.5,
+          275.5,
+          177.0,
+          275.0,
+          176.5,
+          274.0,
+          176.5,
+          273.0,
+          176.5,
+          272.5,
+          176.0,
+          272.0,
+          175.5,
+          271.0,
+          175.5,
+          270.0,
+          175.5,
+          269.5,
+          176.0,
+          269.0,
+          176.5,
+          268.0,
+          176.5,
+          267.0,
+          176.5,
+          266.0,
+          176.5,
+          265.5,
+          176.0,
+          265.0,
+          175.5,
+          264.0,
+          175.5,
+          263.0,
+          175.5,
+          262.0,
+          175.5,
+          261.0,
+          175.5,
+          260.0,
+          175.5,
+          259.0,
+          175.5,
+          258.0,
+          175.5,
+          257.0,
+          175.5,
+          256.0,
+          175.5,
+          255.5,
+          176.0,
+          255.0,
+          176.5,
+          254.0,
+          176.5,
+          253.0,
+          176.5,
+          252.5,
+          176.0,
+          252.0,
+          175.5,
+          251.0,
+          175.5,
+          250.0,
+          175.5,
+          249.0,
+          175.5,
+          248.0,
+          175.5,
+          247.0,
+          175.5,
+          246.0,
+          175.5,
+          245.0,
+          175.5,
+          244.0,
+          175.5,
+          243.0,
+          175.5,
+          242.0,
+          175.5,
+          241.0,
+          175.5,
+          240.0,
+          175.5,
+          239.0,
+          175.5,
+          238.0,
+          175.5,
+          237.0,
+          175.5,
+          236.0,
+          175.5,
+          235.0,
+          175.5,
+          234.0,
+          175.5,
+          233.0,
+          175.5,
+          232.0,
+          175.5,
+          231.5,
+          176.0,
+          231.0,
+          176.5,
+          230.0,
+          176.5,
+          229.0,
+          176.5,
+          228.0,
+          176.5,
+          227.0,
+          176.5,
+          226.0,
+          176.5,
+          225.0,
+          176.5,
+          224.0,
+          176.5,
+          223.0,
+          176.5,
+          222.0,
+          176.5,
+          221.0,
+          176.5,
+          220.0,
+          176.5,
+          219.0,
+          176.5,
+          218.0,
+          176.5,
+          217.0,
+          176.5,
+          216.0,
+          176.5,
+          215.0,
+          176.5,
+          214.0,
+          176.5,
+          213.0,
+          176.5,
+          212.0,
+          176.5,
+          211.5,
+          176.0,
+          211.0,
+          175.5,
+          210.0,
+          175.5,
+          209.5,
+          175.0,
+          209.0,
+          174.5,
+          208.5,
+          174.0,
+          208.0,
+          173.5,
+          207.5,
+          173.0,
+          207.0,
+          172.5,
+          206.0,
+          172.5,
+          205.5,
+          172.0,
+          205.5,
+          171.0,
+          205.0,
+          170.5,
+          204.5,
+          170.0,
+          204.5,
+          169.0,
+          204.5,
+          168.0,
+          204.5,
+          167.0,
+          204.5,
+          166.0,
+          204.5,
+          165.0,
+          204.5,
+          164.0,
+          204.5,
+          163.0,
+          204.5,
+          162.0,
+          204.5,
+          161.0,
+          204.5,
+          160.0,
+          205.0,
+          159.5,
+          205.5,
+          159.0,
+          205.5,
+          158.0,
+          206.0,
+          157.5,
+          207.0,
+          157.5,
+          207.5,
+          157.0,
+          207.5,
+          156.0,
+          208.0,
+          155.5,
+          208.5,
+          155.0,
+          209.0,
+          154.5,
+          209.5,
+          154.0,
+          210.0,
+          153.5,
+          210.5,
+          153.0,
+          211.0,
+          152.5,
+          211.5,
+          152.0,
+          212.0,
+          151.5,
+          212.5,
+          151.0,
+          213.0,
+          150.5,
+          214.0,
+          150.5,
+          214.5,
+          150.0,
+          215.0,
+          149.5,
+          215.5,
+          149.0,
+          215.5,
+          148.0,
+          216.0,
+          147.5,
+          217.0,
+          147.5,
+          217.5,
+          147.0,
+          218.0,
+          146.5,
+          219.0,
+          146.5,
+          219.5,
+          146.0,
+          220.0,
+          145.5,
+          221.0,
+          145.5,
+          221.5,
+          145.0,
+          222.0,
+          144.5,
+          223.0,
+          144.5,
+          223.5,
+          144.0,
+          224.0,
+          143.5,
+          225.0,
+          143.5,
+          226.0,
+          143.5,
+          227.0,
+          143.5,
+          228.0,
+          143.5,
+          228.5,
+          143.0,
+          229.0,
+          142.5,
+          230.0,
+          142.5,
+          231.0,
+          142.5,
+          232.0,
+          142.5,
+          233.0,
+          142.5,
+          233.5,
+          142.0,
+          234.0,
+          141.5,
+          235.0,
+          141.5,
+          236.0,
+          141.5,
+          237.0,
+          141.5,
+          238.0,
+          141.5,
+          238.5,
+          141.0,
+          239.0,
+          140.5,
+          240.0,
+          140.5,
+          241.0,
+          140.5,
+          242.0,
+          140.5,
+          243.0,
+          140.5,
+          244.0,
+          140.5,
+          245.0,
+          140.5,
+          246.0,
+          140.5,
+          247.0,
+          140.5,
+          248.0,
+          140.5,
+          248.5,
+          140.0,
+          249.0,
+          139.5,
+          250.0,
+          139.5,
+          251.0,
+          139.5,
+          252.0,
+          139.5,
+          253.0,
+          139.5,
+          254.0,
+          139.5,
+          255.0,
+          139.5,
+          256.0,
+          139.5,
+          257.0,
+          139.5,
+          258.0,
+          139.5,
+          259.0,
+          139.5,
+          260.0,
+          139.5,
+          261.0,
+          139.5,
+          262.0,
+          139.5,
+          263.0,
+          139.5,
+          264.0,
+          139.5,
+          265.0,
+          139.5,
+          266.0,
+          139.5,
+          267.0,
+          139.5,
+          268.0,
+          139.5,
+          269.0,
+          139.5,
+          270.0,
+          139.5,
+          271.0,
+          139.5,
+          272.0,
+          139.5,
+          273.0,
+          139.5,
+          274.0,
+          139.5,
+          274.5,
+          140.0,
+          275.0,
+          140.5,
+          276.0,
+          140.5,
+          277.0,
+          140.5,
+          278.0,
+          140.5,
+          278.5,
+          141.0,
+          279.0,
+          141.5,
+          280.0,
+          141.5,
+          281.0,
+          141.5,
+          281.5,
+          142.0,
+          282.0,
+          142.5,
+          283.0,
+          142.5,
+          284.0,
+          142.5,
+          285.0,
+          142.5,
+          285.5,
+          143.0,
+          286.0,
+          143.5,
+          287.0,
+          143.5,
+          288.0,
+          143.5,
+          289.0,
+          143.5,
+          290.0,
+          143.5,
+          290.5,
+          144.0,
+          291.0,
+          144.5,
+          291.5,
+          145.0,
+          292.0,
+          145.5,
+          292.5,
+          146.0,
+          293.0,
+          146.5,
+          294.0,
+          146.5,
+          295.0,
+          146.5,
+          296.0,
+          146.5,
+          296.5,
+          147.0,
+          297.0,
+          147.5,
+          298.0,
+          147.5,
+          299.0,
+          147.5,
+          299.5,
+          148.0,
+          300.0,
+          148.5,
+          301.0,
+          148.5,
+          302.0,
+          148.5,
+          302.5,
+          149.0,
+          303.0,
+          149.5,
+          304.0,
+          149.5,
+          305.0,
+          149.5,
+          306.0,
+          149.5,
+          307.0,
+          149.5,
+          307.5,
+          150.0,
+          308.0,
+          150.5,
+          309.0,
+          150.5,
+          310.0,
+          150.5,
+          311.0,
+          150.5,
+          311.5,
+          151.0,
+          312.0,
+          151.5,
+          313.0,
+          151.5,
+          314.0,
+          151.5,
+          315.0,
+          151.5,
+          316.0,
+          151.5,
+          317.0,
+          151.5,
+          317.5,
+          152.0,
+          318.0,
+          152.5,
+          319.0,
+          152.5,
+          320.0,
+          152.5,
+          321.0,
+          152.5,
+          321.5,
+          153.0,
+          322.0,
+          153.5,
+          323.0,
+          153.5,
+          324.0,
+          153.5,
+          324.5,
+          154.0,
+          325.0,
+          154.5,
+          326.0,
+          154.5,
+          327.0,
+          154.5,
+          327.5,
+          155.0,
+          328.0,
+          155.5,
+          329.0,
+          155.5,
+          330.0,
+          155.5,
+          330.5,
+          156.0,
+          331.0,
+          156.5,
+          332.0,
+          156.5,
+          333.0,
+          156.5,
+          333.5,
+          157.0,
+          334.0,
+          157.5,
+          335.0,
+          157.5,
+          335.5,
+          158.0,
+          336.0,
+          158.5,
+          337.0,
+          158.5,
+          337.5,
+          159.0,
+          338.0,
+          159.5,
+          339.0,
+          159.5,
+          339.5,
+          160.0,
+          340.0,
+          160.5,
+          341.0,
+          160.5,
+          341.5,
+          161.0,
+          342.0,
+          161.5,
+          343.0,
+          161.5,
+          343.5,
+          162.0,
+          344.0,
+          162.5,
+          344.5,
+          163.0,
+          345.0,
+          163.5,
+          346.0,
+          163.5,
+          346.5,
+          164.0,
+          347.0,
+          164.5,
+          347.5,
+          165.0,
+          347.5,
+          166.0,
+          348.0,
+          166.5,
+          348.5,
+          167.0,
+          349.0,
+          167.5,
+          350.0,
+          167.5,
+          350.5,
+          168.0,
+          351.0,
+          168.5,
+          351.5,
+          169.0,
+          352.0,
+          169.5,
+          352.5,
+          170.0,
+          353.0,
+          170.5,
+          353.5,
+          171.0,
+          353.5,
+          172.0,
+          354.0,
+          172.5,
+          354.5,
+          173.0,
+          354.5,
+          174.0,
+          355.0,
+          174.5,
+          355.5,
+          175.0,
+          355.5,
+          176.0,
+          356.0,
+          176.5,
+          356.5,
+          177.0,
+          357.0,
+          177.5,
+          357.5,
+          178.0,
+          357.5,
+          179.0,
+          358.0,
+          179.5,
+          358.5,
+          180.0,
+          358.5,
+          181.0,
+          358.5,
+          182.0,
+          358.5,
+          183.0,
+          358.5,
+          184.0,
+          358.0,
+          184.5,
+          357.5,
+          185.0,
+          357.5,
+          186.0,
+          357.0,
+          186.5,
+          356.5,
+          187.0,
+          356.5,
+          188.0,
+          356.0,
+          188.5,
+          355.0,
+          188.5,
+          354.5,
+          189.0,
+          354.0,
+          189.5,
+          353.5,
+          190.0,
+          353.0,
+          190.5,
+          352.5,
+          191.0,
+          352.0,
+          191.5,
+          351.0,
+          191.5,
+          350.5,
+          192.0,
+          350.0,
+          192.5,
+          349.0,
+          192.5,
+          348.0,
+          192.5,
+          347.5,
+          193.0,
+          347.0,
+          193.5,
+          346.0,
+          193.5,
+          345.0,
+          193.5,
+          344.0,
+          193.5,
+          343.0,
+          193.5,
+          342.0,
+          193.5,
+          341.0,
+          193.5,
+          340.0,
+          193.5,
+          339.5,
+          194.0,
+          339.0,
+          194.5
+        ]
+      ],
+      "iscrowd": 0,
+      "score": 0.8703579306602478
+    }
+  ]
+}
