@@ -215,7 +215,7 @@ if __name__ == "__main__":
         adjusted_volume = (raw_volume * scaling_factor) 
         vol_cup = (adjusted_volume / 236.588)
         if vol_cup >= 3:
-            vol_cup = vol_cup - 2.1 
+            vol_cup = vol_cup - 1.9 
         """
         add the api call to the server to get the macronutrients here:
 
@@ -239,6 +239,7 @@ if __name__ == "__main__":
 
 
         })
+        print(f'food_data_list {food_data_list}')
         print(f"\nResults for '{category_name}':")
         print(f"Raw Volume: {raw_volume:.2f} cm³")
         print(f"Calibrated Volume: {adjusted_volume:.2f} cm³")

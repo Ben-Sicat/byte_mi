@@ -218,9 +218,9 @@ class PreprocessingPipeline:
                 
                 # convert to depth - darker is higher
                 base_height = self.plate_height + self.plate_depth
-                max_height = 2.4
-                
-                depth_variation = 1.0 - (adjusted_intensity - np.min(adjusted_intensity)) / (np.max(adjusted_intensity) - np.min(adjusted_intensity) + 1e-6)
+                max_height = 2.7
+
+                depth_variation = (adjusted_intensity - np.min(adjusted_intensity)) / (np.max(adjusted_intensity) - np.min(adjusted_intensity) + 1e-6)
                 # calculate depth variation relative to plate
                 
                 # adjust depth variation based on relationship to plate values

@@ -1,4 +1,3 @@
-# src/preprocessing/test.py
 
 import os
 import sys
@@ -45,7 +44,7 @@ def test_create_segmentation_mask(pipeline):
     
     print(f"Segmentation mask shape: {mask.shape}")
     print(f"Unique mask values: {np.unique(mask)}")
-    print(f"Number of unique objects: {len(np.unique(mask)) - 1}")  # -1 to exclude background
+    print(f"Number of unique objects: {len(np.unique(mask)) - 1}")  # -1 exclude background
 
 def test_preprocessing_pipeline():
     """Test the full preprocessing pipeline"""
