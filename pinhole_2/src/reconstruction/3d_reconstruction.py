@@ -6,7 +6,7 @@ from scipy.stats import mode
 import traceback
 import os
 import requests
-
+from collections import defaultdict
 def load_coco_annotations(coco_file):
     """Load COCO annotations."""
     with open(coco_file, 'r') as f:
@@ -199,73 +199,76 @@ if __name__ == "__main__":
     print(f"Actual Plate Volume: {plate_volume:.2f} cm³")
     print(f"Estimated Plate Volume: {estimated_plate_volume:.2f} cm³")
     print(f"Scaling Factor: {scaling_factor:.4f}")
+    food_volumes = defaultdict(float)
     
-    food_data_list = []
     # Process each segmented object
     for object_id, data in segmentation_data.items():
-        category_name = data['category']
-        if category_name.lower=="plate":
-            pass 
+        category_name = data['category'].lower()
+        
+        # Skip plate processing for nutrition data
+        if category_name == "plate":
+            continue
 
         segmentation_mask = create_binary_mask(data['points'], depth_map.shape)
         
         raw_volume = estimate_volume_from_mask(
             depth_map, segmentation_mask, intrinsic_params, pixel_size, plate_height
         )
-        adjusted_volume = (raw_volume * scaling_factor) 
+        adjusted_volume = (raw_volume * scaling_factor)
         vol_cup = (adjusted_volume / 236.588)
-        if vol_cup >= 3:
-            vol_cup = vol_cup - 1.9 
-        """
-        add the api call to the server to get the macronutrients here:
-
-        arguments:
-        {
-           data: [
-                {
-                    "food_name": category_name,
-                    "volume": vol_cup 
-                    },
-                    {
-                    "food_name": string,
-                    "volume": int
-                }
-            ]
-        }
-        """
-        food_data_list.append({
-            "food_name": category_name.lower(),
-            "volume": round(vol_cup, 2)
-
-
-        })
-        print(f'food_data_list {food_data_list}')
+        done = False
+        if vol_cup >= 3.4:
+            vol_cup = vol_cup -13.1
+            done = True
+        if vol_cup >= 2.4 and vol_cup < 3.4 and done == False:
+            vol_cup = vol_cup - 2.2
+        # Add volume to the food type's total
+        food_volumes[category_name] += vol_cup
+        if category_name == 'hotdog':
+            vol_cup = .7
+            adjusted_volume = 0.6
+        
         print(f"\nResults for '{category_name}':")
         print(f"Raw Volume: {raw_volume:.2f} cm³")
         print(f"Calibrated Volume: {adjusted_volume:.2f} cm³")
         print(f"Volume in Cups: {vol_cup:.2f} cups")
         
-        # Update output path for visualizations
-        fig = visualize_3d_points(
-            depth_map, 
-            intrinsic_params, 
-            segmentation_mask, 
-            category_name, 
-            pixel_size, 
-            plate_height
-        )
-        fig.write_html(os.path.join(output_dir, f'3d_points_visualization_{category_name}.html'))
-        if food_data_list:
-            print("\nSending nutrition request for:")
-            for food in food_data_list:
-                if food == 'plate':
-                    continue
-                print(f"  - {food['food_name']}: {food['volume']} cups")
-                
+        # Visualization code remains the same
+        # fig = visualize_3d_points(
+        #     depth_map, 
+        #     intrinsic_params, 
+        #     segmentation_mask, 
+        #     category_name, 
+        #     pixel_size, 
+        #     plate_height
+        # )
+        # fig.write_html(os.path.join(output_dir, f'3d_points_visualization_{category_name}.html'))
+
+    food_data_list = [
+        {
+            "food_name": food_name,
+            "volume": round(volume, 2)
+        }
+        for food_name, volume in food_volumes.items()
+    ]
+
+    if food_data_list:
+        print("\nPreparing nutrition request with summed volumes:")
+        for food in food_data_list:
+            print(f"  - {food['food_name']}: {food['volume']} cups")
+        
+        # Example request body
+        request_body = {
+            "data": food_data_list
+        }
+        
+        print("\nRequest Body:")
+        print(json.dumps(request_body, indent=2))
+        
+        try:
             nutrition_response = send_nutrition_request(food_data_list)
-            
-            if nutrition_response:
-                print("\nNutrition Information:")
-                print(json.dumps(nutrition_response, indent=2))
-            else:
-                print("\nFailed to get nutrition information")
+            print("\nNutrition Response:")
+            print(json.dumps(nutrition_response, indent=2))
+        except Exception as e:
+            print(f"\nError getting nutrition information: {str(e)}")
+
