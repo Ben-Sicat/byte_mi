@@ -1,0 +1,21 @@
+{
+    "data_dir": "data",
+    "output_dir": "data/upscaled",
+    "coco_file": "data/segmented/_annotations.coco.json",
+    "rgbd_shape": [
+        480,
+        640
+    ],
+    "rgb_shape": [
+        1080,
+        1920
+    ],
+    "frame_ids": [
+        "20241127_181653"
+    ],
+    "camera_height": 33.0,
+    "plate_diameter": 25.5,
+    "plate_height": 0.7,
+    "raw_file": "data/rgbd/depth_frame_20241127_181653.raw",
+    "rgb_file": "data/segmented/rgb_frame_20241127_181653.png"
+}
