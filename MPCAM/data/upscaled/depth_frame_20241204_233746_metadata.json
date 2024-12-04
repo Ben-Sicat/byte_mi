@@ -1,0 +1,56 @@
+{
+    "intrinsic_params": {
+        "focal_length": 110.19040724810432,
+        "pixel_size": 0.29948160483423314,
+        "principal_point": [
+            80.0,
+            45.0
+        ],
+        "image_dimensions": [
+            90,
+            160
+        ],
+        "camera_height": 33.0,
+        "reference_object": {
+            "type": "plate",
+            "diameter": 25.5,
+            "height": 0.7,
+            "measured_diameter_pixels": 85.14713287353516,
+            "center_pixels": [
+                82.5,
+                46.5
+            ]
+        }
+    },
+    "depth_scale": 0.09284073114395142,
+    "processed_objects": {
+        "plate": {
+            "category_id": 1,
+            "bbox": [
+                160,
+                72,
+                340,
+                341
+            ]
+        },
+        "rice": {
+            "category_id": 2,
+            "bbox": [
+                254,
+                142,
+                161,
+                184
+            ]
+        }
+    },
+    "alignment_info": {
+        "depth_shape": [
+            90,
+            160
+        ],
+        "rgb_shape": [
+            480,
+            640
+        ]
+    }
+}

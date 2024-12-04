@@ -44,20 +44,15 @@ def get_first_files():
     except Exception as e:
         logger.error(f"Error finding files: {str(e)}")
         raise
-
 def create_test_config(files):
     config = {
         "data_dir": str(Path("data")),
-        "output_dir": str(Path("data/upscaled")),  # Added output_dir
+        "output_dir": str(Path("data/upscaled")),
         "coco_file": files['coco_path'],
-        "rgbd_shape": [480, 640],
-        "rgb_shape": [1080, 1920],
         "frame_ids": [files['frame_id']],
         "camera_height": 33.0,
         "plate_diameter": 25.5,
-        "plate_height": 0.7,
-        "raw_file": files['raw_path'],
-        "rgb_file": files['png_path']
+        "plate_height": 0.7
     }
     
     config_path = Path("test_config.json")

@@ -6,10 +6,11 @@ from pathlib import Path
 import json
 
 from ..core.depth_processor import DepthProcessor
-from ..core.image_alignment import ImageAligner
+from ..utils.io_utils import load_metadata, validate_depth_data, validate_image_alignment
+from ..utils.coco_utils import CocoHandler
+from ..core.depth_processor import DepthProcessor
 from .calibration import CameraCalibrator
 from .noise_reduction import DepthNoiseReducer
-from ..utils.coco_utils import CocoHandler
 
 logging.basicConfig(
     level=logging.INFO,
@@ -27,8 +28,6 @@ class PreprocessingPipeline:
                 - data_dir: Path to data directory
                 - output_dir: Path to save processed data
                 - coco_file: Path to COCO annotations
-                - rgbd_shape: Original RGBD shape (height, width)
-                - rgb_shape: RGB reference shape (height, width)
                 - camera_height: Height of camera in cm
                 - plate_diameter: Diameter of plate in cm
                 - plate_height: Height of plate in cm
@@ -39,23 +38,22 @@ class PreprocessingPipeline:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
         # Initialize components
-        self.depth_processor = DepthProcessor()
-        self.image_aligner = ImageAligner(config['coco_file'])
+        self.coco_handler = CocoHandler(config['coco_file'])
         self.calibrator = CameraCalibrator()
         self.noise_reducer = DepthNoiseReducer()
-        self.coco_handler = CocoHandler(config['coco_file'])
-        
-        # Set reference sizes
-        self.image_aligner.set_reference_sizes(
-            rgb_shape=config['rgb_shape'],
-            rgbd_shape=(120, 120)  # Raw depth resolution
-        )
         
         logger.info("Initialized preprocessing pipeline")
         
     def load_data(self, frame_id: str) -> Dict:
         """Load all necessary data for processing"""
         try:
+            # Get metadata paths
+            rgbd_meta_path = self.data_dir / "rgbd" / f"depth_frame_{frame_id}.meta"
+            rgb_meta_path = self.data_dir / "segmented" / f"rgb_frame_{frame_id}.meta"
+            
+            # Initialize depth processor
+            self.depth_processor = DepthProcessor(rgbd_meta_path, rgb_meta_path)
+            
             # Load RGB image
             rgb_path = self.data_dir / "segmented" / f"rgb_frame_{frame_id}.png"
             if not rgb_path.exists():
@@ -68,30 +66,52 @@ class PreprocessingPipeline:
             depth_path = self.data_dir / "rgbd" / f"depth_frame_{frame_id}.raw"
             if not depth_path.exists():
                 raise FileNotFoundError(f"Depth data not found: {depth_path}")
+                
+            # Load depth metadata
+            depth_meta = load_metadata(rgbd_meta_path)
             
             # Load and process depth
-            raw_depth = self.depth_processor.load_raw_rgbd(str(depth_path))
-            processed_depth = self.depth_processor.process_depth(raw_depth)
-            upscaled_depth = self.depth_processor.upscale_depth(processed_depth)
+            raw_depth = self.depth_processor.load_raw_depth(str(depth_path))
             
-            # Get plate mask
+            # Validate depth data
+            if not validate_depth_data(raw_depth, self.depth_processor.depth_shape, depth_meta):
+                raise ValueError("Invalid depth data")
+                
+            # Process depth
+            processed_depth = self.depth_processor.process_depth(raw_depth)
+            
+            # Get plate mask at RGB resolution
             plate_mask = self.coco_handler.create_category_mask(
                 frame_id, 
-                'case',  # Using 'case' as category from COCO file
+                'plate',
                 rgb_image.shape[:2]
             )
             
+            # Align RGB and mask to depth resolution
+            aligned_rgb, aligned_mask = self.depth_processor.align_to_depth(
+                rgb_image, plate_mask
+            )
+            
+            # Validate alignments
+            if not validate_image_alignment(rgb_image, aligned_rgb, self.depth_processor.depth_shape):
+                raise ValueError("RGB alignment failed validation")
+                
+            if not validate_image_alignment(plate_mask, aligned_mask, self.depth_processor.depth_shape):
+                raise ValueError("Mask alignment failed validation")
+                
             return {
-                'rgb': rgb_image,
-                'depth': upscaled_depth,
-                'plate_mask': plate_mask,
-                'frame_id': frame_id
+                'rgb': aligned_rgb,
+                'depth': processed_depth,
+                'plate_mask': aligned_mask,
+                'frame_id': frame_id,
+                'original_rgb': rgb_image,  # Keep original for reference
+                'original_mask': plate_mask  # Keep original for reference
             }
             
         except Exception as e:
             logger.error(f"Error loading data for frame {frame_id}: {str(e)}")
             raise
-            
+    
     def process_single_image(self, frame_id: str) -> Dict:
         """Process a single image through the pipeline"""
         try:
@@ -113,6 +133,9 @@ class PreprocessingPipeline:
             
             # Step 4: Get depth scale factor using plate
             plate_depth = cleaned_depth[data['plate_mask'] > 0]
+            if len(plate_depth) == 0:
+                raise ValueError("No valid depth values found in plate region")
+                
             depth_scale = self.calibrator.get_depth_scale_factor(plate_depth)
             cleaned_depth *= depth_scale
             logger.info(f"Depth scaling applied (scale factor: {depth_scale:.4f})")
@@ -125,23 +148,28 @@ class PreprocessingPipeline:
                 category_id = ann['category_id']
                 category_name = self.coco_handler.categories[category_id]
                 
-                # Create object mask
-                obj_mask = self.coco_handler.create_mask(
+                # Create object mask at original resolution
+                original_mask = self.coco_handler.create_mask(
                     ann, 
-                    cleaned_depth.shape
+                    (self.depth_processor.rgb_shape[0], self.depth_processor.rgb_shape[1])
                 )
                 
-                # Extract and clean object depth
-                obj_depth = cleaned_depth.copy()
-                obj_depth[obj_mask == 0] = 0
-                
-                processed_objects[category_name] = {
-                    'mask': obj_mask,
-                    'depth': obj_depth,
-                    'category_id': category_id,
-                    'bbox': ann['bbox']
-                }
-                
+                if np.any(original_mask):
+                    # Align mask to depth resolution
+                    _, aligned_mask = self.depth_processor.align_to_depth(mask=original_mask)
+                    
+                    if aligned_mask is not None and np.any(aligned_mask):
+                        # Extract and clean object depth
+                        obj_depth = cleaned_depth.copy()
+                        obj_depth[~aligned_mask] = 0
+                        
+                        processed_objects[category_name] = {
+                            'mask': aligned_mask,
+                            'depth': obj_depth,
+                            'category_id': category_id,
+                            'bbox': ann['bbox']
+                        }
+                        
             logger.info(f"Processed {len(processed_objects)} objects")
             
             # Prepare results
@@ -163,55 +191,58 @@ class PreprocessingPipeline:
         except Exception as e:
             logger.error(f"Error processing frame {frame_id}: {str(e)}")
             raise
-            
     def save_results(self, results: Dict) -> None:
-        """Save processed results to upscaled directory"""
+        """Save processed results to output directory"""
         frame_id = results['frame_id']
-        
-        # Create upscaled directory if it doesn't exist
-        upscaled_dir = self.data_dir / 'upscaled'
-        upscaled_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Generate filenames
         base_filename = f"depth_frame_{frame_id}"
         
-        # Save depth data
+        # Create output directory if it doesn't exist
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Save processed depth
         np.save(
-            upscaled_dir / f"{base_filename}_upscaled.npy",
+            self.output_dir / f"{base_filename}_processed.npy",
             results['depth']
         )
+        
+        # Save aligned RGB for reference
+        cv2.imwrite(
+            str(self.output_dir / f"{base_filename}_aligned_rgb.png"),
+            cv2.cvtColor(results['rgb'], cv2.COLOR_RGB2BGR)
+        )
+        
+        # Save masks
+        for category, obj_data in results['processed_objects'].items():
+            mask_filename = f"{base_filename}_{category}_mask.npy"
+            np.save(self.output_dir / mask_filename, obj_data['mask'])
         
         # Save metadata
         metadata = {
             'intrinsic_params': results['intrinsic_params'],
             'depth_scale': float(results['depth_scale']),
-            'processed_objects': {}
+            'processed_objects': {
+                category: {
+                    'category_id': obj_data['category_id'],
+                    'bbox': obj_data['bbox']
+                }
+                for category, obj_data in results['processed_objects'].items()
+            },
+            'alignment_info': {
+                'depth_shape': self.depth_processor.depth_shape,
+                'rgb_shape': self.depth_processor.rgb_shape  # Using original RGB shape from metadata
+            }
         }
         
-        # Save object-specific data
-        for category, obj_data in results['processed_objects'].items():
-            metadata['processed_objects'][category] = {
-                'category_id': obj_data['category_id'],
-                'bbox': obj_data['bbox']
-            }
-            
-            # Save object depth and mask
-            obj_prefix = f"{base_filename}_{category}"
-            np.save(
-                upscaled_dir / f"{obj_prefix}_depth.npy",
-                obj_data['depth']
-            )
-            np.save(
-                upscaled_dir / f"{obj_prefix}_mask.npy",
-                obj_data['mask']
-            )
-        
-        # Save metadata
-        with open(upscaled_dir / f"{base_filename}_metadata.json", 'w') as f:
+        with open(self.output_dir / f"{base_filename}_metadata.json", 'w') as f:
             json.dump(metadata, f, indent=4)
             
-        logger.info(f"Results saved to {upscaled_dir}")
-
+        logger.info(
+            f"Saved processed results to {self.output_dir}:\n"
+            f"- Processed depth map\n"
+            f"- Aligned RGB image\n"
+            f"- Object masks: {list(results['processed_objects'].keys())}\n"
+            f"- Metadata with alignment info"
+        )
 def run_preprocessing(config_path: str):
     """Run the complete preprocessing pipeline"""
     try:
