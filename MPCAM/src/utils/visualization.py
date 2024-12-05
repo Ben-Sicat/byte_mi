@@ -233,3 +233,155 @@ class DepthVisualizer:
         
         fig.write_html(str(output_dir / filename))
         logger.info(f"Saved visualization to {output_dir / filename}")
+
+class ReconstructionVisualizer:
+    """Visualization tools for 3D reconstruction analysis."""
+    
+    def __init__(self):
+        """Initialize with default color scheme."""
+        self.colors = ['rgb(31, 119, 180)', 'rgb(255, 127, 14)', 
+                      'rgb(44, 160, 44)', 'rgb(214, 39, 40)']
+                      
+    def plot_point_cloud(self, points: np.ndarray, 
+                        title: str = "3D Point Cloud",
+                        color: Optional[str] = None) -> go.Figure:
+        """
+        Create interactive 3D scatter plot of point cloud.
+        
+        Args:
+            points: Nx3 array of 3D points
+            title: Plot title
+            color: Optional color for points
+            
+        Returns:
+            plotly.graph_objects.Figure
+        """
+        fig = go.Figure(data=[go.Scatter3d(
+            x=points[:, 0],
+            y=points[:, 1],
+            z=points[:, 2],
+            mode='markers',
+            marker=dict(
+                size=2,
+                color=color or self.colors[0],
+                opacity=0.8
+            )
+        )])
+        
+        fig.update_layout(
+            title=title,
+            scene=dict(
+                xaxis_title='X (cm)',
+                yaxis_title='Y (cm)',
+                zaxis_title='Z (cm)',
+                aspectmode='data'
+            )
+        )
+        return fig
+        
+    def plot_multiple_objects(self, objects: Dict[str, np.ndarray],
+                            title: str = "Multi-object Reconstruction") -> go.Figure:
+        """
+        Create interactive 3D plot of multiple point clouds.
+        
+        Args:
+            objects: Dictionary mapping object names to point clouds
+            title: Plot title
+            
+        Returns:
+            plotly.graph_objects.Figure
+        """
+        fig = go.Figure()
+        
+        for i, (name, points) in enumerate(objects.items()):
+            fig.add_trace(go.Scatter3d(
+                x=points[:, 0],
+                y=points[:, 1],
+                z=points[:, 2],
+                mode='markers',
+                name=name,
+                marker=dict(
+                    size=2,
+                    color=self.colors[i % len(self.colors)],
+                    opacity=0.8
+                )
+            ))
+            
+        fig.update_layout(
+            title=title,
+            scene=dict(
+                xaxis_title='X (cm)',
+                yaxis_title='Y (cm)',
+                zaxis_title='Z (cm)',
+                aspectmode='data'
+            )
+        )
+        return fig
+        
+    def plot_volume_estimation(self, points: np.ndarray, 
+                             hull_vertices: np.ndarray,
+                             volume: float,
+                             title: Optional[str] = None) -> go.Figure:
+        """
+        Create interactive 3D visualization of volume estimation.
+        
+        Args:
+            points: Nx3 array of 3D points
+            hull_vertices: Indices of convex hull vertices
+            volume: Calculated volume in cubic centimeters
+            title: Optional plot title
+            
+        Returns:
+            plotly.graph_objects.Figure
+        """
+        fig = go.Figure()
+        
+        # Original points
+        fig.add_trace(go.Scatter3d(
+            x=points[:, 0],
+            y=points[:, 1],
+            z=points[:, 2],
+            mode='markers',
+            name='Points',
+            marker=dict(size=2, color='blue', opacity=0.6)
+        ))
+        
+        # Convex hull
+        fig.add_trace(go.Mesh3d(
+            x=points[hull_vertices, 0],
+            y=points[hull_vertices, 1],
+            z=points[hull_vertices, 2],
+            opacity=0.3,
+            color='red',
+            name='Convex Hull'
+        ))
+        
+        plot_title = title or f"Volume Estimation: {volume:.2f} cm³"
+        fig.update_layout(
+            title=plot_title,
+            scene=dict(
+                xaxis_title='X (cm)',
+                yaxis_title='Y (cm)',
+                zaxis_title='Z (cm)',
+                aspectmode='data'
+            )
+        )
+        return fig
+        
+    def save_visualization(self, fig: go.Figure,
+                         output_dir: Path,
+                         filename: str) -> None:
+        """
+        Save visualization as HTML file.
+        
+        Args:
+            fig: Plotly figure object
+            output_dir: Output directory path
+            filename: Output filename (should end with .html)
+        """
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        output_path = output_dir / filename
+        fig.write_html(str(output_path))
+        logger.info(f"Saved visualization to {output_path}")

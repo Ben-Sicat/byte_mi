@@ -1,0 +1,50 @@
+2024-12-05 16:35:33,851 - root - INFO - Logging initialized. Log file: logs/volume_estimation_log_20241205_163533.txt
+2024-12-05 16:35:33,851 - root - INFO - Starting preprocessing pipeline...
+2024-12-05 16:35:33,852 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 16:35:33,852 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 16:35:33,852 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 16:35:33,852 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 16:35:33,852 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 16:35:33,852 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 16:35:33,871 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 16:35:33,872 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 16:35:33,872 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 16:35:33,873 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 16:35:33,875 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 16:35:33,880 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 16:35:33,886 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 16:35:33,886 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 16:35:33,887 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 16:35:33,887 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 16:35:33,887 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 16:35:33,887 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 16:35:33,889 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 16:35:33,897 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 16:35:33,897 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 16:35:33,898 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 16:35:33,898 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 16:35:33,898 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 16:35:33,899 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 16:35:33,899 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 16:35:33,899 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 16:35:33,902 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 16:35:33,902 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 16:35:33,902 - root - INFO - 
+Calculating volumes...
+2024-12-05 16:35:33,903 - src.reconstruction.volume_calculator - INFO - Plate Calibration:
+Camera Height (plate_real): 33.00 cm
+Depth Value (plate_pixel): 32.30
+Scale Factor (plate_real/plate_pixel * 0.33): 0.3372
+Reference Height: 32.30 cm
+2024-12-05 16:35:33,903 - root - INFO - 
+Processing rice...
+2024-12-05 16:35:33,903 - root - ERROR - Pipeline failed: 'VolumeCalculator' object has no attribute 'calculate_volume'
+Traceback (most recent call last):
+  File "/home/ben/cThesis/MPCAM/run_volume_estimation.py", line 70, in main
+    volume_data = calc.calculate_volume(
+                  ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'VolumeCalculator' object has no attribute 'calculate_volume'

@@ -1,0 +1,10 @@
+2024-12-05 15:46:04,055 - root - INFO - Logging initialized. Log file: /home/ben/cThesis/MPCAM/logs/preprocessing/preprocess_log_20241205_154604.txt
+2024-12-05 15:46:04,056 - root - INFO - Starting preprocessing pipeline with config: test_config.json
+2024-12-05 15:46:04,056 - src.preprocessing.preprocessing - ERROR - Pipeline execution failed: Missing required config key: rgb_shape
+2024-12-05 15:46:04,056 - root - ERROR - Pipeline execution failed: Missing required config key: rgb_shape
+Traceback (most recent call last):
+  File "/home/ben/cThesis/MPCAM/run_preprocessing.py", line 27, in main
+    run_preprocessing(args.config)
+  File "/home/ben/cThesis/MPCAM/src/preprocessing/preprocessing.py", line 230, in run_preprocessing
+    raise ValueError(f"Missing required config key: {key}")
+ValueError: Missing required config key: rgb_shape

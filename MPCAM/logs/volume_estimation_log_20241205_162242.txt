@@ -1,0 +1,57 @@
+2024-12-05 16:22:42,326 - root - INFO - Logging initialized. Log file: logs/volume_estimation_log_20241205_162242.txt
+2024-12-05 16:22:42,327 - root - INFO - Starting preprocessing pipeline...
+2024-12-05 16:22:42,327 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 16:22:42,327 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 16:22:42,327 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 16:22:42,327 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 16:22:42,328 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 16:22:42,328 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 16:22:42,345 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 16:22:42,349 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 16:22:42,350 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 16:22:42,351 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 16:22:42,353 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 16:22:42,355 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 16:22:42,360 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 16:22:42,360 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 16:22:42,360 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 16:22:42,360 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 16:22:42,360 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 16:22:42,361 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 16:22:42,362 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 16:22:42,371 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 16:22:42,371 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 16:22:42,371 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 16:22:42,372 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 16:22:42,372 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 16:22:42,373 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 16:22:42,373 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 16:22:42,373 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 16:22:42,376 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 16:22:42,377 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 16:22:42,377 - root - INFO - 
+Calculating volumes...
+2024-12-05 16:22:42,377 - src.reconstruction.volume_calculator - INFO - Volume Calculation Results:
+Average Height Above Plate: 2.19 cm
+Max Height Above Plate: 4.36 cm
+Volume: 505.49 cm³ (17.09 cups)
+2024-12-05 16:22:42,377 - src.reconstruction.volume_calculator - INFO - Plate Calibration:
+Reference Height: 32.30 cm
+Actual Volume: 357.49 cm³
+Estimated Volume: 505.49 cm³
+Scale Factor: 0.7072
+2024-12-05 16:22:42,377 - root - INFO - 
+Processing rice...
+2024-12-05 16:22:42,378 - src.reconstruction.volume_calculator - INFO - Volume Calculation Results:
+Average Height Above Plate: 1.78 cm
+Max Height Above Plate: 3.59 cm
+Volume: 47.55 cm³ (1.61 cups)
+2024-12-05 16:22:42,378 - root - INFO - 
+Results saved to data/upscaled/volumes_20241204_233746.json
+2024-12-05 16:22:42,378 - root - INFO - 
+Volume Summary:
+2024-12-05 16:22:42,378 - root - INFO - rice: 1.61 cups (±0.16)

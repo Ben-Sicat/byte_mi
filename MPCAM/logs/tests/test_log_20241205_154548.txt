@@ -1,0 +1,437 @@
+2024-12-05 15:45:48,360 - root - INFO - Logging initialized. Log file: /home/ben/cThesis/MPCAM/logs/tests/test_log_20241205_154548.txt
+2024-12-05 15:45:48,361 - root - INFO - Starting test suite execution
+2024-12-05 15:45:48,361 - root - INFO - 
+Running preprocessing tests...
+2024-12-05 15:45:48,419 - test.test_preprocessing - INFO - Found files:
+2024-12-05 15:45:48,419 - test.test_preprocessing - INFO - RAW: depth_frame_20241204_233746.raw
+2024-12-05 15:45:48,419 - test.test_preprocessing - INFO - COCO: _annotations.coco.json
+2024-12-05 15:45:48,420 - test.test_preprocessing - INFO - PNG: rgb_frame_20241204_233746.png
+2024-12-05 15:45:48,420 - test.test_preprocessing - INFO - Created config file: test_config.json
+2024-12-05 15:45:48,420 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:48,420 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:48,420 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:48,420 - test.test_preprocessing - INFO - Testing data loading...
+2024-12-05 15:45:48,421 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:48,421 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:48,431 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:48,432 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:48,432 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:48,432 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:48,433 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:48,434 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:48,438 - test.test_preprocessing - INFO - Data loading successful
+2024-12-05 15:45:48,438 - test.test_preprocessing - INFO - Testing full preprocessing pipeline...
+2024-12-05 15:45:48,438 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:48,438 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:48,438 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:48,447 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:48,447 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:48,448 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:48,448 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:48,448 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:48,450 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:48,453 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:48,453 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:48,453 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:48,453 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:48,453 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:48,454 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:48,455 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:48,462 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:48,462 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:48,462 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:48,462 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:48,463 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:48,463 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:48,464 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:48,464 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:48,467 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:48,467 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:48,467 - test.test_preprocessing - INFO - Preprocessing completed successfully
+2024-12-05 15:45:48,467 - test.test_preprocessing - INFO - Files generated in upscaled directory: ['debug', 'depth_frame_20241204_233746_upscaled.npy', 'depth_frame_20241204_233746_plate_mask.npy', 'depth_frame_20241204_233746_rice_mask.npy', 'depth_frame_20241204_233746_metadata.json', 'depth_frame_20241204_233746_processed.npy', 'depth_frame_20241204_233746_aligned_rgb.png']
+2024-12-05 15:45:48,469 - root - INFO - 
+Preprocessing tests passed. Running reconstruction tests...
+2024-12-05 15:45:49,202 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,202 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,202 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,202 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,202 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,203 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,212 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,212 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,212 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,213 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,213 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,214 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,218 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,218 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,218 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,218 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,218 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,219 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,219 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,220 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,220 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,220 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,220 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,221 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,221 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,221 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,222 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,224 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,224 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,224 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,225 - src.reconstruction.point_cloud - INFO - Generated point cloud with 14400 points
+2024-12-05 15:45:49,225 - test.test_point_cloud - INFO - Generated point cloud with 14400 points
+2024-12-05 15:45:49,227 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,227 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,227 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,227 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,227 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,227 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,236 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,236 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,236 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,237 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,237 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,238 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,242 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,242 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,242 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,242 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,242 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,243 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,244 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,244 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,244 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,244 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,245 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,245 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,245 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,246 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,246 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,248 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,248 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,249 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,249 - src.reconstruction.point_cloud - INFO - Generated point cloud with 4290 points
+2024-12-05 15:45:49,308 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,309 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,309 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,309 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,309 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,309 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,318 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,319 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,319 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,319 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,319 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,321 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,324 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,324 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,324 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,324 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,325 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,325 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,326 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,326 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,326 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,326 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,327 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,327 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,327 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,328 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,328 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,330 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,330 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,331 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,331 - src.reconstruction.point_cloud - INFO - Generated point cloud with 1061 points
+2024-12-05 15:45:49,333 - test.test_point_cloud - INFO - Object rice measurements:
+Volume: 8.89 cm³
+Surface Area: 37.83 cm²
+2024-12-05 15:45:49,334 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,334 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,334 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,334 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,334 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,334 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,344 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,344 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,344 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,345 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,345 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,346 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,350 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,350 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,350 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,350 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,350 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,351 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,351 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,352 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,352 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,352 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,353 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,353 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,353 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,354 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,354 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,357 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,357 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,359 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,359 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,359 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,359 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,359 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,360 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,369 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,369 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,369 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,369 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,370 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,371 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,375 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,375 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,375 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,375 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,375 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,376 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,376 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,377 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,377 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,377 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,377 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,378 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,378 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,379 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,379 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,382 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,382 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,382 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,383 - src.reconstruction.point_cloud - INFO - Generated point cloud with 4290 points
+2024-12-05 15:45:49,387 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,387 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,388 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,388 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,388 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,388 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,397 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,398 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,398 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,398 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,398 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,399 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,403 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,403 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,403 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,403 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,403 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,404 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,404 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,405 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,405 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,405 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,405 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,405 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,406 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,406 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,406 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,409 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,409 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,410 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,410 - src.reconstruction.point_cloud - INFO - Generated point cloud with 1061 points
+2024-12-05 15:45:49,412 - src.reconstruction.volume_calculator - INFO - Calculated volume using convex_hull: 8.89cm³ ± 0.08 (0.30 cups ± 0.00)
+2024-12-05 15:45:49,412 - src.reconstruction.volume_calculator - INFO - Calculated volume using grid: 14.50cm³ ± 0.33 (0.49 cups ± 0.01)
+2024-12-05 15:45:49,416 - src.reconstruction.volume_calculator - ERROR - Alpha shape calculation failed: Not all meshes are volumes!
+2024-12-05 15:45:49,416 - src.reconstruction.volume_calculator - ERROR - Error calculating volume: Not all meshes are volumes!
+2024-12-05 15:45:49,416 - test.test_reconstruction - WARNING - Method alpha_shape failed for rice: Not all meshes are volumes!
+2024-12-05 15:45:49,416 - test.test_reconstruction - INFO - 
+Volume estimation for rice:
+2024-12-05 15:45:49,416 - test.test_reconstruction - INFO - convex_hull: 8.89cm³ (±0.08) = 0.30 cups (±0.00)
+2024-12-05 15:45:49,416 - test.test_reconstruction - INFO - grid: 14.50cm³ (±0.33) = 0.49 cups (±0.01)
+2024-12-05 15:45:49,417 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,417 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,417 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,417 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,418 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,418 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,427 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,427 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,427 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,428 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,428 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,429 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,433 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,433 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,433 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,433 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,433 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,433 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,434 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,434 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,435 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,435 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,435 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,435 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,436 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,436 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,436 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,439 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,439 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,439 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,440 - src.reconstruction.point_cloud - INFO - Generated point cloud with 1061 points
+2024-12-05 15:45:49,441 - src.reconstruction.volume_calculator - INFO - Calculated volume using convex_hull: 8.89cm³ ± 0.08 (0.30 cups ± 0.00)
+2024-12-05 15:45:49,441 - src.reconstruction.volume_calculator - INFO - Calculated volume using grid: 14.50cm³ ± 0.33 (0.49 cups ± 0.01)
+2024-12-05 15:45:49,443 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,443 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,443 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,443 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,444 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,444 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,452 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,452 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,453 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,453 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,453 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,455 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,458 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,458 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,459 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,459 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,459 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,460 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,460 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,461 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,461 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,461 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,462 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,463 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,463 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,464 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,464 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,466 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,466 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,467 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,467 - src.reconstruction.point_cloud - INFO - Generated point cloud with 1061 points
+2024-12-05 15:45:49,481 - src.reconstruction.mesh_generator - INFO - Generated mesh using convex method: 108 vertices, 212 faces
+2024-12-05 15:45:49,482 - test.test_reconstruction - WARNING - Method convex failed for rice: 'Trimesh' object has no attribute 'degenerate_faces'
+2024-12-05 15:45:49,482 - src.reconstruction.mesh_generator - ERROR - Mesh generation failed: module 'trimesh.transformations' has no attribute 'PCA'
+2024-12-05 15:45:49,482 - test.test_reconstruction - WARNING - Method surface failed for rice: module 'trimesh.transformations' has no attribute 'PCA'
+2024-12-05 15:45:49,486 - src.reconstruction.mesh_generator - ERROR - Mesh generation failed: Not all meshes are volumes!
+2024-12-05 15:45:49,486 - test.test_reconstruction - WARNING - Method alpha failed for rice: Not all meshes are volumes!
+2024-12-05 15:45:49,486 - test.test_reconstruction - INFO - 
+Mesh generation for rice:
+2024-12-05 15:45:49,487 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,487 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,487 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,487 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,487 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,487 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,497 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,497 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,497 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,498 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,498 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,499 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,503 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,503 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,503 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,503 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,503 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,504 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,504 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,505 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,505 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,505 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,506 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,506 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,506 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,507 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,507 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,510 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,510 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,511 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,511 - src.reconstruction.point_cloud - INFO - Generated point cloud with 1061 points
+2024-12-05 15:45:49,512 - src.reconstruction.volume_calculator - INFO - Calculated volume using convex_hull: 8.89cm³ ± 0.08 (0.30 cups ± 0.00)
+2024-12-05 15:45:49,527 - src.reconstruction.mesh_generator - INFO - Generated mesh using convex method: 108 vertices, 212 faces
+2024-12-05 15:45:49,533 - src.utils.coco_utils - INFO - Loaded categories: ['food', 'plate', 'rice']
+2024-12-05 15:45:49,533 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241204_233746': 0}
+2024-12-05 15:45:49,533 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-05 15:45:49,533 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-05 15:45:49,534 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,534 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-05 15:45:49,543 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [307, 410]
+2024-12-05 15:45:49,543 - src.utils.io_utils - WARNING - Depth values outside expected range: [307.000, 410.000] vs [0.333, 0.342]
+2024-12-05 15:45:49,543 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,544 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,544 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 91453 positive pixels
+2024-12-05 15:45:49,545 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,549 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-05 15:45:49,549 - src.preprocessing.calibration - INFO - Calculated focal length: 110.19 pixels
+2024-12-05 15:45:49,549 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.299482 cm/pixel
+2024-12-05 15:45:49,549 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-05 15:45:49,549 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-05 15:45:49,550 - src.preprocessing.noise_reduction - INFO - Removed 930 outlier points
+2024-12-05 15:45:49,550 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-05 15:45:49,551 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0928
+2024-12-05 15:45:49,551 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0928)
+2024-12-05 15:45:49,551 - src.utils.coco_utils - INFO - Found 2 annotations for image 20241204_233746
+2024-12-05 15:45:49,551 - src.utils.coco_utils - INFO - Created mask with 91453 positive pixels
+2024-12-05 15:45:49,551 - src.core.depth_processor - INFO - Aligned mask - Original: 91453 pixels, Aligned: 4290 pixels
+2024-12-05 15:45:49,552 - src.utils.coco_utils - INFO - Created mask with 22616 positive pixels
+2024-12-05 15:45:49,552 - src.core.depth_processor - INFO - Aligned mask - Original: 22616 pixels, Aligned: 1061 pixels
+2024-12-05 15:45:49,552 - src.preprocessing.preprocessing - INFO - Processed 2 objects
+2024-12-05 15:45:49,554 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['plate', 'rice']
+- Metadata with alignment info
+2024-12-05 15:45:49,554 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241204_233746
+2024-12-05 15:45:49,555 - src.reconstruction.point_cloud - INFO - Initialized PointCloud with focal length: 110.19, pixel size: 0.2995
+2024-12-05 15:45:49,555 - src.reconstruction.point_cloud - INFO - Generated point cloud with 1061 points
+2024-12-05 15:45:49,555 - src.reconstruction.mesh_generator - ERROR - Mesh generation failed: module 'trimesh.transformations' has no attribute 'PCA'
+2024-12-05 15:45:49,555 - test.test_reconstruction - ERROR - Reconstruction failed for rice: module 'trimesh.transformations' has no attribute 'PCA'
+2024-12-05 15:45:49,556 - test.test_reconstruction - INFO - 
+Full reconstruction results:
+2024-12-05 15:45:49,566 - root - ERROR - 
+Reconstruction tests failed!
+2024-12-05 15:45:49,566 - root - INFO - Test suite execution completed
