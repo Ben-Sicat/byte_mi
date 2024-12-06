@@ -14,14 +14,11 @@ class MeshGenerator:
         
     def _surface_reconstruction(self, points: np.ndarray) -> trimesh.Trimesh:
         """Generate mesh using surface reconstruction."""
-        # Use scikit-learn's PCA
         pca = skPCA(n_components=2)
         points_2d = pca.fit_transform(points)
         
-        # Create triangulation
         tri = Delaunay(points_2d)
         
-        # Create mesh
         mesh = trimesh.Trimesh(
             vertices=points,
             faces=tri.simplices
@@ -32,13 +29,6 @@ class MeshGenerator:
                      method: str = 'surface') -> trimesh.Trimesh:
         """
         Generate mesh from point cloud.
-        
-        Args:
-            points: Nx3 array of 3D points
-            method: Mesh generation method ('convex', 'surface', or 'alpha')
-            
-        Returns:
-            trimesh.Trimesh object
         """
         try:
             if method == 'convex':

@@ -1,3 +1,0 @@
-""" 
-    Typicall init.file
-"""

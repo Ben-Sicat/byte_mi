@@ -6,7 +6,6 @@ import trimesh
 import json
 import logging
 
-# Add project root to Python path
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
@@ -22,14 +21,11 @@ logger = logging.getLogger(__name__)
 def preprocessed_data():
     """Load preprocessed data from pipeline"""
     try:
-        # Load test configuration
         with open('test_config.json', 'r') as f:
             config = json.load(f)
             
-        # Get the first frame_id
         frame_id = config['frame_ids'][0]
         
-        # Initialize and run pipeline
         pipeline = PreprocessingPipeline(config)
         result = pipeline.process_single_image(frame_id)
         
@@ -48,17 +44,14 @@ class TestVolumeCalculator:
         results = {}
         
         for obj_name, obj_data in preprocessed_data['processed_objects'].items():
-            # Skip plate
             if obj_name == 'plate':
                 continue
                 
-            # Generate point cloud
             points = pc.depth_to_point_cloud(
                 preprocessed_data['depth'],
                 obj_data['mask']
             )
             
-            # Calculate volume using different methods
             volumes = {}
             for method in ['convex_hull', 'grid', 'alpha_shape']:
                 try:
@@ -94,11 +87,9 @@ class TestVolumeCalculator:
                 obj_data['mask']
             )
             
-            # Calculate volumes
             convex_result = calc.calculate_volume(points, 'convex_hull')
             grid_result = calc.calculate_volume(points, 'grid')
             
-            # Check consistency within reasonable margin (50%)
             assert np.isclose(
                 convex_result['volume_cm3'],
                 grid_result['volume_cm3'],
@@ -117,13 +108,11 @@ class TestMeshGenerator:
             if obj_name == 'plate':
                 continue
                 
-            # Generate point cloud
             points = pc.depth_to_point_cloud(
                 preprocessed_data['depth'],
                 obj_data['mask']
             )
             
-            # Generate meshes using different methods
             meshes = {}
             for method in ['convex', 'surface', 'alpha']:
                 try:
@@ -165,14 +154,11 @@ class TestMeshGenerator:
                 obj_data['mask']
             )
             
-            # Calculate volume directly
             volume_result = calc.calculate_volume(points, 'convex_hull')
             
-            # Generate mesh and calculate its volume
             mesh = generator.generate_mesh(points, 'convex')
             mesh_volume = mesh.volume
             
-            # Compare volumes (within 10% for convex hull method)
             assert np.isclose(
                 volume_result['volume_cm3'],
                 mesh_volume,
@@ -192,17 +178,14 @@ def test_full_reconstruction_pipeline(preprocessed_data):
             continue
             
         try:
-            # 1. Generate point cloud
             points = pc.depth_to_point_cloud(
                 preprocessed_data['depth'],
                 obj_data['mask']
             )
             
-            # 2. Generate mesh
             mesh = generator.generate_mesh(points, 'surface')
             validation = generator.validate_mesh(mesh)
             
-            # 3. Calculate volume
             volume_result = calc.calculate_volume(points, 'convex_hull')
             
             reconstruction_results[obj_name] = {

@@ -12,12 +12,11 @@ class CameraCalibrator:
     All measurements are in centimeters.
     """
     def __init__(self):
-        # Known measurements in cm
+        # everything in cm
         self.camera_height = 33.0  
         self.plate_diameter = 25.5  
         self.plate_height = 0.7  
         
-        # Will be calculated
         self.focal_length = None
         self.principal_point = None
         self.pixel_size = None
@@ -49,7 +48,6 @@ class CameraCalibrator:
         """
         Get plate measurements from mask in pixels.
         """
-        # Find contours of the plate
         contours, _ = cv2.findContours(
             plate_mask.astype(np.uint8),
             cv2.RETR_EXTERNAL,
@@ -59,10 +57,8 @@ class CameraCalibrator:
         if not contours:
             raise ValueError("No plate contour found in mask")
         
-        # Get largest contour (plate)
         plate_contour = max(contours, key=cv2.contourArea)
-        
-        # Find the minimum enclosing circle
+       # inner portion of the circle  
         (center_x, center_y), radius = cv2.minEnclosingCircle(plate_contour)
         diameter_pixels = radius * 2
         

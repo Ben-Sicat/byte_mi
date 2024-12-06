@@ -34,13 +34,6 @@ class DepthNoiseReducer:
                        mask: Optional[np.ndarray] = None) -> np.ndarray:
         """
         Remove outlier depth values using statistical analysis.
-        
-        Args:
-            depth_data: Depth channel data
-            mask: Optional mask to process specific regions
-            
-        Returns:
-            np.ndarray: Depth data with outliers removed
         """
         if mask is not None:
             valid_depths = depth_data[mask > 0]
@@ -50,15 +43,12 @@ class DepthNoiseReducer:
         if len(valid_depths) == 0:
             return depth_data
             
-        # Calculate statistics
         mean_depth = np.mean(valid_depths)
         std_depth = np.std(valid_depths)
         threshold = std_depth * self.config['outlier_threshold']
         
-        # Create outlier mask
         outliers = np.abs(depth_data - mean_depth) > threshold
         
-        # Replace outliers with local median
         cleaned_depth = depth_data.copy()
         if np.any(outliers):
             kernel_size = self.config['median_kernel']
@@ -75,14 +65,7 @@ class DepthNoiseReducer:
     def fill_missing_values(self, depth_data: np.ndarray) -> np.ndarray:
         """
         Fill missing or invalid depth values using interpolation.
-        
-        Args:
-            depth_data: Depth channel data
-            
-        Returns:
-            np.ndarray: Depth data with filled values
         """
-        # Create mask of invalid values
         invalid_mask = (depth_data <= 0) | np.isnan(depth_data)
         
         if not np.any(invalid_mask):
@@ -90,7 +73,6 @@ class DepthNoiseReducer:
             
         filled_depth = depth_data.copy()
         
-        # Use inpainting to fill holes
         filled_depth = cv2.inpaint(
             filled_depth.astype(np.float32),
             invalid_mask.astype(np.uint8),
@@ -104,12 +86,6 @@ class DepthNoiseReducer:
     def apply_bilateral_filter(self, depth_data: np.ndarray) -> np.ndarray:
         """
         Apply bilateral filtering to reduce noise while preserving edges.
-        
-        Args:
-            depth_data: Depth channel data
-            
-        Returns:
-            np.ndarray: Filtered depth data
         """
         filtered_depth = cv2.bilateralFilter(
             depth_data.astype(np.float32),
@@ -124,23 +100,14 @@ class DepthNoiseReducer:
                     mask: Optional[np.ndarray] = None) -> np.ndarray:
         """
         Smooth depth values at object edges.
-        
-        Args:
-            depth_data: Depth channel data
-            mask: Optional segmentation mask
-            
-        Returns:
-            np.ndarray: Depth data with smoothed edges
         """
         if mask is not None:
-            # Find edges in mask
             edges = cv2.Canny(mask.astype(np.uint8), 100, 200)
             
-            # Dilate edges slightly
+            # dilate edges slightly
             kernel = np.ones((3,3), np.uint8)
             edge_region = cv2.dilate(edges, kernel, iterations=1)
             
-            # Apply stronger smoothing only to edge regions
             smoothed = cv2.GaussianBlur(
                 depth_data.astype(np.float32),
                 (5,5),
@@ -158,26 +125,15 @@ class DepthNoiseReducer:
                      mask: Optional[np.ndarray] = None) -> np.ndarray:
         """
         Apply complete noise reduction pipeline to depth data.
-        
-        Args:
-            depth_data: Depth channel data
-            mask: Optional segmentation mask
-            
-        Returns:
-            np.ndarray: Processed depth data
         """
         logger.info("Starting depth noise reduction")
         
-        # Fill missing values first
         filled_depth = self.fill_missing_values(depth_data)
         
-        # Remove statistical outliers
         cleaned_depth = self.remove_outliers(filled_depth, mask)
         
-        # Apply bilateral filtering
         filtered_depth = self.apply_bilateral_filter(cleaned_depth)
         
-        # Smooth edges if mask provided
         if mask is not None:
             final_depth = self.smooth_edges(filtered_depth, mask)
         else:

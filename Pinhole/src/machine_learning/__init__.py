@@ -1,3 +1,0 @@
-"""
-    rtypical shit
-"""
