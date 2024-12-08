@@ -1,0 +1,12 @@
+2024-12-08 21:53:06,071 - root - INFO - Logging initialized. Log file: logs/volume_estimation_log_20241208_215306.txt
+2024-12-08 21:53:06,106 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-12-08 21:53:06,106 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-12-08 21:53:06,107 - werkzeug - INFO -  * Restarting with stat
+2024-12-08 21:53:06,353 - root - INFO - Logging initialized. Log file: logs/volume_estimation_log_20241208_215306.txt
+2024-12-08 21:53:06,366 - werkzeug - WARNING -  * Debugger is active!
+2024-12-08 21:53:06,367 - werkzeug - INFO -  * Debugger PIN: 100-235-738
+2024-12-08 21:53:17,505 - werkzeug - INFO - 127.0.0.1 - - [08/Dec/2024 21:53:17] "[31m[1mGET /process HTTP/1.1[0m" 405 -
+2024-12-08 21:53:17,556 - werkzeug - INFO - 127.0.0.1 - - [08/Dec/2024 21:53:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-12-08 21:53:55,176 - werkzeug - INFO - 127.0.0.1 - - [08/Dec/2024 21:53:55] "[31m[1mPOST /process HTTP/1.1[0m" 400 -
+2024-12-08 21:54:39,275 - werkzeug - INFO - 127.0.0.1 - - [08/Dec/2024 21:54:39] "[31m[1mPOST /process HTTP/1.1[0m" 400 -

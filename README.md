@@ -11,3 +11,12 @@
 - initialize the flask app
 - add function to call api for the macronutrient database.
 
+
+
+
+# TO RUN 
+
+python run_volume_estimation --config test_config.json
+
+endpoint is http://127.0.0.1:5000/get_volumes
+

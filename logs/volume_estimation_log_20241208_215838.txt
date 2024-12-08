@@ -1,0 +1,17 @@
+2024-12-08 21:58:38,268 - root - INFO - Logging initialized. Log file: logs/volume_estimation_log_20241208_215838.txt
+2024-12-08 21:58:38,282 - werkzeug - WARNING -  * Debugger is active!
+2024-12-08 21:58:38,282 - werkzeug - INFO -  * Debugger PIN: 100-235-738
+2024-12-08 21:58:45,032 - root - ERROR - Failed to process: 'data_dir'
+Traceback (most recent call last):
+  File "/home/ben/cThesis/run_volume_estimation.py", line 74, in get_volumes
+    results = process_frames(DEFAULT_CONFIG)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ben/cThesis/run_volume_estimation.py", line 22, in process_frames
+    pipeline = PreprocessingPipeline(config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ben/cThesis/src/preprocessing/preprocessing.py", line 35, in __init__
+    self.data_dir = Path(config['data_dir'])
+                         ~~~~~~^^^^^^^^^^^^
+KeyError: 'data_dir'
+2024-12-08 21:58:45,033 - werkzeug - INFO - 127.0.0.1 - - [08/Dec/2024 21:58:45] "[35m[1mGET /get_volumes HTTP/1.1[0m" 500 -
+2024-12-08 22:00:51,609 - werkzeug - INFO -  * Detected change in '/home/ben/cThesis/run_volume_estimation.py', reloading
