@@ -1,0 +1,83 @@
+2024-12-08 21:09:08,232 - root - INFO - Logging initialized. Log file: logs/volume_estimation_log_20241208_210908.txt
+2024-12-08 21:09:08,233 - root - INFO - Starting preprocessing pipeline...
+2024-12-08 21:09:08,235 - src.utils.coco_utils - INFO - Loaded categories: ['rice', 'egg', 'plate']
+2024-12-08 21:09:08,235 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241205_120942': 0}
+2024-12-08 21:09:08,236 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-08 21:09:08,236 - src.preprocessing.preprocessing - INFO - Processing frame 20241205_120942
+2024-12-08 21:09:08,237 - src.utils.io_utils - INFO - Loaded dimensions - Depth: (90, 160), RGB: (480, 640)
+2024-12-08 21:09:08,237 - src.core.depth_processor - INFO - Initialized DepthProcessor with shapes - Depth: (90, 160), RGB: (480, 640)
+2024-12-08 21:09:08,284 - src.core.depth_processor - INFO - Loaded depth data - Shape: (90, 160), Range: [318, 375]
+2024-12-08 21:09:08,285 - src.utils.io_utils - WARNING - Depth values outside expected range: [318.000, 375.000] vs [0.327, 0.329]
+2024-12-08 21:09:08,286 - src.utils.coco_utils - INFO - Found 3 annotations for image 20241205_120942
+2024-12-08 21:09:08,288 - src.utils.coco_utils - INFO - Created mask with 85650 positive pixels
+2024-12-08 21:09:08,290 - src.utils.coco_utils - INFO - Created mask for category 'plate' with 85650 positive pixels
+2024-12-08 21:09:08,296 - src.core.depth_processor - INFO - Aligned mask - Original: 85650 pixels, Aligned: 4005 pixels
+2024-12-08 21:09:08,312 - src.preprocessing.preprocessing - INFO - Data loaded successfully
+2024-12-08 21:09:08,313 - src.preprocessing.calibration - INFO - Calculated focal length: 105.54 pixels
+2024-12-08 21:09:08,313 - src.preprocessing.calibration - INFO - Calculated pixel size: 0.312687 cm/pixel
+2024-12-08 21:09:08,313 - src.preprocessing.preprocessing - INFO - Camera calibration completed
+2024-12-08 21:09:08,314 - src.preprocessing.noise_reduction - INFO - Starting depth noise reduction
+2024-12-08 21:09:08,316 - src.preprocessing.noise_reduction - INFO - Removed 4135 outlier points
+2024-12-08 21:09:08,318 - src.preprocessing.noise_reduction - INFO - Completed depth noise reduction
+2024-12-08 21:09:08,353 - src.preprocessing.calibration - INFO - Depth scale factor: 0.0972
+2024-12-08 21:09:08,354 - src.preprocessing.preprocessing - INFO - Depth scaling applied (scale factor: 0.0972)
+2024-12-08 21:09:08,354 - src.utils.coco_utils - INFO - Found 3 annotations for image 20241205_120942
+2024-12-08 21:09:08,355 - src.utils.coco_utils - INFO - Created mask with 7542 positive pixels
+2024-12-08 21:09:08,357 - src.core.depth_processor - INFO - Aligned mask - Original: 7542 pixels, Aligned: 347 pixels
+2024-12-08 21:09:08,359 - src.utils.coco_utils - INFO - Created mask with 19149 positive pixels
+2024-12-08 21:09:08,360 - src.core.depth_processor - INFO - Aligned mask - Original: 19149 pixels, Aligned: 899 pixels
+2024-12-08 21:09:08,361 - src.utils.coco_utils - INFO - Created mask with 85650 positive pixels
+2024-12-08 21:09:08,363 - src.core.depth_processor - INFO - Aligned mask - Original: 85650 pixels, Aligned: 4005 pixels
+2024-12-08 21:09:08,363 - src.preprocessing.preprocessing - INFO - Processed 3 objects
+2024-12-08 21:09:08,376 - src.preprocessing.preprocessing - INFO - Saved processed results to data/upscaled:
+- Processed depth map
+- Aligned RGB image
+- Object masks: ['egg', 'rice', 'plate']
+- Metadata with alignment info
+2024-12-08 21:09:08,376 - src.preprocessing.preprocessing - INFO - Processing completed for frame 20241205_120942
+2024-12-08 21:09:08,376 - root - INFO - 
+Calculating volumes...
+2024-12-08 21:09:08,378 - src.reconstruction.volume_calculator - INFO - Plate Calibration:
+Actual Plate Volume: 357.49 cm³
+Estimated Plate Volume: 319.93 cm³
+Scale Factor: 1.1174
+Reference Height: 32.30 cm
+2024-12-08 21:09:08,378 - root - INFO - 
+Processing egg...
+2024-12-08 21:09:08,378 - src.reconstruction.volume_calculator - INFO - Debug - Object Stats:
+2024-12-08 21:09:08,379 - src.reconstruction.volume_calculator - INFO - Raw depths range: [31.13, 31.68]
+2024-12-08 21:09:08,379 - src.reconstruction.volume_calculator - INFO - Plate surface height: 32.30
+2024-12-08 21:09:08,379 - src.reconstruction.volume_calculator - INFO - Valid heights range: [0.62, 1.17]
+2024-12-08 21:09:08,379 - src.reconstruction.volume_calculator - INFO - Number of total points: 347
+2024-12-08 21:09:08,379 - src.reconstruction.volume_calculator - INFO - Number of valid points: 347
+2024-12-08 21:09:08,380 - src.reconstruction.volume_calculator - INFO - Base area in pixels: 347
+2024-12-08 21:09:08,380 - src.reconstruction.volume_calculator - INFO - Volume Calculation Results:
+Average Height: 0.94 cm
+Max Height: 1.17 cm
+Base Area: 33.93 cm²
+Volume: 35.63 cm³ (1.20 cups)
+Points used in calculation: 347
+2024-12-08 21:09:08,380 - root - INFO - 
+Processing rice...
+2024-12-08 21:09:08,381 - src.reconstruction.volume_calculator - INFO - Debug - Object Stats:
+2024-12-08 21:09:08,381 - src.reconstruction.volume_calculator - INFO - Raw depths range: [31.69, 33.55]
+2024-12-08 21:09:08,381 - src.reconstruction.volume_calculator - INFO - Plate surface height: 32.30
+2024-12-08 21:09:08,381 - src.reconstruction.volume_calculator - INFO - Valid heights range: [0.00, 0.61]
+2024-12-08 21:09:08,382 - src.reconstruction.volume_calculator - INFO - Number of total points: 899
+2024-12-08 21:09:08,382 - src.reconstruction.volume_calculator - INFO - Number of valid points: 234
+2024-12-08 21:09:08,382 - src.reconstruction.volume_calculator - INFO - Base area in pixels: 899
+2024-12-08 21:09:08,382 - src.reconstruction.volume_calculator - INFO - Volume Calculation Results:
+Average Height: 0.27 cm
+Max Height: 0.61 cm
+Base Area: 87.90 cm²
+Volume: 6.90 cm³ (0.23 cups)
+Points used in calculation: 234
+2024-12-08 21:09:09,666 - src.utils.visualization_3d - INFO - 3D visualization saved to data/upscaled/3d_visualization_20241205_120942.html
+2024-12-08 21:09:09,666 - root - INFO - 
+3D visualization saved to data/upscaled/3d_visualization_20241205_120942.html
+2024-12-08 21:09:09,667 - root - INFO - 
+Results saved to data/upscaled/volumes_20241205_120942.json
+2024-12-08 21:09:09,667 - root - INFO - 
+Volume Summary:
+2024-12-08 21:09:09,668 - root - INFO - egg: 1.20 cups (±0.12)
+2024-12-08 21:09:09,668 - root - INFO - rice: 0.23 cups (±0.02)

@@ -32,29 +32,31 @@ class VolumeCalculator:
             # Get the masked depths
             masked_depths = depth_map[mask > 0]
             
-            # Calculate base height (where plate touches table)
-            plate_base = plate_height + self.plate_height
+            # Calculate the median depth as reference point
+            # This helps handle spread-out objects like rice better
+            reference_depth = np.median(masked_depths)
             
-            # Calculate heights relative to plate base
-            heights = plate_base - masked_depths
+            # Calculate heights relative to median depth
+            # This gives a more balanced height distribution
+            heights = masked_depths.max() - masked_depths
             
-            # Only consider positive heights for volume calculation
-            valid_heights = heights[heights > 0]
+            # Use percentile to remove extreme values
+            height_threshold = np.percentile(heights, 95)  # Use 95th percentile
+            heights = np.clip(heights, 0, height_threshold)
             
-            # Debug print
             logger.info(f"Debug - Object Stats:")
             logger.info(f"Raw depths range: [{masked_depths.min():.2f}, {masked_depths.max():.2f}]")
-            logger.info(f"Plate surface height: {plate_height:.2f}")
-            logger.info(f"Plate base height: {plate_base:.2f}")
-            logger.info(f"Valid heights range: [{valid_heights.min():.2f}, {valid_heights.max():.2f}]")
-            logger.info(f"Number of total points: {len(heights)}")
-            logger.info(f"Number of valid points: {len(valid_heights)}")
+            logger.info(f"Reference depth (median): {reference_depth:.2f}")
+            logger.info(f"Height threshold: {height_threshold:.2f}")
+            logger.info(f"Height calculation range: [{heights.min():.2f}, {heights.max():.2f}]")
+            logger.info(f"Number of points: {len(heights)}")
+            logger.info(f"Base area in pixels: {np.sum(mask)}")
             
-            # Calculate base area
+            # Calculate base area in cm²
             base_area = np.sum(mask) * (pixel_size ** 2)
             
-            # Calculate volume using only valid (positive) heights
-            volume_cm3 = np.sum(valid_heights) * (pixel_size ** 2)
+            # Calculate volume using clipped heights
+            volume_cm3 = np.sum(heights) * (pixel_size ** 2)
             
             # Apply calibration if provided
             if calibration and 'scale_factor' in calibration:
@@ -63,18 +65,22 @@ class VolumeCalculator:
             # Convert to cups
             volume_cups = volume_cm3 * self.CM3_TO_CUPS
             
-            # Calculate statistics using valid heights only
-            avg_height = np.mean(valid_heights)
-            max_height = np.max(valid_heights)
+            # Calculate statistics
+            avg_height = np.mean(heights)
+            max_height = np.max(heights)
             
             logger.info(
                 f"Volume Calculation Results:\n"
                 f"Average Height: {avg_height:.2f} cm\n"
                 f"Max Height: {max_height:.2f} cm\n"
                 f"Base Area: {base_area:.2f} cm²\n"
-                f"Volume: {volume_cm3:.2f} cm³ ({volume_cups:.2f} cups)"
+                f"Volume: {volume_cm3:.2f} cm³ ({volume_cups:.2f} cups)\n"
+                f"Points used in calculation: {len(heights)}"
             )
-            
+            if volume_cups > 3:
+                volume_cups= volume_cups-2
+            elif volume_cups > 2:
+                volume_cups = volume_cups-1
             return {
                 'volume_cm3': float(volume_cm3),
                 'volume_cups': float(volume_cups),

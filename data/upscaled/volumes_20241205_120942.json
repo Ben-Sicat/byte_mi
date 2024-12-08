@@ -1,20 +1,20 @@
 {
   "egg": {
-    "volume_cm3": 62.164306640625,
-    "volume_cups": 2.102025270462036,
-    "uncertainty_cm3": 6.2164306640625,
-    "uncertainty_cups": 0.21020253002643585,
+    "volume_cm3": 12.1260986328125,
+    "volume_cups": 0.4100321829319,
+    "uncertainty_cm3": 1.212609887123108,
+    "uncertainty_cups": 0.04100321978330612,
     "base_area_cm2": 33.92723480596555,
-    "avg_height_cm": 1.6397737264633179,
-    "max_height_cm": 1.8747844696044922
+    "avg_height_cm": 0.31986290216445923,
+    "max_height_cm": 0.5055319666862488
   },
   "rice": {
-    "volume_cm3": 49.56224060058594,
-    "volume_cups": 1.675898790359497,
-    "uncertainty_cm3": 4.956223964691162,
-    "uncertainty_cups": 0.16758988797664642,
+    "volume_cm3": 99.73942565917969,
+    "volume_cups": 1.372591257095337,
+    "uncertainty_cm3": 9.973942756652832,
+    "uncertainty_cups": 0.1372591257095337,
     "base_area_cm2": 87.89793686041217,
-    "avg_height_cm": 0.5816056728363037,
-    "max_height_cm": 1.311258316040039
+    "avg_height_cm": 1.0154988765716553,
+    "max_height_cm": 1.7235617637634277
   }
 }
