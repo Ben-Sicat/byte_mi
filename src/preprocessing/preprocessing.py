@@ -223,7 +223,7 @@ def run_preprocessing(config_path: str):
             
         required_keys = [
             'data_dir', 'output_dir', 'coco_file',
-            'rgb_shape', 'camera_height', 'plate_diameter', 'plate_height'
+             'camera_height', 'plate_diameter', 'plate_height'
         ]
         for key in required_keys:
             if key not in config:

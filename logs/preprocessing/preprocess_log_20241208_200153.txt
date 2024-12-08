@@ -1,0 +1,13 @@
+2024-12-08 20:01:53,795 - root - INFO - Logging initialized. Log file: /home/ben/cThesis/logs/preprocessing/preprocess_log_20241208_200153.txt
+2024-12-08 20:01:53,795 - root - INFO - Starting preprocessing pipeline with config: test_config.json
+2024-12-08 20:01:53,798 - src.utils.coco_utils - INFO - Loaded categories: ['rice', 'egg', 'plate']
+2024-12-08 20:01:53,798 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241205_120942': 0}
+2024-12-08 20:01:53,798 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-08 20:01:53,799 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-08 20:01:53,799 - src.utils.io_utils - ERROR - Error loading metadata from data/rgbd/depth_frame_20241204_233746.meta: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:01:53,799 - src.utils.io_utils - ERROR - Error getting frame dimensions: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:01:53,800 - src.preprocessing.preprocessing - ERROR - Error loading data for frame 20241204_233746: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:01:53,800 - src.preprocessing.preprocessing - ERROR - Error processing frame 20241204_233746: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:01:53,800 - src.preprocessing.preprocessing - ERROR - Failed to process frame 20241204_233746: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:01:53,800 - src.preprocessing.preprocessing - INFO - Preprocessing pipeline completed
+2024-12-08 20:01:53,801 - root - INFO - Preprocessing pipeline completed successfully

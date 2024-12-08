@@ -3,7 +3,7 @@
     "output_dir": "data/upscaled",
     "coco_file": "data/segmented/_annotations.coco.json",
     "frame_ids": [
-        "20241204_233746"
+        "20241205_120942"
     ],
     "camera_height": 33.0,
     "plate_diameter": 25.5,

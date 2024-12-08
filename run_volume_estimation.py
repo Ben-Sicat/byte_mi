@@ -12,6 +12,7 @@ sys.path.insert(0, str(project_root))
 from src.preprocessing.preprocessing import PreprocessingPipeline
 from src.reconstruction.volume_calculator import VolumeCalculator
 from src.utils.logging_utils import setup_logging
+from src.utils.visualization_3d import Visualizer3D
 
 def main():
     parser = argparse.ArgumentParser(description="Run volume estimation pipeline")
@@ -70,17 +71,37 @@ def main():
                 volume_data = calc.calculate_volume(
                     depth_map=result['depth'],
                     mask=obj_data['mask'],
-                    plate_height=plate_height,  # Use measured plate height
+                    plate_height=plate_height,
                     intrinsic_params=result['intrinsic_params'],
                     calibration=calibration
                 )
                 
                 volume_results[obj_name] = volume_data
             
-            # Save results
+            # 3. Create 3D visualization
+            visualizer = Visualizer3D(result['intrinsic_params'])
+            
+            # Prepare masks dictionary including plate
+            masks = {
+                name: data['mask'] 
+                for name, data in result['processed_objects'].items()
+            }
+            
+            # Create and save visualizations
             output_dir = Path(config['output_dir'])
             output_dir.mkdir(parents=True, exist_ok=True)
             
+            # Save overall scene visualization
+            viz_path = output_dir / f"3d_visualization_{frame_id}.html"
+            visualizer.create_3d_surface(
+                depth_map=result['depth'],
+                masks=masks,
+                plate_height=plate_height,
+                output_path=str(viz_path)
+            )
+            logger.info(f"\n3D visualization saved to {viz_path}")
+            
+            # Save volume results
             output_file = output_dir / f"volumes_{frame_id}.json"
             with open(output_file, 'w') as f:
                 json.dump(volume_results, f, indent=2)

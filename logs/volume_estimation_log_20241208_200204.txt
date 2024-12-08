@@ -1,0 +1,31 @@
+2024-12-08 20:02:04,138 - root - INFO - Logging initialized. Log file: logs/volume_estimation_log_20241208_200204.txt
+2024-12-08 20:02:04,139 - root - INFO - Starting preprocessing pipeline...
+2024-12-08 20:02:04,141 - src.utils.coco_utils - INFO - Loaded categories: ['rice', 'egg', 'plate']
+2024-12-08 20:02:04,142 - src.utils.coco_utils - INFO - Loaded image mappings: {'rgb_frame_20241205_120942': 0}
+2024-12-08 20:02:04,142 - src.preprocessing.preprocessing - INFO - Initialized preprocessing pipeline
+2024-12-08 20:02:04,142 - src.preprocessing.preprocessing - INFO - Processing frame 20241204_233746
+2024-12-08 20:02:04,143 - src.utils.io_utils - ERROR - Error loading metadata from data/rgbd/depth_frame_20241204_233746.meta: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:02:04,143 - src.utils.io_utils - ERROR - Error getting frame dimensions: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:02:04,143 - src.preprocessing.preprocessing - ERROR - Error loading data for frame 20241204_233746: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:02:04,144 - src.preprocessing.preprocessing - ERROR - Error processing frame 20241204_233746: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+2024-12-08 20:02:04,144 - root - ERROR - Pipeline failed: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
+Traceback (most recent call last):
+  File "/home/ben/cThesis/run_volume_estimation.py", line 35, in main
+    result = pipeline.process_single_image(frame_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ben/cThesis/src/preprocessing/preprocessing.py", line 107, in process_single_image
+    data = self.load_data(frame_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ben/cThesis/src/preprocessing/preprocessing.py", line 51, in load_data
+    self.depth_processor = DepthProcessor(rgbd_meta_path, rgb_meta_path)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ben/cThesis/src/core/depth_processor.py", line 22, in __init__
+    self.depth_shape, self.rgb_shape = get_frame_dimensions(
+                                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ben/cThesis/src/utils/io_utils.py", line 28, in get_frame_dimensions
+    rgbd_meta = load_metadata(rgbd_meta_path)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ben/cThesis/src/utils/io_utils.py", line 13, in load_metadata
+    with open(file_path, 'r') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data/rgbd/depth_frame_20241204_233746.meta'
