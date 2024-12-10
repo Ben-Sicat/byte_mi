@@ -40,12 +40,10 @@ class PointCloud:
             indexing='ij'
         )
         
-        # Flatten arrays
         x_indices = x_indices.flatten()
         y_indices = y_indices.flatten()
         depth_values = depth_map.flatten()
         
-        # Apply mask if provided
         if mask is not None:
             mask_flat = mask.flatten()
             valid_points = mask_flat > 0
@@ -53,16 +51,13 @@ class PointCloud:
             y_indices = y_indices[valid_points]
             depth_values = depth_values[valid_points]
         
-        # Center coordinates on principal point
         x_centered = (x_indices - self.principal_point[0]) * self.pixel_size
         y_centered = (y_indices - self.principal_point[1]) * self.pixel_size
         
-        # Calculate X and Y coordinates using pinhole model
         X = x_centered * depth_values / self.focal_length
         Y = y_centered * depth_values / self.focal_length
         Z = depth_values
         
-        # Stack coordinates
         points = np.column_stack([X, Y, Z])
         
         logger.info(f"Generated point cloud with {len(points)} points")
@@ -70,13 +65,6 @@ class PointCloud:
     def estimate_volume(self, points: np.ndarray, method: str = 'convex_hull') -> float:
         """
         Estimate volume of point cloud.
-        
-        Args:
-            points: Nx3 array of 3D points
-            method: Volume estimation method ('convex_hull' or 'alpha_shape')
-            
-        Returns:
-            float: Estimated volume in cubic centimeters
         """
         if len(points) < 4:
             raise ValueError("Need at least 4 points to estimate volume")
@@ -85,7 +73,6 @@ class PointCloud:
             hull = ConvexHull(points)
             return hull.volume
         elif method == 'alpha_shape':
-            # TODO: Implement alpha shape method
             raise NotImplementedError("Alpha shape method not implemented")
         else:
             raise ValueError(f"Unknown volume estimation method: {method}")
@@ -93,12 +80,6 @@ class PointCloud:
     def calculate_surface_area(self, points: np.ndarray) -> float:
         """
         Calculate surface area of point cloud using convex hull.
-        
-        Args:
-            points: Nx3 array of 3D points
-            
-        Returns:
-            float: Surface area in square centimeters
         """
         if len(points) < 4:
             raise ValueError("Need at least 4 points to calculate surface area")
@@ -109,12 +90,6 @@ class PointCloud:
     def get_dimensions(self, points: np.ndarray) -> Dict[str, float]:
         """
         Calculate bounding box dimensions.
-        
-        Args:
-            points: Nx3 array of 3D points
-            
-        Returns:
-            Dict containing length, width, height in centimeters
         """
         min_coords = np.min(points, axis=0)
         max_coords = np.max(points, axis=0)

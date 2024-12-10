@@ -4,7 +4,6 @@ from pathlib import Path
 import argparse
 import logging
 
-# Add the project root to Python path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
@@ -16,7 +15,6 @@ def main():
     parser.add_argument('--config', required=True, help='Path to config file')
     args = parser.parse_args()
     
-    # Set up logging
     logger = setup_logging(
         log_dir=project_root / "logs/preprocessing",
         log_prefix="preprocess"

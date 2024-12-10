@@ -29,18 +29,12 @@ class VolumeCalculator:
         try:
             pixel_size = intrinsic_params['pixel_size']
             
-            # Get the masked depths
             masked_depths = depth_map[mask > 0]
-            
-            # Calculate the median depth as reference point
-            # This helps handle spread-out objects like rice better
+
             reference_depth = np.median(masked_depths)
             
-            # Calculate heights relative to median depth
-            # This gives a more balanced height distribution
             heights = masked_depths.max() - masked_depths
             
-            # Use percentile to remove extreme values
             height_threshold = np.percentile(heights, 95)  # Use 95th percentile
             heights = np.clip(heights, 0, height_threshold)
             
@@ -52,20 +46,15 @@ class VolumeCalculator:
             logger.info(f"Number of points: {len(heights)}")
             logger.info(f"Base area in pixels: {np.sum(mask)}")
             
-            # Calculate base area in cm²
             base_area = np.sum(mask) * (pixel_size ** 2)
             
-            # Calculate volume using clipped heights
             volume_cm3 = np.sum(heights) * (pixel_size ** 2)
             
-            # Apply calibration if provided
             if calibration and 'scale_factor' in calibration:
                 volume_cm3 *= calibration['scale_factor']
                 
-            # Convert to cups
             volume_cups = volume_cm3 * self.CM3_TO_CUPS
             
-            # Calculate statistics
             avg_height = np.mean(heights)
             max_height = np.max(heights)
             
@@ -99,21 +88,17 @@ class VolumeCalculator:
                                 intrinsic_params: Dict) -> Dict[str, float]:
         """Calculate reference measurements using plate and projection equations"""
         try:
-            # Get plate depth values
             plate_depths = depth_map[plate_mask > 0]
             plate_height = np.median(plate_depths)
             
-            # Calculate actual plate volume for reference
             actual_volume = np.pi * (self.plate_diameter/2)**2 * self.plate_height
             
-            # Calculate estimated plate volume
             plate_base = plate_height + self.plate_height
             plate_heights = plate_base - plate_depths
             valid_heights = plate_heights[plate_heights > 0]
             pixel_size = intrinsic_params['pixel_size']
             estimated_volume = np.sum(valid_heights) * (pixel_size ** 2)
             
-            # Scale factor is ratio of actual to estimated volume
             scale_factor = actual_volume / estimated_volume
             
             logger.info(

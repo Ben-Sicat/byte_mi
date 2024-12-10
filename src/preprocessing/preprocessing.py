@@ -201,7 +201,7 @@ class PreprocessingPipeline:
             },
             'alignment_info': {
                 'depth_shape': self.depth_processor.depth_shape,
-                'rgb_shape': self.depth_processor.rgb_shape  # Using original RGB shape from metadata
+                'rgb_shape': self.depth_processor.rgb_shape  
             }
         }
         

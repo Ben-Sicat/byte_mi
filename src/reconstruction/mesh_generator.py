@@ -40,7 +40,6 @@ class MeshGenerator:
             else:
                 raise ValueError(f"Unknown method: {method}")
                 
-            # Apply smoothing
             if self.smoothing_factor > 0:
                 mesh = self._smooth_mesh(mesh)
                 
@@ -62,14 +61,11 @@ class MeshGenerator:
         
     def _surface_reconstruction(self, points: np.ndarray) -> trimesh.Trimesh:
         """Generate mesh using surface reconstruction."""
-        # Project points to 2D for triangulation
         pca = trimesh.transformations.PCA(points)
         points_2d = points @ pca[:2].T
         
-        # Create triangulation
         tri = Delaunay(points_2d)
         
-        # Create mesh
         mesh = trimesh.Trimesh(
             vertices=points,
             faces=tri.simplices
@@ -81,7 +77,6 @@ class MeshGenerator:
                          alpha: float = None) -> trimesh.Trimesh:
         """Generate mesh using alpha shape."""
         if alpha is None:
-            # Estimate alpha based on point density
             bbox_volume = np.prod(np.ptp(points, axis=0))
             point_density = len(points) / bbox_volume
             alpha = 1 / np.sqrt(point_density)
@@ -94,15 +89,13 @@ class MeshGenerator:
         
     def _smooth_mesh(self, mesh: trimesh.Trimesh) -> trimesh.Trimesh:
         """Apply Laplacian smoothing to mesh."""
-        # Create copy to avoid modifying original
         smoothed = mesh.copy()
         
-        # Apply Laplacian smoothing
         factor = self.smoothing_factor
         vertices = smoothed.vertices
         adjacency = trimesh.graph.vertex_adjacency_graph(smoothed)
         
-        for _ in range(3):  # Number of smoothing iterations
+        for _ in range(3):  
             new_vertices = vertices.copy()
             for i in range(len(vertices)):
                 neighbors = adjacency[i].keys()
@@ -117,12 +110,6 @@ class MeshGenerator:
     def validate_mesh(self, mesh: trimesh.Trimesh) -> Dict[str, bool]:
         """
         Validate mesh quality and properties.
-        
-        Args:
-            mesh: trimesh.Trimesh object
-            
-        Returns:
-            Dictionary of validation results
         """
         results = {
             'is_watertight': mesh.is_watertight,

@@ -13,14 +13,6 @@ class DepthNoiseReducer:
     def __init__(self, config: Optional[Dict] = None):
         """
         Initialize with optional configuration parameters.
-        
-        Args:
-            config: Dictionary containing filter parameters:
-                - bilateral_d: Diameter of pixel neighborhood
-                - bilateral_sigma_color: Filter sigma in color space
-                - bilateral_sigma_space: Filter sigma in coordinate space
-                - median_kernel: Median filter kernel size
-                - outlier_threshold: Standard deviation threshold for outliers
         """
         self.config = config or {
             'bilateral_d': 5,
@@ -104,7 +96,6 @@ class DepthNoiseReducer:
         if mask is not None:
             edges = cv2.Canny(mask.astype(np.uint8), 100, 200)
             
-            # dilate edges slightly
             kernel = np.ones((3,3), np.uint8)
             edge_region = cv2.dilate(edges, kernel, iterations=1)
             
